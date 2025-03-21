@@ -149,7 +149,7 @@ public class Login extends javax.swing.JFrame {
                 ex.printStackTrace();
             }
         }else {
-        JOptionPane.showMessageDialog(null, "Fields cannot be Empty", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Fields cannot be Empty", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_BtnLoginActionPerformed
 
