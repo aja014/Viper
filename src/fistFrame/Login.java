@@ -15,6 +15,8 @@ import java.sql.Statement;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import Menu.*;
+import java.net.URL;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -29,6 +31,15 @@ public class Login extends javax.swing.JFrame {
 
     public Login() {
         initComponents();
+        
+        URL iconURL = getClass().getResource("/virusSweeperIcon.png");
+        if (iconURL == null) {
+            System.out.println("Image not found! Check the path.");
+        } else {
+            ImageIcon frameIcon = new ImageIcon(iconURL);
+            setIconImage(frameIcon.getImage());
+        }
+        
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
