@@ -15,6 +15,7 @@ import java.sql.Statement;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import Menu.*;
+import java.awt.Image;
 import java.net.URL;
 import javax.swing.ImageIcon;
 
@@ -31,7 +32,7 @@ public class Login extends javax.swing.JFrame {
 
     public Login() {
         initComponents();
-        
+
         URL iconURL = getClass().getResource("/virusSweeperIcon.png");
         if (iconURL == null) {
             System.out.println("Image not found! Check the path.");
@@ -39,7 +40,25 @@ public class Login extends javax.swing.JFrame {
             ImageIcon frameIcon = new ImageIcon(iconURL);
             setIconImage(frameIcon.getImage());
         }
-        
+
+        getContentPane().setLayout(null);
+
+        lbLogo = new javax.swing.JLabel();
+        lbLogo.setBounds(0, 0, 1200, 720); 
+        getContentPane().add(lbLogo); 
+
+        URL bgURL = getClass().getResource("/login.png");
+        if (bgURL == null) {
+            System.out.println("Background image not found! Check the path.");
+        } else {
+            ImageIcon VSBG = new ImageIcon(bgURL);
+            Image img3 = VSBG.getImage();
+            Image img4 = img3.getScaledInstance(1200, 720, Image.SCALE_SMOOTH);
+            ImageIcon scaledIcon = new ImageIcon(img4);
+            lbLogo.setIcon(scaledIcon);
+        }
+
+        setSize(1200, 720); 
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -221,5 +240,5 @@ public class Login extends javax.swing.JFrame {
     public javax.swing.JPasswordField password;
     public javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
-
+    private javax.swing.JLabel lbLogo;
 }
