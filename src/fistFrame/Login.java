@@ -14,14 +14,19 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import Menu.*;
 
 /**
  *
  * @author Asus
  */
+
+
 public class Login extends javax.swing.JFrame {
 
-    /** Creates new form Login */
+    public static String username1;
+    public static String password1;
+
     public Login() {
         initComponents();
         setVisible(true);
@@ -123,8 +128,8 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnCreateAccActionPerformed
 
     private void BtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLoginActionPerformed
-        String username1 = username.getText();
-        String password1 = new String(password.getPassword());
+        username1 = username.getText();
+        password1 = new String(password.getPassword());
         
         if (!username1.isEmpty() && !password1.isEmpty()){
             try {
@@ -139,6 +144,12 @@ public class Login extends javax.swing.JFrame {
 
                 if (rs.next()){
                     JOptionPane.showMessageDialog(null, "Login Successfuly", "Login Successful", JOptionPane.INFORMATION_MESSAGE);
+                    menu m1 = new menu();
+                    m1.LblAccountUsername.setText(username1);
+                    m1.setVisible(true);
+                    m1.setLocationRelativeTo(null);
+                    m1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "Account does not exist", "Error", JOptionPane.ERROR_MESSAGE);
                     username.setText("");
@@ -193,8 +204,8 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JButton BtnLogin;
     private javax.swing.JLabel LblUsername;
     private javax.swing.JLabel LblUsername1;
-    private javax.swing.JPasswordField password;
-    private javax.swing.JTextField username;
+    public javax.swing.JPasswordField password;
+    public javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
 
 }
