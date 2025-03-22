@@ -6,6 +6,8 @@
 package Menu;
 
 import fistFrame.*;
+import java.net.URL;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -18,6 +20,15 @@ public class menu extends javax.swing.JFrame {
     
     public menu() {
         initComponents();
+        
+        URL iconURL = getClass().getResource("/virusSweeperIcon.png");
+        if (iconURL == null) {
+            System.out.println("Image not found! Check the path.");
+        } else {
+            ImageIcon frameIcon = new ImageIcon(iconURL);
+            setIconImage(frameIcon.getImage());
+        }
+    
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -134,7 +145,7 @@ public class menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLogoutActionPerformed
-        // TODO add your handling code here:
+        // TODO add youradmadmad         handling code here:
         int x = JOptionPane.showConfirmDialog(null, "Are you sure?", "Logout", JOptionPane.YES_NO_OPTION);
         
         if (x == 0){
