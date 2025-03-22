@@ -135,39 +135,47 @@ public class createAcc extends javax.swing.JFrame {
         String confirmpass = new String(confirmPassword.getPassword());
         
         if (!username1.isEmpty() && !password1.isEmpty() && !confirmpass.isEmpty()){
-            if (password1.equals(confirmpass)){
-                System.out.println("hi");
-                int num = 1;
-                try{
-                    Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ViperDB","root","root");
-                    Statement st = con.createStatement();
-                    ResultSet rs = st.executeQuery(getLatestId);
-                    if (rs.next()){
-                        num = rs.getInt("id") + 1;
-                    }
-                    numId = String.valueOf(num);
-
-                    String addAcc = addAcc1 + "values ("+numId+",'"+username1+"','"+password1+"')";
-                    st.executeUpdate(addAcc);
-
-                    con.close();
-                    st.close();
-                    rs.close();
-                    System.out.println("Added");
-                    JOptionPane.showMessageDialog(null, "Added Successfully!", "Successful",JOptionPane.INFORMATION_MESSAGE);
-                    username.setText("");
-                    password.setText("");
-                    confirmPassword.setText("");
-                }catch (SQLException ex){
-                    if (ex.getSQLState().equals("23505")){
-                        JOptionPane.showMessageDialog(null, "Username already Exist", "Error",JOptionPane.ERROR_MESSAGE);
-                    }else {
-                        ex.printStackTrace();
-                    }
-                    System.out.println("Failed");
+            if (username1.length() < 3 || password1.length() < 8){
+                if (username1.length() < 3){
+                    JOptionPane.showMessageDialog(null, "Username must be greater than 3 characters", "Error", JOptionPane.ERROR_MESSAGE);
+                }else if (password1.length() < 8){
+                    JOptionPane.showMessageDialog(null, "Password must be greater than 8 characters", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }else{
-                JOptionPane.showMessageDialog(null, "Password doesn't match", "Error",JOptionPane.ERROR_MESSAGE);
+                if (password1.equals(confirmpass)){
+                    System.out.println("hi");
+                    int num = 1;
+                    try{
+                        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ViperDB","root","root");
+                        Statement st = con.createStatement();
+                        ResultSet rs = st.executeQuery(getLatestId);
+                        if (rs.next()){
+                            num = rs.getInt("id") + 1;
+                        }
+                        numId = String.valueOf(num);
+
+                        String addAcc = addAcc1 + "values ("+numId+",'"+username1+"','"+password1+"')";
+                        st.executeUpdate(addAcc);
+
+                        con.close();
+                        st.close();
+                        rs.close();
+                        System.out.println("Added");
+                        JOptionPane.showMessageDialog(null, "Added Successfully!", "Successful",JOptionPane.INFORMATION_MESSAGE);
+                        username.setText("");
+                        password.setText("");
+                        confirmPassword.setText("");
+                    }catch (SQLException ex){
+                        if (ex.getSQLState().equals("23505")){
+                            JOptionPane.showMessageDialog(null, "Username already Exist", "Error",JOptionPane.ERROR_MESSAGE);
+                        }else {
+                            ex.printStackTrace();
+                        }
+                        System.out.println("Failed");
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(null, "Password doesn't match", "Error",JOptionPane.ERROR_MESSAGE);
+                }
             }
         }else{
             JOptionPane.showMessageDialog(null, "Fields cannot be empty!", "Error", JOptionPane.ERROR_MESSAGE);

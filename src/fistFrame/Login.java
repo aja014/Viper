@@ -48,7 +48,7 @@ public class Login extends javax.swing.JFrame {
         LblUsername = new javax.swing.JLabel();
         LblUsername1 = new javax.swing.JLabel();
         BtnLogin = new javax.swing.JButton();
-        BtnCreateAcc = new javax.swing.JButton();
+        BtnRegister = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,11 +68,11 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        BtnCreateAcc.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        BtnCreateAcc.setText("Create Account");
-        BtnCreateAcc.addActionListener(new java.awt.event.ActionListener() {
+        BtnRegister.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        BtnRegister.setText("Register");
+        BtnRegister.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnCreateAccActionPerformed(evt);
+                BtnRegisterActionPerformed(evt);
             }
         });
 
@@ -96,7 +96,7 @@ public class Login extends javax.swing.JFrame {
                         .addGap(58, 58, 58))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(BtnCreateAcc, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BtnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(BtnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(125, 125, 125))))
         );
@@ -114,18 +114,18 @@ public class Login extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addComponent(BtnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(BtnCreateAcc, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(BtnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void BtnCreateAccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCreateAccActionPerformed
+    private void BtnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegisterActionPerformed
         new createAcc();
         dispose();
 
-    }//GEN-LAST:event_BtnCreateAccActionPerformed
+    }//GEN-LAST:event_BtnRegisterActionPerformed
 
     private void BtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLoginActionPerformed
         username1 = username.getText();
@@ -200,8 +200,8 @@ public class Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BtnCreateAcc;
     private javax.swing.JButton BtnLogin;
+    private javax.swing.JButton BtnRegister;
     private javax.swing.JLabel LblUsername;
     private javax.swing.JLabel LblUsername1;
     public javax.swing.JPasswordField password;

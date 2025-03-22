@@ -34,8 +34,9 @@ public class playFrame extends javax.swing.JFrame {
 
         easy = new javax.swing.JButton();
         medium = new javax.swing.JButton();
-        hard = new javax.swing.JButton();
+        blitz = new javax.swing.JButton();
         btnEasy3 = new javax.swing.JButton();
+        hard1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -45,8 +46,8 @@ public class playFrame extends javax.swing.JFrame {
         medium.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         medium.setText("Medium");
 
-        hard.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        hard.setText("Hard");
+        blitz.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        blitz.setText("Blitz");
 
         btnEasy3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnEasy3.setText("Back");
@@ -55,6 +56,9 @@ public class playFrame extends javax.swing.JFrame {
                 btnEasy3ActionPerformed(evt);
             }
         });
+
+        hard1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        hard1.setText("Hard");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -65,9 +69,10 @@ public class playFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(117, 117, 117)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(hard, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(blitz, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(medium, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(easy, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(easy, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(hard1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(btnEasy3, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -80,9 +85,11 @@ public class playFrame extends javax.swing.JFrame {
                 .addComponent(easy, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(medium, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(hard, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(hard1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(blitz, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addComponent(btnEasy3)
                 .addContainerGap())
         );
@@ -132,9 +139,10 @@ public class playFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton blitz;
     private javax.swing.JButton btnEasy3;
     private javax.swing.JButton easy;
-    private javax.swing.JButton hard;
+    private javax.swing.JButton hard1;
     private javax.swing.JButton medium;
     // End of variables declaration//GEN-END:variables
 }
