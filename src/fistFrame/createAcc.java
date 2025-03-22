@@ -128,7 +128,8 @@ public class createAcc extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCreateActionPerformed
-        String getLatestId = "select * from account order by id desc fetch first 1 row only";
+//        String getLatestId = "select * from account order by id desc fetch first 1 row only";
+        String getLatestId = "select * from account";
         String addAcc1 = "insert into account(id,username,password) ";
         String numId = "";
         
@@ -150,9 +151,17 @@ public class createAcc extends javax.swing.JFrame {
                         Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ViperDB","root","root");
                         Statement st = con.createStatement();
                         ResultSet rs = st.executeQuery(getLatestId);
-                        if (rs.next()){
-                            num = rs.getInt("id") + 1;
+//                        if (rs.next()){
+//                            num = rs.getInt("id") + 1;
+//                        }
+                        while(rs.next()){
+                            if (rs.getInt("id") == num){
+                                num++;
+                            }else {
+                                break;
+                            }
                         }
+                    
                         numId = String.valueOf(num);
 
                         String addAcc = addAcc1 + "values ("+numId+",'"+username1+"','"+password1+"')";
@@ -174,6 +183,7 @@ public class createAcc extends javax.swing.JFrame {
                     }catch (SQLException ex){
                         if (ex.getSQLState().equals("23505")){
                             JOptionPane.showMessageDialog(null, "Username already Exist", "Error",JOptionPane.ERROR_MESSAGE);
+                            ex.printStackTrace();
                         }else {
                             ex.printStackTrace();
                         }

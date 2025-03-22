@@ -42,15 +42,35 @@ public class leaderboardsFrame extends javax.swing.JFrame {
 
         BtnEasy.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         BtnEasy.setText("Easy");
+        BtnEasy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnEasyActionPerformed(evt);
+            }
+        });
 
         BtnMedium.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         BtnMedium.setText("Medium");
+        BtnMedium.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnMediumActionPerformed(evt);
+            }
+        });
 
         BtnHard.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         BtnHard.setText("Hard");
+        BtnHard.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnHardActionPerformed(evt);
+            }
+        });
 
         BtnBlitz.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         BtnBlitz.setText("Blitz");
+        BtnBlitz.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnBlitzActionPerformed(evt);
+            }
+        });
 
         BtnBack.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         BtnBack.setText("Back");
@@ -101,6 +121,52 @@ public class leaderboardsFrame extends javax.swing.JFrame {
         new menu();
         dispose();
     }//GEN-LAST:event_BtnBackActionPerformed
+
+    private void BtnEasyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEasyActionPerformed
+        // TODO add your handling code here:
+        leaderboardsScoreFrame easy = new leaderboardsScoreFrame("easyscore");
+        easy.LblLevel.setText("Easy");
+        easy.setVisible(true);
+        easy.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        easy.setLocationRelativeTo(null);
+        dispose();
+//        leaderboardsScoreFrame easy = new leaderboardsScoreFrame();
+//        easy.lvl = "easyscore";
+//        easy.setVisible(true);
+//        easy.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        easy.setLocationRelativeTo(null);
+        
+    }//GEN-LAST:event_BtnEasyActionPerformed
+
+    private void BtnMediumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnMediumActionPerformed
+        // TODO add your handling code here:
+        leaderboardsScoreFrame medium = new leaderboardsScoreFrame("mediumscore");
+        medium.LblLevel.setText("Medium");
+        medium.setVisible(true);
+        medium.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        medium.setLocationRelativeTo(null);
+        dispose();
+    }//GEN-LAST:event_BtnMediumActionPerformed
+
+    private void BtnHardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHardActionPerformed
+        // TODO add your handling code here:
+        leaderboardsScoreFrame hard = new leaderboardsScoreFrame("hardscore");
+        hard.LblLevel.setText("Hard");
+        hard.setVisible(true);
+        hard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        hard.setLocationRelativeTo(null);
+        dispose();
+    }//GEN-LAST:event_BtnHardActionPerformed
+
+    private void BtnBlitzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBlitzActionPerformed
+        // TODO add your handling code here:
+        leaderboardsScoreFrame blitz = new leaderboardsScoreFrame("blitzscore");
+        blitz.LblLevel.setText("Blitz");
+        blitz.setVisible(true);
+        blitz.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        blitz.setLocationRelativeTo(null);
+        dispose();
+    }//GEN-LAST:event_BtnBlitzActionPerformed
 
     /**
      * @param args the command line arguments

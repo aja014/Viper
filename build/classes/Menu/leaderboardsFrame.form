@@ -66,6 +66,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Easy"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnEasyActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="BtnMedium">
       <Properties>
@@ -74,6 +77,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Medium"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnMediumActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="BtnHard">
       <Properties>
@@ -82,6 +88,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Hard"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnHardActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="BtnBlitz">
       <Properties>
@@ -90,6 +99,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Blitz"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnBlitzActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="BtnBack">
       <Properties>
