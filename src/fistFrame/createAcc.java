@@ -5,12 +5,14 @@
  */
 package fistFrame;
 
+import Menu.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.*;
+import fistFrame.*;
 
 /**
  *
@@ -143,7 +145,6 @@ public class createAcc extends javax.swing.JFrame {
                 }
             }else{
                 if (password1.equals(confirmpass)){
-                    System.out.println("hi");
                     int num = 1;
                     try{
                         Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ViperDB","root","root");
@@ -162,9 +163,14 @@ public class createAcc extends javax.swing.JFrame {
                         rs.close();
                         System.out.println("Added");
                         JOptionPane.showMessageDialog(null, "Added Successfully!", "Successful",JOptionPane.INFORMATION_MESSAGE);
+                        Login.username1 = username1;
+                        
                         username.setText("");
                         password.setText("");
                         confirmPassword.setText("");
+                        
+                        new menu();
+                        dispose();
                     }catch (SQLException ex){
                         if (ex.getSQLState().equals("23505")){
                             JOptionPane.showMessageDialog(null, "Username already Exist", "Error",JOptionPane.ERROR_MESSAGE);
