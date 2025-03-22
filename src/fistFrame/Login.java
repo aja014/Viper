@@ -155,6 +155,9 @@ public class Login extends javax.swing.JFrame {
                     username.setText("");
                     password.setText("");
                 }
+                con.close();
+                pst.close();
+                rs.close();
 
             }catch (SQLException ex){
                 ex.printStackTrace();
