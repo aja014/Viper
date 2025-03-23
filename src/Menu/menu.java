@@ -21,14 +21,14 @@ public class menu extends javax.swing.JFrame {
     public menu() {
         initComponents();
         
-        URL iconURL = getClass().getResource("/virusSweeperIcon.png");
+        URL iconURL = getClass().getResource("/images/virusSweeperIcon.png");
         if (iconURL == null) {
             System.out.println("Image not found! Check the path.");
         } else {
             ImageIcon frameIcon = new ImageIcon(iconURL);
             setIconImage(frameIcon.getImage());
         }
-    
+        
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -45,6 +45,7 @@ public class menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        background = new javax.swing.JPanel();
         LblUsername = new javax.swing.JLabel();
         LblAccountUsername = new javax.swing.JLabel();
         BtnPlay = new javax.swing.JButton();
@@ -52,46 +53,84 @@ public class menu extends javax.swing.JFrame {
         BtnShop = new javax.swing.JButton();
         BtnHelp = new javax.swing.JButton();
         BtnLogout = new javax.swing.JButton();
+        image = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Viper");
 
-        LblUsername.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        background.setLayout(null);
+
+        LblUsername.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        LblUsername.setForeground(java.awt.Color.white);
         LblUsername.setText("Username:");
+        background.add(LblUsername);
+        LblUsername.setBounds(20, 650, 120, 22);
 
-        LblAccountUsername.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        LblAccountUsername.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        LblAccountUsername.setForeground(java.awt.Color.white);
         LblAccountUsername.setText("text1");
+        background.add(LblAccountUsername);
+        LblAccountUsername.setBounds(140, 650, 180, 22);
 
+        BtnPlay.setBackground(null);
         BtnPlay.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        BtnPlay.setText("Play");
+        BtnPlay.setForeground(null);
+        BtnPlay.setBorder(null);
+        BtnPlay.setBorderPainted(false);
+        BtnPlay.setContentAreaFilled(false);
+        BtnPlay.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BtnPlay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnPlayActionPerformed(evt);
             }
         });
+        background.add(BtnPlay);
+        BtnPlay.setBounds(320, 260, 550, 90);
 
+        BtnLeaderBoards.setBackground(null);
         BtnLeaderBoards.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        BtnLeaderBoards.setText("Leaderboards");
+        BtnLeaderBoards.setForeground(null);
+        BtnLeaderBoards.setBorder(null);
+        BtnLeaderBoards.setBorderPainted(false);
+        BtnLeaderBoards.setContentAreaFilled(false);
+        BtnLeaderBoards.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BtnLeaderBoards.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnLeaderBoardsActionPerformed(evt);
             }
         });
+        background.add(BtnLeaderBoards);
+        BtnLeaderBoards.setBounds(330, 500, 540, 90);
 
+        BtnShop.setBackground(null);
         BtnShop.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        BtnShop.setText("Shop");
+        BtnShop.setForeground(null);
+        BtnShop.setBorder(null);
+        BtnShop.setBorderPainted(false);
+        BtnShop.setContentAreaFilled(false);
+        BtnShop.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BtnShop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnShopActionPerformed(evt);
             }
         });
+        background.add(BtnShop);
+        BtnShop.setBounds(330, 380, 540, 90);
 
+        BtnHelp.setBackground(null);
         BtnHelp.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        BtnHelp.setText("Help");
+        BtnHelp.setForeground(null);
+        BtnHelp.setBorder(null);
+        BtnHelp.setBorderPainted(false);
+        BtnHelp.setContentAreaFilled(false);
+        BtnHelp.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BtnHelp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnHelpActionPerformed(evt);
             }
         });
+        background.add(BtnHelp);
+        BtnHelp.setBounds(1107, 540, 50, 50);
 
         BtnLogout.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         BtnLogout.setText("Logout");
@@ -100,45 +139,24 @@ public class menu extends javax.swing.JFrame {
                 BtnLogoutActionPerformed(evt);
             }
         });
+        background.add(BtnLogout);
+        BtnLogout.setBounds(340, 50, 87, 31);
+
+        image.setBackground(null);
+        image.setForeground(null);
+        image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/4_home.png"))); // NOI18N
+        background.add(image);
+        image.setBounds(0, 0, 1200, 720);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(135, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(BtnLeaderBoards, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(BtnPlay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(BtnHelp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(BtnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(BtnShop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(128, 128, 128))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(LblUsername)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(LblAccountUsername)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, 1200, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(BtnPlay, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BtnLeaderBoards, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BtnShop, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BtnHelp, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BtnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LblUsername)
-                    .addComponent(LblAccountUsername))
-                .addContainerGap())
+            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE)
         );
 
         pack();
@@ -221,5 +239,7 @@ public class menu extends javax.swing.JFrame {
     private javax.swing.JButton BtnShop;
     public javax.swing.JLabel LblAccountUsername;
     private javax.swing.JLabel LblUsername;
+    private javax.swing.JPanel background;
+    private javax.swing.JLabel image;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,11 +5,13 @@
  */
 package Menu;
 
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 
@@ -27,6 +29,15 @@ public class leaderboardsScoreFrame extends javax.swing.JFrame {
     
     public leaderboardsScoreFrame(String level) {
         initComponents();
+        
+        URL iconURL = getClass().getResource("/images/virusSweeperIcon.png");
+        if (iconURL == null) {
+            System.out.println("Image not found! Check the path.");
+        } else {
+            ImageIcon frameIcon = new ImageIcon(iconURL);
+            setIconImage(frameIcon.getImage());
+        }
+        
         this.lvl = level;
         
 //        if (lvl.equals("easyscore")){
@@ -76,12 +87,20 @@ public class leaderboardsScoreFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        background = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableScore = new javax.swing.JTable();
         BtnBack = new javax.swing.JButton();
         LblLevel = new javax.swing.JLabel();
+        image = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Viper");
+        setPreferredSize(new java.awt.Dimension(1200, 720));
+
+        background.setLayout(null);
+
+        jScrollPane1.setBackground(java.awt.Color.white);
 
         tableScore.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -112,45 +131,46 @@ public class leaderboardsScoreFrame extends javax.swing.JFrame {
             tableScore.getColumnModel().getColumn(1).setResizable(false);
         }
 
+        background.add(jScrollPane1);
+        jScrollPane1.setBounds(280, 350, 640, 230);
+
+        BtnBack.setBackground(null);
         BtnBack.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        BtnBack.setText("Back");
+        BtnBack.setForeground(null);
+        BtnBack.setBorder(null);
+        BtnBack.setBorderPainted(false);
+        BtnBack.setContentAreaFilled(false);
+        BtnBack.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BtnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnBackActionPerformed(evt);
             }
         });
+        background.add(BtnBack);
+        BtnBack.setBounds(27, 43, 50, 50);
 
-        LblLevel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        LblLevel.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        LblLevel.setForeground(new java.awt.Color(153, 0, 51));
         LblLevel.setText("LblLevel");
+        LblLevel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        background.add(LblLevel);
+        LblLevel.setBounds(560, 280, 210, 60);
+
+        image.setBackground(null);
+        image.setForeground(null);
+        image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/6_leaderboard.png"))); // NOI18N
+        background.add(image);
+        image.setBounds(0, 0, 1200, 720);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(88, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(83, 83, 83))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(BtnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(156, 156, 156)
-                        .addComponent(LblLevel)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, 1200, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(17, Short.MAX_VALUE)
-                .addComponent(LblLevel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(BtnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE)
         );
 
         pack();
@@ -200,6 +220,8 @@ public class leaderboardsScoreFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnBack;
     public javax.swing.JLabel LblLevel;
+    private javax.swing.JPanel background;
+    private javax.swing.JLabel image;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tableScore;
     // End of variables declaration//GEN-END:variables

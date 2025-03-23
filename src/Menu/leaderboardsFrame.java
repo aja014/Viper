@@ -5,6 +5,8 @@
  */
 package Menu;
 
+import java.net.URL;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 /**
@@ -18,6 +20,15 @@ public class leaderboardsFrame extends javax.swing.JFrame {
      */
     public leaderboardsFrame() {
         initComponents();
+        
+        URL iconURL = getClass().getResource("/images/virusSweeperIcon.png");
+        if (iconURL == null) {
+            System.out.println("Image not found! Check the path.");
+        } else {
+            ImageIcon frameIcon = new ImageIcon(iconURL);
+            setIconImage(frameIcon.getImage());
+        }
+        
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,85 +43,110 @@ public class leaderboardsFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        background = new javax.swing.JPanel();
         BtnEasy = new javax.swing.JButton();
         BtnMedium = new javax.swing.JButton();
         BtnHard = new javax.swing.JButton();
         BtnBlitz = new javax.swing.JButton();
         BtnBack = new javax.swing.JButton();
+        image = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Viper");
+        setPreferredSize(new java.awt.Dimension(1200, 720));
 
+        background.setLayout(null);
+
+        BtnEasy.setBackground(null);
         BtnEasy.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        BtnEasy.setText("Easy");
+        BtnEasy.setForeground(null);
+        BtnEasy.setBorder(null);
+        BtnEasy.setBorderPainted(false);
+        BtnEasy.setContentAreaFilled(false);
+        BtnEasy.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BtnEasy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnEasyActionPerformed(evt);
             }
         });
+        background.add(BtnEasy);
+        BtnEasy.setBounds(380, 260, 440, 80);
 
+        BtnMedium.setBackground(null);
         BtnMedium.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        BtnMedium.setText("Medium");
+        BtnMedium.setForeground(null);
+        BtnMedium.setBorder(null);
+        BtnMedium.setBorderPainted(false);
+        BtnMedium.setContentAreaFilled(false);
+        BtnMedium.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BtnMedium.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnMediumActionPerformed(evt);
             }
         });
+        background.add(BtnMedium);
+        BtnMedium.setBounds(380, 351, 440, 80);
 
+        BtnHard.setBackground(null);
         BtnHard.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        BtnHard.setText("Hard");
+        BtnHard.setForeground(null);
+        BtnHard.setBorder(null);
+        BtnHard.setBorderPainted(false);
+        BtnHard.setContentAreaFilled(false);
+        BtnHard.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BtnHard.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnHardActionPerformed(evt);
             }
         });
+        background.add(BtnHard);
+        BtnHard.setBounds(380, 450, 440, 80);
 
+        BtnBlitz.setBackground(null);
         BtnBlitz.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        BtnBlitz.setText("Blitz");
+        BtnBlitz.setForeground(null);
+        BtnBlitz.setBorder(null);
+        BtnBlitz.setBorderPainted(false);
+        BtnBlitz.setContentAreaFilled(false);
+        BtnBlitz.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BtnBlitz.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnBlitzActionPerformed(evt);
             }
         });
+        background.add(BtnBlitz);
+        BtnBlitz.setBounds(380, 550, 440, 70);
 
+        BtnBack.setBackground(null);
         BtnBack.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        BtnBack.setText("Back");
+        BtnBack.setForeground(null);
+        BtnBack.setBorder(null);
+        BtnBack.setBorderPainted(false);
+        BtnBack.setContentAreaFilled(false);
+        BtnBack.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BtnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnBackActionPerformed(evt);
             }
         });
+        background.add(BtnBack);
+        BtnBack.setBounds(30, 30, 50, 50);
+
+        image.setBackground(null);
+        image.setForeground(null);
+        image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/8_play_lead.png"))); // NOI18N
+        background.add(image);
+        image.setBounds(0, 0, 1200, 720);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(130, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BtnBlitz, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BtnHard, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BtnMedium, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BtnEasy, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(140, 140, 140))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(BtnBack)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, 1200, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(BtnEasy)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BtnMedium)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BtnHard)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BtnBlitz)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
-                .addComponent(BtnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE)
         );
 
         pack();
@@ -209,5 +245,7 @@ public class leaderboardsFrame extends javax.swing.JFrame {
     private javax.swing.JButton BtnEasy;
     private javax.swing.JButton BtnHard;
     private javax.swing.JButton BtnMedium;
+    private javax.swing.JPanel background;
+    private javax.swing.JLabel image;
     // End of variables declaration//GEN-END:variables
 }

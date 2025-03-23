@@ -41,7 +41,7 @@ public class Login extends javax.swing.JFrame {
             setIconImage(frameIcon.getImage());
         }
 
-        setSize(1200, 720); 
+        setTitle("Viper");
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -79,14 +79,14 @@ public class Login extends javax.swing.JFrame {
         username.setOpaque(false);
         username.setSelectedTextColor(null);
         background.add(username);
-        username.setBounds(380, 310, 440, 70);
+        username.setBounds(390, 310, 430, 70);
 
         password.setBackground(null);
         password.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         password.setBorder(null);
         password.setOpaque(false);
         background.add(password);
-        password.setBounds(380, 420, 440, 70);
+        password.setBounds(390, 420, 430, 70);
 
         BtnLogin.setBackground(null);
         BtnLogin.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -94,6 +94,7 @@ public class Login extends javax.swing.JFrame {
         BtnLogin.setBorder(null);
         BtnLogin.setBorderPainted(false);
         BtnLogin.setContentAreaFilled(false);
+        BtnLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BtnLogin.setOpaque(false);
         BtnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -107,6 +108,7 @@ public class Login extends javax.swing.JFrame {
         BtnRegister.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         BtnRegister.setBorder(null);
         BtnRegister.setContentAreaFilled(false);
+        BtnRegister.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BtnRegister.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnRegisterActionPerformed(evt);
