@@ -5,6 +5,8 @@
  */
 package Menu;
 
+import java.net.URL;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import play.*;
 
@@ -19,6 +21,15 @@ public class playFrame extends javax.swing.JFrame {
      */
     public playFrame() {
         initComponents();
+        
+        URL iconURL = getClass().getResource("/images/virusSweeperIcon.png");
+        if (iconURL == null) {
+            System.out.println("Image not found! Check the path.");
+        } else {
+            ImageIcon frameIcon = new ImageIcon(iconURL);
+            setIconImage(frameIcon.getImage());
+        }
+        
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -33,91 +44,115 @@ public class playFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        background = new javax.swing.JPanel();
         easy = new javax.swing.JButton();
         medium = new javax.swing.JButton();
         blitz = new javax.swing.JButton();
-        btnEasy3 = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
         hard1 = new javax.swing.JButton();
+        image = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Viper");
+        setPreferredSize(new java.awt.Dimension(1200, 720));
 
+        background.setLayout(null);
+
+        easy.setBackground(null);
         easy.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        easy.setText("Easy");
+        easy.setForeground(null);
+        easy.setBorder(null);
+        easy.setBorderPainted(false);
+        easy.setContentAreaFilled(false);
+        easy.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         easy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 easyActionPerformed(evt);
             }
         });
+        background.add(easy);
+        easy.setBounds(380, 260, 440, 80);
 
+        medium.setBackground(null);
         medium.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        medium.setText("Medium");
+        medium.setForeground(null);
+        medium.setBorder(null);
+        medium.setBorderPainted(false);
+        medium.setContentAreaFilled(false);
+        medium.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         medium.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mediumActionPerformed(evt);
             }
         });
+        background.add(medium);
+        medium.setBounds(380, 360, 440, 70);
 
+        blitz.setBackground(null);
         blitz.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        blitz.setText("Blitz");
+        blitz.setForeground(null);
+        blitz.setBorder(null);
+        blitz.setBorderPainted(false);
+        blitz.setContentAreaFilled(false);
+        blitz.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        background.add(blitz);
+        blitz.setBounds(380, 550, 450, 70);
 
-        btnEasy3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnEasy3.setText("Back");
-        btnEasy3.addActionListener(new java.awt.event.ActionListener() {
+        btnBack.setBackground(null);
+        btnBack.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnBack.setForeground(null);
+        btnBack.setBorder(null);
+        btnBack.setBorderPainted(false);
+        btnBack.setContentAreaFilled(false);
+        btnBack.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEasy3ActionPerformed(evt);
+                btnBackActionPerformed(evt);
             }
         });
+        background.add(btnBack);
+        btnBack.setBounds(29, 30, 50, 50);
 
+        hard1.setBackground(null);
         hard1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        hard1.setText("Hard");
+        hard1.setForeground(null);
+        hard1.setBorder(null);
+        hard1.setBorderPainted(false);
+        hard1.setContentAreaFilled(false);
+        hard1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         hard1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 hard1ActionPerformed(evt);
             }
         });
+        background.add(hard1);
+        hard1.setBounds(380, 450, 440, 80);
+
+        image.setBackground(null);
+        image.setForeground(null);
+        image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/8_play_lead.png"))); // NOI18N
+        background.add(image);
+        image.setBounds(0, 0, 1200, 720);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(117, 117, 117)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(blitz, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(medium, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(easy, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(hard1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnEasy3, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(129, Short.MAX_VALUE))
+            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, 1200, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addComponent(easy, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(medium, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(hard1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(blitz, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                .addComponent(btnEasy3)
-                .addContainerGap())
+            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnEasy3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEasy3ActionPerformed
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
         new menu();
         dispose();
-    }//GEN-LAST:event_btnEasy3ActionPerformed
+    }//GEN-LAST:event_btnBackActionPerformed
 
     private void easyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_easyActionPerformed
         // TODO add your handling code here:
@@ -173,10 +208,12 @@ public class playFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel background;
     private javax.swing.JButton blitz;
-    private javax.swing.JButton btnEasy3;
+    private javax.swing.JButton btnBack;
     private javax.swing.JButton easy;
     private javax.swing.JButton hard1;
+    private javax.swing.JLabel image;
     private javax.swing.JButton medium;
     // End of variables declaration//GEN-END:variables
 }
