@@ -33,29 +33,12 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
 
-        URL iconURL = getClass().getResource("/virusSweeperIcon.png");
+        URL iconURL = getClass().getResource("/images/virusSweeperIcon.png");
         if (iconURL == null) {
             System.out.println("Image not found! Check the path.");
         } else {
             ImageIcon frameIcon = new ImageIcon(iconURL);
             setIconImage(frameIcon.getImage());
-        }
-
-        getContentPane().setLayout(null);
-
-        lbLogo = new javax.swing.JLabel();
-        lbLogo.setBounds(0, 0, 1200, 720); 
-        getContentPane().add(lbLogo); 
-
-        URL bgURL = getClass().getResource("/login.png");
-        if (bgURL == null) {
-            System.out.println("Background image not found! Check the path.");
-        } else {
-            ImageIcon VSBG = new ImageIcon(bgURL);
-            Image img3 = VSBG.getImage();
-            Image img4 = img3.getScaledInstance(1200, 720, Image.SCALE_SMOOTH);
-            ImageIcon scaledIcon = new ImageIcon(img4);
-            lbLogo.setIcon(scaledIcon);
         }
 
         setSize(1200, 720); 
@@ -73,79 +56,78 @@ public class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        background = new javax.swing.JPanel();
         username = new javax.swing.JTextField();
         password = new javax.swing.JPasswordField();
-        LblUsername = new javax.swing.JLabel();
-        LblUsername1 = new javax.swing.JLabel();
         BtnLogin = new javax.swing.JButton();
         BtnRegister = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Viper");
+        setPreferredSize(new java.awt.Dimension(1200, 720));
 
-        username.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        background.setPreferredSize(new java.awt.Dimension(1200, 720));
+        background.setLayout(null);
 
-        LblUsername.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        LblUsername.setText("Username:");
+        username.setBackground(null);
+        username.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        username.setBorder(null);
+        username.setCaretColor(null);
+        username.setDisabledTextColor(java.awt.Color.lightGray);
+        username.setDoubleBuffered(true);
+        username.setOpaque(false);
+        username.setSelectedTextColor(null);
+        background.add(username);
+        username.setBounds(380, 310, 440, 70);
 
-        LblUsername1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        LblUsername1.setText("Password:");
+        password.setBackground(null);
+        password.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        password.setBorder(null);
+        password.setOpaque(false);
+        background.add(password);
+        password.setBounds(380, 420, 440, 70);
 
+        BtnLogin.setBackground(null);
         BtnLogin.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        BtnLogin.setText("Login");
+        BtnLogin.setForeground(null);
+        BtnLogin.setBorder(null);
+        BtnLogin.setBorderPainted(false);
+        BtnLogin.setContentAreaFilled(false);
+        BtnLogin.setOpaque(false);
         BtnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnLoginActionPerformed(evt);
             }
         });
+        background.add(BtnLogin);
+        BtnLogin.setBounds(450, 525, 310, 50);
 
+        BtnRegister.setBackground(null);
         BtnRegister.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        BtnRegister.setText("Register");
+        BtnRegister.setBorder(null);
+        BtnRegister.setContentAreaFilled(false);
         BtnRegister.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnRegisterActionPerformed(evt);
             }
         });
+        background.add(BtnRegister);
+        BtnRegister.setBounds(450, 590, 310, 60);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/2_login.png"))); // NOI18N
+        background.add(jLabel1);
+        jLabel1.setBounds(0, 0, 1200, 720);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(76, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(LblUsername)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(LblUsername1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(58, 58, 58))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(BtnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(BtnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(125, 125, 125))))
+            .addComponent(background, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(63, 63, 63)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(LblUsername))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(LblUsername1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addComponent(BtnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(BtnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29))
+            .addComponent(background, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -235,8 +217,8 @@ public class Login extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnLogin;
     private javax.swing.JButton BtnRegister;
-    private javax.swing.JLabel LblUsername;
-    private javax.swing.JLabel LblUsername1;
+    private javax.swing.JPanel background;
+    private javax.swing.JLabel jLabel1;
     public javax.swing.JPasswordField password;
     public javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
