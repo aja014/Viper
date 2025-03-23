@@ -5,6 +5,8 @@
  */
 package fistFrame;
 
+import play.*;
+
 /**
  *
  * @author Asus
@@ -16,6 +18,8 @@ public class Main {
      */
     public static void main(String[] args) {
         new Login();
+//        new Minesweeper(10,9);
+
     }
     
 }
