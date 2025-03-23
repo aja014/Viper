@@ -10,7 +10,6 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
 public class menu extends javax.swing.JFrame {
 
     /**
