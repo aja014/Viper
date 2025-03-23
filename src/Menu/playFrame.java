@@ -6,6 +6,7 @@
 package Menu;
 
 import javax.swing.JFrame;
+import play.*;
 
 /**
  *
@@ -42,9 +43,19 @@ public class playFrame extends javax.swing.JFrame {
 
         easy.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         easy.setText("Easy");
+        easy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                easyActionPerformed(evt);
+            }
+        });
 
         medium.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         medium.setText("Medium");
+        medium.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mediumActionPerformed(evt);
+            }
+        });
 
         blitz.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         blitz.setText("Blitz");
@@ -59,6 +70,11 @@ public class playFrame extends javax.swing.JFrame {
 
         hard1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         hard1.setText("Hard");
+        hard1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hard1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -102,6 +118,24 @@ public class playFrame extends javax.swing.JFrame {
         new menu();
         dispose();
     }//GEN-LAST:event_btnEasy3ActionPerformed
+
+    private void easyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_easyActionPerformed
+        // TODO add your handling code here:
+        new Minesweeper(10,9);
+        dispose();
+    }//GEN-LAST:event_easyActionPerformed
+
+    private void mediumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mediumActionPerformed
+        // TODO add your handling code here:
+        new Minesweeper(20,15);
+        dispose();
+    }//GEN-LAST:event_mediumActionPerformed
+
+    private void hard1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hard1ActionPerformed
+        // TODO add your handling code here:
+        new Minesweeper(30,21);
+        dispose();
+    }//GEN-LAST:event_hard1ActionPerformed
 
     /**
      * @param args the command line arguments
