@@ -5,11 +5,13 @@
  */
 package fistFrame;
 
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 /**
@@ -23,6 +25,15 @@ public class LogAndCreate extends javax.swing.JFrame {
      */
     public LogAndCreate() {
         initComponents();
+        
+        URL iconURL = getClass().getResource("/images/virusSweeperIcon.png");
+        if (iconURL == null) {
+            System.out.println("Image not found! Check the path.");
+        } else {
+            ImageIcon frameIcon = new ImageIcon(iconURL);
+            setIconImage(frameIcon.getImage());
+        }
+        
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

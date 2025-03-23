@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.*;
 import fistFrame.*;
+import java.net.URL;
 
 /**
  *
@@ -24,7 +25,17 @@ public class createAcc extends javax.swing.JFrame {
      * Creates new form createAcc
      */
     public createAcc() {
-        initComponents();setVisible(true);
+        initComponents();
+
+        URL iconURL = getClass().getResource("/images/virusSweeperIcon.png");
+        if (iconURL == null) {
+            System.out.println("Image not found! Check the path.");
+        } else {
+            ImageIcon frameIcon = new ImageIcon(iconURL);
+            setIconImage(frameIcon.getImage());
+        }
+        
+        setTitle("Viper");
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,93 +51,91 @@ public class createAcc extends javax.swing.JFrame {
     private void initComponents() {
 
         jPasswordField1 = new javax.swing.JPasswordField();
-        jPanel1 = new javax.swing.JPanel();
+        background = new javax.swing.JPanel();
         username = new javax.swing.JTextField();
         password = new javax.swing.JPasswordField();
         confirmPassword = new javax.swing.JPasswordField();
         BtnCancel = new javax.swing.JButton();
         BtnCreate = new javax.swing.JButton();
-        LblUsername = new javax.swing.JLabel();
-        LblPassword = new javax.swing.JLabel();
-        LblConfirmPassword = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         jPasswordField1.setText("jPasswordField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1200, 720));
 
-        jPanel1.setLayout(null);
+        background.setLayout(null);
 
-        username.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        username.setBackground(null);
+        username.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        username.setBorder(null);
+        username.setCaretColor(null);
+        username.setOpaque(false);
+        background.add(username);
+        username.setBounds(400, 300, 440, 60);
 
-        BtnCancel.setText("CANCEL");
+        password.setBackground(null);
+        password.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        password.setBorder(null);
+        password.setCaretColor(null);
+        password.setOpaque(false);
+        background.add(password);
+        password.setBounds(400, 410, 440, 70);
+
+        confirmPassword.setBackground(null);
+        confirmPassword.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        confirmPassword.setBorder(null);
+        confirmPassword.setCaretColor(null);
+        confirmPassword.setOpaque(false);
+        confirmPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                confirmPasswordActionPerformed(evt);
+            }
+        });
+        background.add(confirmPassword);
+        confirmPassword.setBounds(400, 520, 440, 70);
+
+        BtnCancel.setBackground(null);
+        BtnCancel.setForeground(null);
+        BtnCancel.setBorder(null);
+        BtnCancel.setBorderPainted(false);
+        BtnCancel.setContentAreaFilled(false);
+        BtnCancel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BtnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnCancelActionPerformed(evt);
             }
         });
+        background.add(BtnCancel);
+        BtnCancel.setBounds(610, 622, 310, 60);
 
-        BtnCreate.setText("CREATE");
+        BtnCreate.setBackground(null);
+        BtnCreate.setForeground(null);
+        BtnCreate.setBorder(null);
+        BtnCreate.setBorderPainted(false);
+        BtnCreate.setContentAreaFilled(false);
+        BtnCreate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BtnCreate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnCreateActionPerformed(evt);
             }
         });
+        background.add(BtnCreate);
+        BtnCreate.setBounds(280, 630, 310, 50);
 
-        LblUsername.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        LblUsername.setText("Username:");
-
-        LblPassword.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        LblPassword.setText("Password:");
-
-        LblConfirmPassword.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        LblConfirmPassword.setText("Confirm Password:");
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/3_register.png"))); // NOI18N
+        background.add(jLabel1);
+        jLabel1.setBounds(0, 0, 1200, 720);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(BtnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(BtnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(LblConfirmPassword)
-                            .addComponent(LblPassword)
-                            .addComponent(LblUsername))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(username)
-                            .addComponent(password)
-                            .addComponent(confirmPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE))
-                        .addGap(73, 73, 73))))
+            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(51, 51, 51)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(LblUsername, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LblPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LblConfirmPassword)
-                    .addComponent(confirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(60, 60, 60)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BtnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BtnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23))
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -209,6 +218,10 @@ public class createAcc extends javax.swing.JFrame {
         
     }//GEN-LAST:event_BtnCancelActionPerformed
 
+    private void confirmPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmPasswordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_confirmPasswordActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -247,11 +260,9 @@ public class createAcc extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnCancel;
     private javax.swing.JButton BtnCreate;
-    private javax.swing.JLabel LblConfirmPassword;
-    private javax.swing.JLabel LblPassword;
-    private javax.swing.JLabel LblUsername;
+    private javax.swing.JPanel background;
     private javax.swing.JPasswordField confirmPassword;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JPasswordField password;
     private javax.swing.JTextField username;

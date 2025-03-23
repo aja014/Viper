@@ -5,6 +5,8 @@
  */
 package Menu;
 
+import java.net.URL;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 /**
@@ -18,6 +20,15 @@ public class helpFrame extends javax.swing.JFrame {
      */
     public helpFrame() {
         initComponents();
+        
+        URL iconURL = getClass().getResource("/images/virusSweeperIcon.png");
+        if (iconURL == null) {
+            System.out.println("Image not found! Check the path.");
+        } else {
+            ImageIcon frameIcon = new ImageIcon(iconURL);
+            setIconImage(frameIcon.getImage());
+        }
+        
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,43 +43,52 @@ public class helpFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        background = new javax.swing.JPanel();
         BtnBack = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        image = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Viper");
+        setPreferredSize(new java.awt.Dimension(1200, 720));
 
+        background.setLayout(null);
+
+        BtnBack.setBackground(null);
         BtnBack.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        BtnBack.setText("Back");
+        BtnBack.setForeground(null);
+        BtnBack.setBorder(null);
+        BtnBack.setBorderPainted(false);
+        BtnBack.setContentAreaFilled(false);
+        BtnBack.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BtnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnBackActionPerformed(evt);
             }
         });
+        background.add(BtnBack);
+        BtnBack.setBounds(20, 50, 60, 50);
 
         jLabel1.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
         jLabel1.setText("Help Description");
+        background.add(jLabel1);
+        jLabel1.setBounds(560, 390, 127, 67);
+
+        image.setBackground(null);
+        image.setForeground(null);
+        image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/7_help.png"))); // NOI18N
+        background.add(image);
+        image.setBounds(0, 0, 1200, 720);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(BtnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(139, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(134, 134, 134))
+            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, 1200, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(79, 79, 79)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
-                .addComponent(BtnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE)
         );
 
         pack();
@@ -117,6 +137,8 @@ public class helpFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnBack;
+    private javax.swing.JPanel background;
+    private javax.swing.JLabel image;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
