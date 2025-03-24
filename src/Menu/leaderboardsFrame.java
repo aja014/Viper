@@ -49,17 +49,15 @@ public class leaderboardsFrame extends javax.swing.JFrame {
         BtnHard = new javax.swing.JButton();
         BtnBlitz = new javax.swing.JButton();
         BtnBack = new javax.swing.JButton();
+        BtnSettings = new javax.swing.JButton();
         image = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Viper");
-        setPreferredSize(new java.awt.Dimension(1200, 720));
 
         background.setLayout(null);
 
-        BtnEasy.setBackground(null);
         BtnEasy.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        BtnEasy.setForeground(null);
         BtnEasy.setBorder(null);
         BtnEasy.setBorderPainted(false);
         BtnEasy.setContentAreaFilled(false);
@@ -72,9 +70,7 @@ public class leaderboardsFrame extends javax.swing.JFrame {
         background.add(BtnEasy);
         BtnEasy.setBounds(380, 260, 440, 80);
 
-        BtnMedium.setBackground(null);
         BtnMedium.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        BtnMedium.setForeground(null);
         BtnMedium.setBorder(null);
         BtnMedium.setBorderPainted(false);
         BtnMedium.setContentAreaFilled(false);
@@ -87,9 +83,7 @@ public class leaderboardsFrame extends javax.swing.JFrame {
         background.add(BtnMedium);
         BtnMedium.setBounds(380, 351, 440, 80);
 
-        BtnHard.setBackground(null);
         BtnHard.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        BtnHard.setForeground(null);
         BtnHard.setBorder(null);
         BtnHard.setBorderPainted(false);
         BtnHard.setContentAreaFilled(false);
@@ -102,9 +96,7 @@ public class leaderboardsFrame extends javax.swing.JFrame {
         background.add(BtnHard);
         BtnHard.setBounds(380, 450, 440, 80);
 
-        BtnBlitz.setBackground(null);
         BtnBlitz.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        BtnBlitz.setForeground(null);
         BtnBlitz.setBorder(null);
         BtnBlitz.setBorderPainted(false);
         BtnBlitz.setContentAreaFilled(false);
@@ -117,9 +109,7 @@ public class leaderboardsFrame extends javax.swing.JFrame {
         background.add(BtnBlitz);
         BtnBlitz.setBounds(380, 550, 440, 70);
 
-        BtnBack.setBackground(null);
         BtnBack.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        BtnBack.setForeground(null);
         BtnBack.setBorder(null);
         BtnBack.setBorderPainted(false);
         BtnBack.setContentAreaFilled(false);
@@ -132,8 +122,19 @@ public class leaderboardsFrame extends javax.swing.JFrame {
         background.add(BtnBack);
         BtnBack.setBounds(30, 30, 50, 50);
 
-        image.setBackground(null);
-        image.setForeground(null);
+        BtnSettings.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        BtnSettings.setBorder(null);
+        BtnSettings.setBorderPainted(false);
+        BtnSettings.setContentAreaFilled(false);
+        BtnSettings.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        BtnSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnSettingsActionPerformed(evt);
+            }
+        });
+        background.add(BtnSettings);
+        BtnSettings.setBounds(1100, 610, 60, 50);
+
         image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/8_play_lead.png"))); // NOI18N
         background.add(image);
         image.setBounds(0, 0, 1200, 720);
@@ -204,6 +205,12 @@ public class leaderboardsFrame extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_BtnBlitzActionPerformed
 
+    private void BtnSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSettingsActionPerformed
+        // TODO add your handling code here:
+        new settingsFrame("leaderboardsFrame");
+        dispose();
+    }//GEN-LAST:event_BtnSettingsActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -245,6 +252,7 @@ public class leaderboardsFrame extends javax.swing.JFrame {
     private javax.swing.JButton BtnEasy;
     private javax.swing.JButton BtnHard;
     private javax.swing.JButton BtnMedium;
+    private javax.swing.JButton BtnSettings;
     private javax.swing.JPanel background;
     private javax.swing.JLabel image;
     // End of variables declaration//GEN-END:variables

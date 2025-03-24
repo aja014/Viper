@@ -74,6 +74,7 @@ public class shopFrame extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         BtnBack = new javax.swing.JButton();
+        BtnSettings3 = new javax.swing.JButton();
         image = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -88,8 +89,6 @@ public class shopFrame extends javax.swing.JFrame {
         background.add(LblAccountCoin);
         LblAccountCoin.setBounds(810, 310, 90, 30);
 
-        jButton1.setBackground(null);
-        jButton1.setForeground(null);
         jButton1.setBorder(null);
         jButton1.setBorderPainted(false);
         jButton1.setContentAreaFilled(false);
@@ -102,8 +101,6 @@ public class shopFrame extends javax.swing.JFrame {
         background.add(jButton1);
         jButton1.setBounds(720, 530, 130, 30);
 
-        jButton2.setBackground(null);
-        jButton2.setForeground(null);
         jButton2.setBorder(null);
         jButton2.setBorderPainted(false);
         jButton2.setContentAreaFilled(false);
@@ -111,8 +108,6 @@ public class shopFrame extends javax.swing.JFrame {
         background.add(jButton2);
         jButton2.setBounds(350, 530, 130, 30);
 
-        jButton3.setBackground(null);
-        jButton3.setForeground(null);
         jButton3.setBorder(null);
         jButton3.setBorderPainted(false);
         jButton3.setContentAreaFilled(false);
@@ -125,9 +120,7 @@ public class shopFrame extends javax.swing.JFrame {
         background.add(jButton3);
         jButton3.setBounds(540, 530, 120, 30);
 
-        BtnBack.setBackground(null);
         BtnBack.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        BtnBack.setForeground(null);
         BtnBack.setBorder(null);
         BtnBack.setBorderPainted(false);
         BtnBack.setContentAreaFilled(false);
@@ -140,8 +133,19 @@ public class shopFrame extends javax.swing.JFrame {
         background.add(BtnBack);
         BtnBack.setBounds(30, 30, 50, 50);
 
-        image.setBackground(null);
-        image.setForeground(null);
+        BtnSettings3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        BtnSettings3.setBorder(null);
+        BtnSettings3.setBorderPainted(false);
+        BtnSettings3.setContentAreaFilled(false);
+        BtnSettings3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        BtnSettings3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnSettings3ActionPerformed(evt);
+            }
+        });
+        background.add(BtnSettings3);
+        BtnSettings3.setBounds(1100, 610, 60, 50);
+
         image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/5_shop.png"))); // NOI18N
         background.add(image);
         image.setBounds(0, 0, 1200, 720);
@@ -173,6 +177,12 @@ public class shopFrame extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void BtnSettings3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSettings3ActionPerformed
+        // TODO add your handling code here:
+        new settingsFrame("shopFrame");
+        dispose();
+    }//GEN-LAST:event_BtnSettings3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -211,6 +221,10 @@ public class shopFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnBack;
+    private javax.swing.JButton BtnSettings;
+    private javax.swing.JButton BtnSettings1;
+    private javax.swing.JButton BtnSettings2;
+    private javax.swing.JButton BtnSettings3;
     private javax.swing.JLabel LblAccountCoin;
     private javax.swing.JPanel background;
     private javax.swing.JLabel image;
