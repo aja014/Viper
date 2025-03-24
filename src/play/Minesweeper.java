@@ -123,7 +123,7 @@ public class Minesweeper implements ActionListener {
                 
                 // decrement and timeStart should vary on levels
                 if (elapsedTime >= 25){ // after 25 seconds
-                    if (elapsedTime % 5 == 0) timeScore -= 1; // score decreases by 1 per 5 seconds 
+                    if (elapsedTime % 3 == 0) timeScore -= 1; // score decreases by 1 per 5 seconds 
                 }
                     
                 
@@ -136,9 +136,11 @@ public class Minesweeper implements ActionListener {
             }
         });
         
+        // Setting Tiles
         for(int r =0;r<numRows;r++){
             for(int c =0; c< numCols;c++){
                 Minetile tile = new Minetile(r,c);
+                tile.setBackground(Color.black); // unclicked color
                 board[r][c] = tile;
                 
                 tile.setFocusable(false);
@@ -174,6 +176,7 @@ public class Minesweeper implements ActionListener {
                         else if (e.getButton() == MouseEvent.BUTTON3){ // right click - setting flag
                             if (tile.getText() == "" && tile.isEnabled()){ // adding Flag
                                 tile.setText("F");
+                                tile.setForeground(Color.YELLOW); // Set text color
                             }
                             else if (tile.getText() == "F"){ // removing Flag
                                 tile.setText("");
@@ -213,6 +216,7 @@ public class Minesweeper implements ActionListener {
         for (int i =0;i<minelist.size();i++){
             Minetile tile = minelist.get(i);
             tile.setText("#"); // Bomb text
+            tile.setForeground(Color.red); // Set text color
         }
         BtnRestart.setText("Again");
         BtnBack.setEnabled(true);
@@ -232,6 +236,7 @@ public class Minesweeper implements ActionListener {
         // if tile is clicked = exit
         if (!tile.isEnabled()) return;
         
+        tile.setBackground(Color.white); // clicked color
         tile.setEnabled(false); // disabling button
         tilesClicked += 1; // increment 'tilesClicked' if there's no bomb
         
