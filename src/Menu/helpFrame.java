@@ -46,7 +46,6 @@ public class helpFrame extends javax.swing.JFrame {
         background = new javax.swing.JPanel();
         BtnBack1 = new javax.swing.JButton();
         BtnSettings = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
         image = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -79,11 +78,6 @@ public class helpFrame extends javax.swing.JFrame {
         });
         background.add(BtnSettings);
         BtnSettings.setBounds(1100, 610, 60, 50);
-
-        jLabel1.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
-        jLabel1.setText("Help Description");
-        background.add(jLabel1);
-        jLabel1.setBounds(560, 390, 127, 67);
 
         image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/7_help.png"))); // NOI18N
         background.add(image);
@@ -155,6 +149,5 @@ public class helpFrame extends javax.swing.JFrame {
     private javax.swing.JButton BtnSettings;
     private javax.swing.JPanel background;
     private javax.swing.JLabel image;
-    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
