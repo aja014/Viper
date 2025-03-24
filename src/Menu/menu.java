@@ -15,6 +15,8 @@ public class menu extends javax.swing.JFrame {
     /**
      * Creates new form menu
      */
+    public static int sound;
+    public static int music;
      
     
     public menu() {
@@ -51,7 +53,7 @@ public class menu extends javax.swing.JFrame {
         BtnLeaderBoards = new javax.swing.JButton();
         BtnShop = new javax.swing.JButton();
         BtnHelp = new javax.swing.JButton();
-        BtnLogout = new javax.swing.JButton();
+        BtnSettings = new javax.swing.JButton();
         image = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -71,9 +73,7 @@ public class menu extends javax.swing.JFrame {
         background.add(LblAccountUsername);
         LblAccountUsername.setBounds(140, 650, 180, 22);
 
-        BtnPlay.setBackground(null);
         BtnPlay.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        BtnPlay.setForeground(null);
         BtnPlay.setBorder(null);
         BtnPlay.setBorderPainted(false);
         BtnPlay.setContentAreaFilled(false);
@@ -86,9 +86,7 @@ public class menu extends javax.swing.JFrame {
         background.add(BtnPlay);
         BtnPlay.setBounds(320, 260, 550, 90);
 
-        BtnLeaderBoards.setBackground(null);
         BtnLeaderBoards.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        BtnLeaderBoards.setForeground(null);
         BtnLeaderBoards.setBorder(null);
         BtnLeaderBoards.setBorderPainted(false);
         BtnLeaderBoards.setContentAreaFilled(false);
@@ -101,9 +99,7 @@ public class menu extends javax.swing.JFrame {
         background.add(BtnLeaderBoards);
         BtnLeaderBoards.setBounds(330, 500, 540, 90);
 
-        BtnShop.setBackground(null);
         BtnShop.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        BtnShop.setForeground(null);
         BtnShop.setBorder(null);
         BtnShop.setBorderPainted(false);
         BtnShop.setContentAreaFilled(false);
@@ -116,9 +112,7 @@ public class menu extends javax.swing.JFrame {
         background.add(BtnShop);
         BtnShop.setBounds(330, 380, 540, 90);
 
-        BtnHelp.setBackground(null);
         BtnHelp.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        BtnHelp.setForeground(null);
         BtnHelp.setBorder(null);
         BtnHelp.setBorderPainted(false);
         BtnHelp.setContentAreaFilled(false);
@@ -131,18 +125,19 @@ public class menu extends javax.swing.JFrame {
         background.add(BtnHelp);
         BtnHelp.setBounds(1107, 540, 50, 50);
 
-        BtnLogout.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        BtnLogout.setText("Logout");
-        BtnLogout.addActionListener(new java.awt.event.ActionListener() {
+        BtnSettings.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        BtnSettings.setBorder(null);
+        BtnSettings.setBorderPainted(false);
+        BtnSettings.setContentAreaFilled(false);
+        BtnSettings.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        BtnSettings.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnLogoutActionPerformed(evt);
+                BtnSettingsActionPerformed(evt);
             }
         });
-        background.add(BtnLogout);
-        BtnLogout.setBounds(340, 50, 87, 31);
+        background.add(BtnSettings);
+        BtnSettings.setBounds(1100, 610, 60, 50);
 
-        image.setBackground(null);
-        image.setForeground(null);
         image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/4_home.png"))); // NOI18N
         background.add(image);
         image.setBounds(0, 0, 1200, 720);
@@ -160,16 +155,6 @@ public class menu extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void BtnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLogoutActionPerformed
-        // TODO add youradmadmad         handling code here:
-        int x = JOptionPane.showConfirmDialog(null, "Are you sure?", "Logout", JOptionPane.YES_NO_OPTION);
-        
-        if (x == 0){
-            new Login();
-            dispose();
-        }
-    }//GEN-LAST:event_BtnLogoutActionPerformed
 
     private void BtnPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPlayActionPerformed
         // TODO add your handling code here:
@@ -194,6 +179,12 @@ public class menu extends javax.swing.JFrame {
         new shopFrame();
         dispose();
     }//GEN-LAST:event_BtnShopActionPerformed
+
+    private void BtnSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSettingsActionPerformed
+        // TODO add your handling code here:
+        new settingsFrame("menu");
+        dispose();
+    }//GEN-LAST:event_BtnSettingsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -233,8 +224,8 @@ public class menu extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnHelp;
     private javax.swing.JButton BtnLeaderBoards;
-    private javax.swing.JButton BtnLogout;
     private javax.swing.JButton BtnPlay;
+    private javax.swing.JButton BtnSettings;
     private javax.swing.JButton BtnShop;
     public javax.swing.JLabel LblAccountUsername;
     private javax.swing.JLabel LblUsername;

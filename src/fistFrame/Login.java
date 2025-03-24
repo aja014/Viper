@@ -148,13 +148,15 @@ public class Login extends javax.swing.JFrame {
         if (!username1.isEmpty() && !password1.isEmpty()){
             try {
                 String sqlFindAcc = "Select * from account where username = ? and password = ?";
+                String sqlSoundMusic = "Select * from account where username = '"+username1+"'";
 
                 Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ViperDB","root","root");
-    //            Statement st = con.createStatement();
+                Statement st = con.createStatement();
                 PreparedStatement pst = con.prepareStatement(sqlFindAcc);
                 pst.setString(1, username1);
                 pst.setString(2, password1);
                 ResultSet rs = pst.executeQuery();
+                ResultSet rs1 = st.executeQuery(sqlSoundMusic);
 
                 if (rs.next()){
                     JOptionPane.showMessageDialog(null, "Login Successfuly", "Login Successful", JOptionPane.INFORMATION_MESSAGE);
@@ -163,6 +165,12 @@ public class Login extends javax.swing.JFrame {
                     m1.setVisible(true);
                     m1.setLocationRelativeTo(null);
                     m1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    while (rs1.next()){
+                        m1.sound = rs1.getInt("sound");
+                        m1.music = rs1.getInt("music");
+                    }
+                    
+                    
                     dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "Account does not exist", "Error", JOptionPane.ERROR_MESSAGE);

@@ -50,17 +50,15 @@ public class playFrame extends javax.swing.JFrame {
         blitz = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
         hard1 = new javax.swing.JButton();
+        BtnSettings = new javax.swing.JButton();
         image = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Viper");
-        setPreferredSize(new java.awt.Dimension(1200, 720));
 
         background.setLayout(null);
 
-        easy.setBackground(null);
         easy.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        easy.setForeground(null);
         easy.setBorder(null);
         easy.setBorderPainted(false);
         easy.setContentAreaFilled(false);
@@ -73,9 +71,7 @@ public class playFrame extends javax.swing.JFrame {
         background.add(easy);
         easy.setBounds(380, 260, 440, 80);
 
-        medium.setBackground(null);
         medium.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        medium.setForeground(null);
         medium.setBorder(null);
         medium.setBorderPainted(false);
         medium.setContentAreaFilled(false);
@@ -88,9 +84,7 @@ public class playFrame extends javax.swing.JFrame {
         background.add(medium);
         medium.setBounds(380, 360, 440, 70);
 
-        blitz.setBackground(null);
         blitz.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        blitz.setForeground(null);
         blitz.setBorder(null);
         blitz.setBorderPainted(false);
         blitz.setContentAreaFilled(false);
@@ -98,9 +92,7 @@ public class playFrame extends javax.swing.JFrame {
         background.add(blitz);
         blitz.setBounds(380, 550, 450, 70);
 
-        btnBack.setBackground(null);
         btnBack.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnBack.setForeground(null);
         btnBack.setBorder(null);
         btnBack.setBorderPainted(false);
         btnBack.setContentAreaFilled(false);
@@ -113,9 +105,7 @@ public class playFrame extends javax.swing.JFrame {
         background.add(btnBack);
         btnBack.setBounds(29, 30, 50, 50);
 
-        hard1.setBackground(null);
         hard1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        hard1.setForeground(null);
         hard1.setBorder(null);
         hard1.setBorderPainted(false);
         hard1.setContentAreaFilled(false);
@@ -128,8 +118,19 @@ public class playFrame extends javax.swing.JFrame {
         background.add(hard1);
         hard1.setBounds(380, 450, 440, 80);
 
-        image.setBackground(null);
-        image.setForeground(null);
+        BtnSettings.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        BtnSettings.setBorder(null);
+        BtnSettings.setBorderPainted(false);
+        BtnSettings.setContentAreaFilled(false);
+        BtnSettings.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        BtnSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnSettingsActionPerformed(evt);
+            }
+        });
+        background.add(BtnSettings);
+        BtnSettings.setBounds(1100, 610, 60, 50);
+
         image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/8_play_lead.png"))); // NOI18N
         background.add(image);
         image.setBounds(0, 0, 1200, 720);
@@ -172,6 +173,12 @@ public class playFrame extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_hard1ActionPerformed
 
+    private void BtnSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSettingsActionPerformed
+        // TODO add your handling code here:
+        new settingsFrame("playFrame");
+        dispose();
+    }//GEN-LAST:event_BtnSettingsActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -208,6 +215,7 @@ public class playFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnSettings;
     private javax.swing.JPanel background;
     private javax.swing.JButton blitz;
     private javax.swing.JButton btnBack;

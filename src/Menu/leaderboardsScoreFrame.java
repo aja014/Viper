@@ -78,6 +78,10 @@ public class leaderboardsScoreFrame extends javax.swing.JFrame {
 //        setLocationRelativeTo(null);
     }
 
+    leaderboardsScoreFrame() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -91,12 +95,12 @@ public class leaderboardsScoreFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableScore = new javax.swing.JTable();
         BtnBack = new javax.swing.JButton();
+        BtnSettings = new javax.swing.JButton();
         LblLevel = new javax.swing.JLabel();
         image = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Viper");
-        setPreferredSize(new java.awt.Dimension(1200, 720));
 
         background.setLayout(null);
 
@@ -134,9 +138,7 @@ public class leaderboardsScoreFrame extends javax.swing.JFrame {
         background.add(jScrollPane1);
         jScrollPane1.setBounds(280, 350, 640, 230);
 
-        BtnBack.setBackground(null);
         BtnBack.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        BtnBack.setForeground(null);
         BtnBack.setBorder(null);
         BtnBack.setBorderPainted(false);
         BtnBack.setContentAreaFilled(false);
@@ -149,6 +151,19 @@ public class leaderboardsScoreFrame extends javax.swing.JFrame {
         background.add(BtnBack);
         BtnBack.setBounds(27, 43, 50, 50);
 
+        BtnSettings.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        BtnSettings.setBorder(null);
+        BtnSettings.setBorderPainted(false);
+        BtnSettings.setContentAreaFilled(false);
+        BtnSettings.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        BtnSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnSettingsActionPerformed(evt);
+            }
+        });
+        background.add(BtnSettings);
+        BtnSettings.setBounds(1100, 610, 60, 50);
+
         LblLevel.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         LblLevel.setForeground(new java.awt.Color(153, 0, 51));
         LblLevel.setText("LblLevel");
@@ -156,8 +171,6 @@ public class leaderboardsScoreFrame extends javax.swing.JFrame {
         background.add(LblLevel);
         LblLevel.setBounds(560, 280, 210, 60);
 
-        image.setBackground(null);
-        image.setForeground(null);
         image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/6_leaderboard.png"))); // NOI18N
         background.add(image);
         image.setBounds(0, 0, 1200, 720);
@@ -175,6 +188,12 @@ public class leaderboardsScoreFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void BtnSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSettingsActionPerformed
+        // TODO add your handling code here:
+        new settingsFrame("leaderboardsScoreFrame",lvl);
+        dispose();
+    }//GEN-LAST:event_BtnSettingsActionPerformed
 
     private void BtnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBackActionPerformed
         // TODO add your handling code here:
@@ -219,6 +238,7 @@ public class leaderboardsScoreFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnBack;
+    private javax.swing.JButton BtnSettings;
     public javax.swing.JLabel LblLevel;
     private javax.swing.JPanel background;
     private javax.swing.JLabel image;
