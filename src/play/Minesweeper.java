@@ -163,10 +163,6 @@ public class Minesweeper implements ActionListener {
             
             Minetile tile = board[r][c];
             
-//            if (!minelist.contains(tile) && tile != firstClick){
-//                minelist.add(tile);
-//                mineleft -=1;
-//            }
             // ensures neighbor tiles are mine-free
             if (!minelist.contains(tile) && !isNeighbor(firstClick, tile)) {
                 minelist.add(tile);

@@ -66,7 +66,6 @@ public class createAcc extends javax.swing.JFrame {
 
         background.setLayout(null);
 
-        username.setBackground(null);
         username.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         username.setBorder(null);
         username.setCaretColor(null);
@@ -74,7 +73,6 @@ public class createAcc extends javax.swing.JFrame {
         background.add(username);
         username.setBounds(400, 300, 440, 60);
 
-        password.setBackground(null);
         password.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         password.setBorder(null);
         password.setCaretColor(null);
@@ -82,7 +80,6 @@ public class createAcc extends javax.swing.JFrame {
         background.add(password);
         password.setBounds(400, 410, 440, 70);
 
-        confirmPassword.setBackground(null);
         confirmPassword.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         confirmPassword.setBorder(null);
         confirmPassword.setCaretColor(null);
@@ -95,8 +92,6 @@ public class createAcc extends javax.swing.JFrame {
         background.add(confirmPassword);
         confirmPassword.setBounds(400, 520, 440, 70);
 
-        BtnCancel.setBackground(null);
-        BtnCancel.setForeground(null);
         BtnCancel.setBorder(null);
         BtnCancel.setBorderPainted(false);
         BtnCancel.setContentAreaFilled(false);
@@ -109,8 +104,6 @@ public class createAcc extends javax.swing.JFrame {
         background.add(BtnCancel);
         BtnCancel.setBounds(610, 622, 310, 60);
 
-        BtnCreate.setBackground(null);
-        BtnCreate.setForeground(null);
         BtnCreate.setBorder(null);
         BtnCreate.setBorderPainted(false);
         BtnCreate.setContentAreaFilled(false);
