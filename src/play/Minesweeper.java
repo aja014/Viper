@@ -274,6 +274,7 @@ public class Minesweeper implements ActionListener {
              } else {
                  frame.dispose();
                  new Minesweeper(mineCount,numRows);
+                 // delete this
              }
         }
     }
