@@ -29,6 +29,7 @@ public class leaderboardsScoreFrame extends javax.swing.JFrame {
     
     public leaderboardsScoreFrame(String level) {
         initComponents();
+        setResizable(false);
         
         URL iconURL = getClass().getResource("/images/virusSweeperIcon.png");
         if (iconURL == null) {

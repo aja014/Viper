@@ -21,6 +21,7 @@ public class playFrame extends javax.swing.JFrame {
      */
     public playFrame() {
         initComponents();
+        setResizable(false);
         
         URL iconURL = getClass().getResource("/images/virusSweeperIcon.png");
         if (iconURL == null) {
@@ -89,6 +90,11 @@ public class playFrame extends javax.swing.JFrame {
         blitz.setBorderPainted(false);
         blitz.setContentAreaFilled(false);
         blitz.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        blitz.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                blitzActionPerformed(evt);
+            }
+        });
         background.add(blitz);
         blitz.setBounds(380, 550, 450, 70);
 
@@ -178,6 +184,13 @@ public class playFrame extends javax.swing.JFrame {
         new settingsFrame("playFrame");
         dispose();
     }//GEN-LAST:event_BtnSettingsActionPerformed
+
+    private void blitzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blitzActionPerformed
+        // TODO add your handling code here:
+        Minesweeper blitz = new Minesweeper(10,9);
+        blitz.level = "blitz";
+        dispose();
+    }//GEN-LAST:event_blitzActionPerformed
 
     /**
      * @param args the command line arguments

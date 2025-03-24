@@ -30,6 +30,7 @@ public class settingsFrame extends javax.swing.JFrame {
     
     public settingsFrame(String desti) {
         initComponents();
+        setResizable(false);
         
         URL iconURL = getClass().getResource("/images/virusSweeperIcon.png");
         if (iconURL == null) {
@@ -94,9 +95,7 @@ public class settingsFrame extends javax.swing.JFrame {
         background.add(JSMusic);
         JSMusic.setBounds(150, 120, 200, 26);
 
-        jButton1.setBackground(null);
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jButton1.setForeground(null);
         jButton1.setBorder(null);
         jButton1.setBorderPainted(false);
         jButton1.setContentAreaFilled(false);
@@ -109,8 +108,6 @@ public class settingsFrame extends javax.swing.JFrame {
         background.add(jButton1);
         jButton1.setBounds(130, 165, 170, 30);
 
-        jButton2.setBackground(null);
-        jButton2.setForeground(null);
         jButton2.setBorder(null);
         jButton2.setBorderPainted(false);
         jButton2.setContentAreaFilled(false);
@@ -123,8 +120,6 @@ public class settingsFrame extends javax.swing.JFrame {
         background.add(jButton2);
         jButton2.setBounds(20, 20, 30, 30);
 
-        image.setBackground(null);
-        image.setForeground(null);
         image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/settings.png"))); // NOI18N
         image.setFocusable(false);
         image.setMaximumSize(null);

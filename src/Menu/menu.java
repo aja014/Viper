@@ -21,6 +21,7 @@ public class menu extends javax.swing.JFrame {
     
     public menu() {
         initComponents();
+        setResizable(false);
         
         URL iconURL = getClass().getResource("/images/virusSweeperIcon.png");
         if (iconURL == null) {

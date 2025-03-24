@@ -27,6 +27,7 @@ public class shopFrame extends javax.swing.JFrame {
      */
     public shopFrame() {
         initComponents();
+        setResizable(false);
         
         URL iconURL = getClass().getResource("/images/virusSweeperIcon.png");
         if (iconURL == null) {

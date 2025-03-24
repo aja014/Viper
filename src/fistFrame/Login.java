@@ -32,6 +32,7 @@ public class Login extends javax.swing.JFrame {
 
     public Login() {
         initComponents();
+        setResizable(false);
 
         URL iconURL = getClass().getResource("/images/virusSweeperIcon.png");
         if (iconURL == null) {

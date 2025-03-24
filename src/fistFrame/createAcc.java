@@ -26,6 +26,7 @@ public class createAcc extends javax.swing.JFrame {
      */
     public createAcc() {
         initComponents();
+        setResizable(false);
 
         URL iconURL = getClass().getResource("/images/virusSweeperIcon.png");
         if (iconURL == null) {
@@ -136,7 +137,7 @@ public class createAcc extends javax.swing.JFrame {
 
     private void BtnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCreateActionPerformed
 //        String getLatestId = "select * from account order by id desc fetch first 1 row only";
-        String getLatestId = "select * from account";
+        String getLatestId = "select * from account order by id asc";
         String addAcc1 = "insert into account(id,username,password) ";
         String numId = "";
         
@@ -180,6 +181,8 @@ public class createAcc extends javax.swing.JFrame {
                         System.out.println("Added");
                         JOptionPane.showMessageDialog(null, "Added Successfully!", "Successful",JOptionPane.INFORMATION_MESSAGE);
                         Login.username1 = username1;
+                        menu.sound = 50;
+                        menu.music = 50;
                         
                         username.setText("");
                         password.setText("");

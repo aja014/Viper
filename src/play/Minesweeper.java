@@ -9,8 +9,10 @@ package play;
 // Need timer
 
 import Menu.playFrame;
+import fistFrame.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.*;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,6 +29,8 @@ public class Minesweeper implements ActionListener {
         }
     }
     
+    public String level = "";
+    
     int tileSize = 70;
     int numRows;
     int mineCount;
@@ -34,9 +38,14 @@ public class Minesweeper implements ActionListener {
     int boardWidth;
     int boardHeight;
     int tilesClicked = 0;
+    int elapsedTime = 0;
+    int timeScore;
     
+    Timer timer;
     JFrame frame = new JFrame("Minesweeper");
+    JLabel timerLabel = new JLabel("Time : 0s");
     JLabel textLabel = new JLabel();
+    JLabel scoreLabel = new JLabel("Score : " + Integer.toString(timeScore));
     JPanel textPanel = new JPanel();
     JPanel boardPanel = new JPanel();
     JPanel outerPanel = new JPanel(new BorderLayout());
@@ -61,6 +70,7 @@ public class Minesweeper implements ActionListener {
         board = new Minetile[numRows][numCols];
         boardWidth = 1100;
         boardHeight = 700 ;
+        timeScore = 100;
         
         
         frame.setSize(boardWidth,boardHeight);
@@ -77,10 +87,10 @@ public class Minesweeper implements ActionListener {
         textLabel.setBounds(30,100,250,25);
         
         
-//        textPanel.setLayout(new BorderLayout());
-//        textPanel.add(textLabel);
-//        frame.add(textPanel,BorderLayout.NORTH);
-
+        //timer
+        timerLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        timerLabel.setBounds(50, 150, 200, 20);
+        
         // Board panel
         boardPanel.setLayout(new GridLayout(numRows,numCols)); // Declaring tiles rows and colums
         
@@ -91,14 +101,40 @@ public class Minesweeper implements ActionListener {
         //Button
         BtnBack.setBounds(30,600,65,30);
         BtnRestart.setBounds(110,600,85,30);
+        scoreLabel.setBounds(50,200,200,20);
         
         BtnBack.addActionListener(this);
         BtnRestart.addActionListener(this);
         
+        frame.add(scoreLabel);
+        frame.add(timerLabel);
         frame.add(textLabel);
         frame.add(BtnRestart);
         frame.add(BtnBack);
         frame.add(outerPanel);
+        
+        // timer score function
+        timer = new Timer(1000, new ActionListener() {
+        @Override
+            public void actionPerformed(ActionEvent e) {
+                elapsedTime++; // Decrease time
+                timerLabel.setText("Time : " + elapsedTime + "s");
+                scoreLabel.setText("Score :" + Integer.toString(timeScore));
+                
+                // decrement and timeStart should vary on levels
+                if (elapsedTime >= 25){ // after 25 seconds
+                    if (elapsedTime % 5 == 0) timeScore -= 1; // score decreases by 1 per 5 seconds 
+                }
+                    
+                
+//                if (timeLeft == 0) {
+//                    timer.stop();
+//                    gameOver = true;
+//                    revealMines();
+//                    textLabel.setText("Time Over! You Lost");
+//                }
+            }
+        });
         
         for(int r =0;r<numRows;r++){
             for(int c =0; c< numCols;c++){
@@ -117,6 +153,7 @@ public class Minesweeper implements ActionListener {
                         if (!start) { // The first Click
                             firstClick = tile;
                             start = true;
+                            timer.start();
                             setMines(firstClick);
                         }
                         
@@ -181,6 +218,8 @@ public class Minesweeper implements ActionListener {
         BtnBack.setEnabled(true);
         BtnRestart.setEnabled(true);
         gameOver = true;
+        scoreLabel.setText("Score :" + Integer.toString(timeScore));
+        timer.stop();
         textLabel.setText("Game Over");
     }
     
@@ -232,8 +271,42 @@ public class Minesweeper implements ActionListener {
         }
         // Win if all tiles are clicked except with bombs
         if (tilesClicked == numRows * numCols - minelist.size()){
+            // Update database score
+            if (numRows == 9 && level.equals("")) level = "easyscore";
+            else if (numRows == 15) level = "mediumscore";
+            else if (numRows == 21) level = "hardscore";
+            else level = "blitzscore";
+            
+            
+            
+            String findScore = "select "+level+" from account where username = '"+Login.username1+"'";
+            String uptScore = "update account set "+level+" = "+timeScore+" where username = '"+Login.username1+"'";
+            
+            try {
+                Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ViperDB", "root", "root");
+                Statement st = con.createStatement();
+                ResultSet rs = st.executeQuery(findScore);
+                
+                // Updating score
+                if (rs.next()){
+                    if (timeScore > rs.getInt(level)){
+                        st.executeUpdate(uptScore);
+                    }
+                }
+                
+                st.close();
+                rs.close();
+                con.close();
+            }catch(SQLException ex){
+                ex.printStackTrace();
+                System.out.println("Faied");
+            }
+            
+            
             gameOver = true; // Players cannot click tiles anymore
             textLabel.setText("Mines Cleared");
+            timer.stop();
+            level = "";
         }
     }
     
