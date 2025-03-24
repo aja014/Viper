@@ -53,7 +53,6 @@ public class menu extends javax.swing.JFrame {
         BtnLeaderBoards = new javax.swing.JButton();
         BtnShop = new javax.swing.JButton();
         BtnHelp = new javax.swing.JButton();
-        BtnLogout = new javax.swing.JButton();
         BtnSettings = new javax.swing.JButton();
         image = new javax.swing.JLabel();
 
@@ -126,16 +125,6 @@ public class menu extends javax.swing.JFrame {
         background.add(BtnHelp);
         BtnHelp.setBounds(1107, 540, 50, 50);
 
-        BtnLogout.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        BtnLogout.setText("Logout");
-        BtnLogout.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnLogoutActionPerformed(evt);
-            }
-        });
-        background.add(BtnLogout);
-        BtnLogout.setBounds(340, 50, 87, 31);
-
         BtnSettings.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         BtnSettings.setBorder(null);
         BtnSettings.setBorderPainted(false);
@@ -166,16 +155,6 @@ public class menu extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void BtnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLogoutActionPerformed
-        // TODO add youradmadmad         handling code here:
-        int x = JOptionPane.showConfirmDialog(null, "Are you sure?", "Logout", JOptionPane.YES_NO_OPTION);
-        
-        if (x == 0){
-            new Login();
-            dispose();
-        }
-    }//GEN-LAST:event_BtnLogoutActionPerformed
 
     private void BtnPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPlayActionPerformed
         // TODO add your handling code here:
@@ -245,7 +224,6 @@ public class menu extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnHelp;
     private javax.swing.JButton BtnLeaderBoards;
-    private javax.swing.JButton BtnLogout;
     private javax.swing.JButton BtnPlay;
     private javax.swing.JButton BtnSettings;
     private javax.swing.JButton BtnShop;
