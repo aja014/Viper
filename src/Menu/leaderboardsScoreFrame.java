@@ -74,6 +74,8 @@ public class leaderboardsScoreFrame extends javax.swing.JFrame {
             ex.printStackTrace();
             System.out.println("Failed");
         }
+        
+          setSize(1200,720);
 //        setVisible(true);
 //        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //        setLocationRelativeTo(null);

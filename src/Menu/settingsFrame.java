@@ -30,7 +30,6 @@ public class settingsFrame extends javax.swing.JFrame {
     
     public settingsFrame(String desti) {
         initComponents();
-        setResizable(false);
         
         URL iconURL = getClass().getResource("/images/virusSweeperIcon.png");
         if (iconURL == null) {
@@ -79,21 +78,20 @@ public class settingsFrame extends javax.swing.JFrame {
         setTitle("Viper");
         setMaximumSize(null);
         setMinimumSize(null);
-        setPreferredSize(null);
-        setSize(new java.awt.Dimension(426, 227));
+        setResizable(false);
+        setSize(new java.awt.Dimension(426, 220));
 
-        background.setLayout(null);
+        background.setPreferredSize(new java.awt.Dimension(426, 227));
+        background.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         JSSound.setBackground(new java.awt.Color(255, 204, 204));
         JSSound.setForeground(new java.awt.Color(255, 0, 102));
         JSSound.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        background.add(JSSound);
-        JSSound.setBounds(150, 70, 200, 26);
+        background.add(JSSound, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 70, -1, -1));
 
         JSMusic.setBackground(new java.awt.Color(255, 204, 204));
         JSMusic.setForeground(new java.awt.Color(255, 0, 102));
-        background.add(JSMusic);
-        JSMusic.setBounds(150, 120, 200, 26);
+        background.add(JSMusic, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 120, -1, -1));
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButton1.setBorder(null);
@@ -105,8 +103,7 @@ public class settingsFrame extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        background.add(jButton1);
-        jButton1.setBounds(130, 165, 170, 30);
+        background.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 165, 170, 30));
 
         jButton2.setBorder(null);
         jButton2.setBorderPainted(false);
@@ -117,26 +114,24 @@ public class settingsFrame extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        background.add(jButton2);
-        jButton2.setBounds(20, 20, 30, 30);
+        background.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 30, 30));
 
         image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/settings.png"))); // NOI18N
         image.setFocusable(false);
         image.setMaximumSize(null);
         image.setMinimumSize(null);
         image.setPreferredSize(null);
-        background.add(image);
-        image.setBounds(0, 0, 426, 227);
+        background.add(image, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
+            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(background, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
+            .addComponent(background, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();

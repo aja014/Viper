@@ -30,6 +30,7 @@ public class leaderboardsFrame extends javax.swing.JFrame {
             setIconImage(frameIcon.getImage());
         }
         
+        setSize(1200,720);        
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

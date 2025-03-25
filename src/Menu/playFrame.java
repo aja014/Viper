@@ -30,7 +30,8 @@ public class playFrame extends javax.swing.JFrame {
             ImageIcon frameIcon = new ImageIcon(iconURL);
             setIconImage(frameIcon.getImage());
         }
-        
+
+        setSize(1200,720);        
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);

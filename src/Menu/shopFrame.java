@@ -58,6 +58,7 @@ public class shopFrame extends javax.swing.JFrame {
             System.out.println("Failed");
         }
         
+        setSize(1200,720);        
     }
 
     /**
