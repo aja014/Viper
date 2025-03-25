@@ -163,19 +163,19 @@ public class playFrame extends javax.swing.JFrame {
 
     private void easyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_easyActionPerformed
         // TODO add your handling code here:
-        new Minesweeper(10,9);
+        Minesweeper easy = new Minesweeper(10,9,15,1);
         dispose();
     }//GEN-LAST:event_easyActionPerformed
 
     private void mediumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mediumActionPerformed
         // TODO add your handling code here:
-        new Minesweeper(20,15);
+        Minesweeper medium = new Minesweeper(20,15,25, 4);
         dispose();
     }//GEN-LAST:event_mediumActionPerformed
 
     private void hard1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hard1ActionPerformed
         // TODO add your handling code here:
-        new Minesweeper(30,21);
+        Minesweeper hard = new Minesweeper(30,21,45, 8);
         dispose();
     }//GEN-LAST:event_hard1ActionPerformed
 
@@ -187,7 +187,7 @@ public class playFrame extends javax.swing.JFrame {
 
     private void blitzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blitzActionPerformed
         // TODO add your handling code here:
-        Minesweeper blitz = new Minesweeper(10,9);
+        Minesweeper blitz = new Minesweeper(10,9,20,3);
         blitz.level = "blitz";
         dispose();
     }//GEN-LAST:event_blitzActionPerformed

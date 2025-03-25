@@ -30,6 +30,8 @@ public class Minesweeper implements ActionListener {
     }
     
     public String level = "";
+    public int scoreTimeStart;
+    public int timePerScore;
     
     int tileSize = 70;
     int numRows;
@@ -39,7 +41,9 @@ public class Minesweeper implements ActionListener {
     int boardHeight;
     int tilesClicked = 0;
     int elapsedTime = 0;
+    int elapsedTime2 = 0;
     int timeScore;
+    int coinsEarned = 50;
     
     Timer timer;
     JFrame frame = new JFrame("Minesweeper");
@@ -63,9 +67,12 @@ public class Minesweeper implements ActionListener {
     boolean gameOver = false;
     boolean start = false;
     
-    public Minesweeper(int minecount, int rowsNcols){ 
+    // Minesweeper(int minecout, int rowsNcols, int scoreTimeStart, int timePerScore)
+    public Minesweeper(int minecount, int rowsNcols, int scoreTimeStart, int timePerScore){ 
         this.mineCount = minecount;
         this.numRows = rowsNcols;
+        this.scoreTimeStart = scoreTimeStart;
+        this.timePerScore = timePerScore;
         numCols = numRows;
         board = new Minetile[numRows][numCols];
         boardWidth = 1100;
@@ -118,21 +125,35 @@ public class Minesweeper implements ActionListener {
         @Override
             public void actionPerformed(ActionEvent e) {
                 elapsedTime++; // Decrease time
+                elapsedTime2++;
                 timerLabel.setText("Time : " + elapsedTime + "s");
                 scoreLabel.setText("Score :" + Integer.toString(timeScore));
                 
-                // decrement and timeStart should vary on levels
-                if (elapsedTime >= 25){ // after 25 seconds
-                    if (elapsedTime % 3 == 0) timeScore -= 1; // score decreases by 1 per 5 seconds 
+                // DECREMENT AND TIME START SHOULD VARY ON LEVELS
+                if (elapsedTime >= scoreTimeStart) { 
+                    if (elapsedTime == scoreTimeStart) {
+                        timeScore--; // decrement if it meets when the score start to decrease
+                        elapsedTime2 =0;
+                    } 
+                    else if (elapsedTime2 % timePerScore == 0) { 
+                        timeScore--; // Decrement every after 'timePerScore'
+                        
+                        // Coins based on score 
+                        if (timeScore >= 90) {
+                            coinsEarned = 50; 
+                        } else if (timeScore >= 85) {
+                            coinsEarned = 40;
+                        } else if (timeScore >= 65) {
+                            coinsEarned = 30;
+                        } else if (timeScore >= 45) {
+                            coinsEarned = 20;
+                        } else if (timeScore >= 25) {
+                            coinsEarned = 10;
+                        } else {
+                            coinsEarned = 5;
+                        }
+                    }
                 }
-                    
-                
-//                if (timeLeft == 0) {
-//                    timer.stop();
-//                    gameOver = true;
-//                    revealMines();
-//                    textLabel.setText("Time Over! You Lost");
-//                }
             }
         });
         
@@ -232,6 +253,7 @@ public class Minesweeper implements ActionListener {
         if (r < 0 || r >= numRows || c < 0 || c >= numCols){
             return;
         }
+        
         Minetile tile = board[r][c];
         // if tile is clicked = exit
         if (!tile.isEnabled()) return;
@@ -264,38 +286,48 @@ public class Minesweeper implements ActionListener {
             
             //Check neighboring mine
             checkMine(r-1,c-1); // top-left
+            if (gameOver == true) return;
             checkMine(r-1,c); // top-center
+            if (gameOver == true) return;
             checkMine(r-1,c+1); // top-right
+            if (gameOver == true) return;
             
             checkMine(r,c-1); // left
+            if (gameOver == true) return;
             checkMine(r,c+1); // right
+            if (gameOver == true) return;
             
             checkMine(r+1,c-1); // bottom-left
+            if (gameOver == true) return;
             checkMine(r+1,c); // bottom-center
+            if (gameOver == true) return;
             checkMine(r+1,c+1);// bottom-right
+            if (gameOver == true) return;
         }
         // Win if all tiles are clicked except with bombs
         if (tilesClicked == numRows * numCols - minelist.size()){
+            timer.stop();
             // Update database score
             if (numRows == 9 && level.equals("")) level = "easyscore";
             else if (numRows == 15) level = "mediumscore";
             else if (numRows == 21) level = "hardscore";
             else level = "blitzscore";
-            
-            
-            
-            String findScore = "select "+level+" from account where username = '"+Login.username1+"'";
-            String uptScore = "update account set "+level+" = "+timeScore+" where username = '"+Login.username1+"'";
+            int oldCoin = 0;
+//            String findScore = "select "+level+" from account where username = '"+Login.username1+"'";
+            String findScore = "select * from account where username = '"+Login.username1+"'";
             
             try {
                 Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ViperDB", "root", "root");
                 Statement st = con.createStatement();
                 ResultSet rs = st.executeQuery(findScore);
                 
-                // Updating score
+                // Updating score & coins
                 if (rs.next()){
+                    oldCoin += rs.getInt("coins") + coinsEarned;
                     if (timeScore > rs.getInt(level)){
-                        st.executeUpdate(uptScore);
+                        st.executeUpdate("update account set "+level+" = "+timeScore+",coins = "+oldCoin+" where username = '"+Login.username1+"'");
+                    } else{
+                        st.executeUpdate("update account set coins = "+oldCoin+" where username = '"+Login.username1+"'");
                     }
                 }
                 
@@ -309,8 +341,8 @@ public class Minesweeper implements ActionListener {
             
             
             gameOver = true; // Players cannot click tiles anymore
+            JOptionPane.showMessageDialog(frame, "You earned " + coinsEarned + " coins!");
             textLabel.setText("Mines Cleared");
-            timer.stop();
             level = "";
         }
     }
@@ -343,11 +375,11 @@ public class Minesweeper implements ActionListener {
                  x = JOptionPane.showConfirmDialog(null, "Are you sure?", "Restart",JOptionPane.YES_NO_OPTION);
                  if (x == 0){
                   frame.dispose();
-                  new Minesweeper(mineCount,numRows);
+                  new Minesweeper(mineCount,numRows,scoreTimeStart,timePerScore);
                  }
              } else {
                  frame.dispose();
-                 new Minesweeper(mineCount,numRows);
+                 new Minesweeper(mineCount,numRows,scoreTimeStart,timePerScore);
                  // trye pa ulit
              }
         }
