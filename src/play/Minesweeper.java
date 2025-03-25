@@ -5,8 +5,6 @@
  */
 package play;
 
-// Power Ups
-// Need timer
 
 import Menu.playFrame;
 import fistFrame.*;
@@ -44,6 +42,7 @@ public class Minesweeper implements ActionListener {
     int elapsedTime2 = 0;
     int timeScore;
     int coinsEarned = 50;
+    int questionTiles;
     
     Timer timer;
     JFrame frame = new JFrame("Minesweeper");
@@ -57,12 +56,13 @@ public class Minesweeper implements ActionListener {
     JButton BtnRestart = new JButton("Restart");
     
     // Reference of the tile we create
-    Minetile[][] board;
+    Minetile[][] position;
     Minetile firstClick = null; // first click tile
     
     Random random = new Random();
     
     ArrayList<Minetile> minelist; // List of mines
+    ArrayList<Minetile> questionTileList; // List of bonus tile
     
     boolean gameOver = false;
     boolean start = false;
@@ -74,11 +74,10 @@ public class Minesweeper implements ActionListener {
         this.scoreTimeStart = scoreTimeStart;
         this.timePerScore = timePerScore;
         numCols = numRows;
-        board = new Minetile[numRows][numCols];
+        position = new Minetile[numRows][numCols];
         boardWidth = 1100;
         boardHeight = 700 ;
         timeScore = 100;
-        
         
         frame.setSize(boardWidth,boardHeight);
         frame.setLocationRelativeTo(null);
@@ -162,7 +161,7 @@ public class Minesweeper implements ActionListener {
             for(int c =0; c< numCols;c++){
                 Minetile tile = new Minetile(r,c);
                 tile.setBackground(Color.black); // unclicked color
-                board[r][c] = tile;
+                position[r][c] = tile;
                 
                 tile.setFocusable(false);
                 tile.setMargin(new Insets(0,0,0,0));
@@ -178,16 +177,30 @@ public class Minesweeper implements ActionListener {
                             start = true;
                             timer.start();
                             setMines(firstClick);
+                            setBonusTile();
                         }
                         
                         Minetile tile = (Minetile) e.getSource();
                         
                         // Left click
                         if (e.getButton() == MouseEvent.BUTTON1){
-                            // Not clicked yet
+                            // "" means Not clicked yet
                             if (tile.getText()== ""){
-                               if (minelist.contains(tile)){// if There's a bomb
-                                    revealMines();
+                                // if There's a bomb/bonus tile
+                                if (minelist.contains(tile)){
+                                    //if it's bonus tile
+                                    if (questionTileList.contains(tile)){
+                                        tile.setText(""); // Show question mark
+                                        tile.setEnabled(false);
+                                        tile.setBackground(Color.white);
+                                        
+                                        JOptionPane.showMessageDialog(null, "Question Tile","Question", JOptionPane.WARNING_MESSAGE);
+                                        // TODO - IF ANSWERED CORRECTLY GIVE CLUE ELSE IF NOT ENABLE SOME TILE
+                                        
+                                    }else{
+                                        // else it's a bomb
+                                        revealMines();
+                                    }
                                 }
                                 else{ // Check neighbor tiles
                                     checkMine(tile.r,tile.c);
@@ -213,31 +226,65 @@ public class Minesweeper implements ActionListener {
         frame.setVisible(true);
     }
     
+    void setBonusTile(){
+        questionTileList = new ArrayList<Minetile>();
+        
+        questionTiles = 5; // count of bonus tile
+        
+        while (questionTiles > 0){
+            // Declare the position
+            int rowPosition = random.nextInt(numRows);
+            int colPosition = random.nextInt(numCols);
+            
+            // qTile inherit the posistion
+            Minetile qTile = position[rowPosition][colPosition];
+            
+            // if it's not on the bonusTileList & minelist, add it.
+            if ((!questionTileList.contains(qTile) && !minelist.contains(qTile)) && !isNeighbor(firstClick, qTile)){
+                questionTileList.add(qTile);
+                minelist.add(qTile);
+                questionTiles--;
+            }
+        }
+    }
+    
     void setMines(Minetile firstClick){
         minelist = new ArrayList<Minetile>();
-        
 //         Declaring mines
         int mineleft = mineCount;
         while (mineleft > 0){
+            // Kung saang board
             int r = random.nextInt(numRows); // 0 to numRows value
             int c = random.nextInt(numCols); // 0 ti numCols value
             
-            Minetile tile = board[r][c];
+            // Make a tile na may bomb based on board
+            Minetile tile = position[r][c];
             
-            // ensures neighbor tiles are mine-free
+            // if wala pang 'tile' position sa 'minelist' && ensures walang katabing bomb 
             if (!minelist.contains(tile) && !isNeighbor(firstClick, tile)) {
                 minelist.add(tile);
                 mineleft -=1;
             }
         }
-
     }
     
     void revealMines(){
+        // Revealing bonustile and bomb
         for (int i =0;i<minelist.size();i++){
             Minetile tile = minelist.get(i);
+            Minetile questionTile;
             tile.setText("#"); // Bomb text
             tile.setForeground(Color.red); // Set text color
+            
+            for (int j =0;j<questionTileList.size(); j++){
+                questionTile = questionTileList.get(j);
+                
+                if (questionTile == tile){
+                    tile.setText("?"); // Bomb text
+                    tile.setForeground(Color.green); // Set text color
+                }
+            }
+            
         }
         BtnRestart.setText("Again");
         BtnBack.setEnabled(true);
@@ -254,9 +301,14 @@ public class Minesweeper implements ActionListener {
             return;
         }
         
-        Minetile tile = board[r][c];
+        Minetile tile = position[r][c];
         // if tile is clicked = exit
         if (!tile.isEnabled()) return;
+        
+        // If it's a bonus tile, do not reveal
+        if (questionTileList.contains(tile)) {
+            return; 
+        }
         
         tile.setBackground(Color.white); // clicked color
         tile.setEnabled(false); // disabling button
@@ -352,8 +404,13 @@ public class Minesweeper implements ActionListener {
         if (r < 0 || r >= numRows || c < 0 || c >= numCols){
             return 0 ;
         }
-        if (minelist.contains(board[r][c])){ // if within tiles
-            return 1;
+        if (minelist.contains(position[r][c])){ // if within tiles
+            // if it's bonus tile do not reveal
+            if (questionTileList.contains(position[r][c])){
+                return 0;
+            }else {
+                return 1;
+            }
         }
         return 0;
     }
