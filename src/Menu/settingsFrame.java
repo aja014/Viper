@@ -120,7 +120,6 @@ public class settingsFrame extends javax.swing.JFrame {
         image.setFocusable(false);
         image.setMaximumSize(null);
         image.setMinimumSize(null);
-        image.setPreferredSize(null);
         background.add(image, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
