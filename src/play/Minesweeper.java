@@ -190,7 +190,7 @@ public class Minesweeper implements ActionListener {
                                 if (minelist.contains(tile)){
                                     //if it's bonus tile
                                     if (questionTileList.contains(tile)){
-                                        tile.setText(""); // Show question mark
+                                        tile.setText("?"); // Show question mark
                                         tile.setEnabled(false);
                                         tile.setBackground(Color.white);
                                         
@@ -269,7 +269,7 @@ public class Minesweeper implements ActionListener {
     }
     
     void revealMines(){
-        // Revealing bonustile and bomb
+        // Revealing questionTile and bomb
         for (int i =0;i<minelist.size();i++){
             Minetile tile = minelist.get(i);
             Minetile questionTile;
@@ -303,7 +303,7 @@ public class Minesweeper implements ActionListener {
         
         Minetile tile = position[r][c];
         // if tile is clicked = exit
-        if (!tile.isEnabled()) return;
+        if (!tile.isEnabled() || questionTileList.contains(tile)) return;
         
         // If it's a bonus tile, do not reveal
         if (questionTileList.contains(tile)) {
@@ -388,13 +388,14 @@ public class Minesweeper implements ActionListener {
                 con.close();
             }catch(SQLException ex){
                 ex.printStackTrace();
-                System.out.println("Faied");
+                System.out.println("Failed");
             }
             
             
+            revealMines();
             gameOver = true; // Players cannot click tiles anymore
-            JOptionPane.showMessageDialog(frame, "You earned " + coinsEarned + " coins!");
             textLabel.setText("Mines Cleared");
+            JOptionPane.showMessageDialog(frame, "You earned " + coinsEarned + " coins!");
             level = "";
         }
     }
