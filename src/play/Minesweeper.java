@@ -22,6 +22,12 @@ public class Minesweeper implements ActionListener {
         }
     }
     
+    String questionLevel = "";
+    String[][] questionList;
+    String tempQuestion = "";
+    String tempAnswer = "";
+    
+    
     public String level = "";
     public int scoreTimeStart;
     public int timePerScore;
@@ -39,11 +45,15 @@ public class Minesweeper implements ActionListener {
     int coinsEarned = 50;
     int questionTiles;
     int newMine = 0;
+    int flagged = 0;
+    int lastBombTime = -60;
     
     Timer timer;
     JFrame frame = new JFrame("Minesweeper");
     JLabel timerLabel = new JLabel("Time : 0s");
-    JLabel textLabel = new JLabel();
+    JLabel textLabel = new JLabel(); // number of mines
+    JLabel textLabel1 = new JLabel(); // "Mines Cleared"
+    JLabel textLabelFlagged = new JLabel(); // flagged
     JLabel textLabelMineCount = new JLabel();
     JLabel scoreLabel = new JLabel("Score : " + Integer.toString(timeScore));
     JPanel textPanel = new JPanel();
@@ -84,15 +94,25 @@ public class Minesweeper implements ActionListener {
         
         // "Minesweeper" Text Panel
         textLabel.setFont(new Font("Arial",Font.BOLD,25));
-        textLabel.setHorizontalAlignment(JLabel.CENTER);
         textLabel.setText("Minesweeper : " + Integer.toString(mineCount + newMine));
         textLabel.setOpaque(true);
         textLabel.setBounds(30,100,250,25);
         
+        // Gameover Text
+        textLabel1.setFont(new Font("Arial",Font.BOLD,25));
+        textLabel1.setText("");
+        textLabel1.setOpaque(true);
+        textLabel1.setBounds(30,25,250,25);
+        
+        // Flagged text
+        textLabelFlagged.setFont(new Font("Arial",Font.BOLD,30));
+        textLabelFlagged.setText("Flagged tiles : " + Integer.toString(flagged));
+        textLabelFlagged.setOpaque(true);
+        textLabelFlagged.setBounds(30,150,250,25);
         
         //timer
         timerLabel.setFont(new Font("Arial", Font.BOLD, 20));
-        timerLabel.setBounds(50, 150, 200, 20);
+        timerLabel.setBounds(50, 250, 200, 20);
         
         // Board panel
         boardPanel.setLayout(new GridLayout(numRows,numCols)); // Declaring tiles rows and colums
@@ -104,17 +124,28 @@ public class Minesweeper implements ActionListener {
         //Button
         BtnBack.setBounds(30,600,65,30);
         BtnRestart.setBounds(110,600,85,30);
-        scoreLabel.setBounds(50,200,200,20);
+        scoreLabel.setBounds(50,300,200,20);
         
         BtnBack.addActionListener(this);
         BtnRestart.addActionListener(this);
         
+        
         frame.add(scoreLabel);
         frame.add(timerLabel);
         frame.add(textLabel);
+        frame.add(textLabel1);
+        frame.add(textLabelFlagged);
         frame.add(BtnRestart);
         frame.add(BtnBack);
         frame.add(outerPanel);
+        
+        questionLevel = "";
+        if (numRows ==  9 && level != "blitz") questionLevel = "easy";
+        else if (numRows == 15) questionLevel = "medium";
+        else if (numRows == 21) questionLevel = "hard";
+        // declare the questions
+        questionList = generateQuestion(questionLevel,"spreadingvirus");
+        
         
         // timer score function
         timer = new Timer(1000, new ActionListener() {
@@ -125,6 +156,26 @@ public class Minesweeper implements ActionListener {
                 timerLabel.setText("Time : " + elapsedTime + "s");
                 scoreLabel.setText("Score :" + Integer.toString(timeScore));
                 
+                // Adds new bomb every 60 seconds
+               if (elapsedTime > 60 && (start && elapsedTime - lastBombTime >= 60)) {
+                    addNewBomb();
+                    lastBombTime = elapsedTime;
+                    
+                    ArrayList<Minetile> availableTiles1 = new ArrayList<>();
+                    // Collect all enabled tiles that are not mines or question tiles
+                    for (int r = 0; r < numRows; r++) {
+                        for (int c = 0; c < numCols; c++) {
+                            Minetile tile = position[r][c];
+                            if (tile.isEnabled() && !minelist.contains(tile) && !questionTileList.contains(tile)) {
+                                availableTiles1.add(tile);
+                            }
+                        }
+                    }
+                    
+                    // Auto lose if there is no more available tiles left
+                    if (availableTiles1.isEmpty()) revealMines();
+                }
+                
                 // DECREMENT AND TIME START SHOULD VARY ON LEVELS
                 if (elapsedTime >= scoreTimeStart) { 
                     if (elapsedTime == scoreTimeStart) {
@@ -132,7 +183,7 @@ public class Minesweeper implements ActionListener {
                         elapsedTime2 =0;
                     } 
                     else if (elapsedTime2 % timePerScore == 0) { 
-                        timeScore--; // Decrement every after 'timePerScore'
+                        if (timeScore > 0)timeScore--; // Decrement every after 'timePerScore'
                         
                         // Coins based on score 
                         if (timeScore >= 90) {
@@ -197,15 +248,29 @@ public class Minesweeper implements ActionListener {
                                         // Remove from minelist and questionTilelist after clicked
                                         questionTileList.remove(tile);
                                         minelist.remove(tile);
- 
                                         
+//                                        if (numRows ==  9 && level != "blitz") questionLevel = "easy";
+//                                        else if (numRows == 15) questionLevel = "medium";
+//                                        else if (numRows == 21) questionLevel = "hard";
+//                                        
+//                                        // declare the questions
+//                                        String[][] questionList = generateQuestion(questionLevel);
+//                                        String tempQuestion = "";
+//                                        String tempAnswer = "";
+                                        if (questionList != null){
+                                            int randomQuestionIndex = random.nextInt(questionList.length);
+                                            tempQuestion = questionList[randomQuestionIndex][0];
+                                            tempAnswer = questionList[randomQuestionIndex][1];
+                                            questionList = removeQuestion(questionList, tempQuestion);
+                                        }
                                         // Show question dialog
                                         String answer = JOptionPane.showInputDialog(frame, 
-                                            "What's 3+3?", 
+                                            tempQuestion, 
                                             "Question Tile", 
                                             JOptionPane.QUESTION_MESSAGE);
-
-                                        if (answer != null && answer.equals("6")) { // Correct answer
+                                        
+                                            
+                                        if (answer != null && (answer.equalsIgnoreCase(tempAnswer))) { // Correct answer
                                             // Remove from mine list and question list
 //                                            minelist.remove(tile);
 //                                            questionTileList.remove(tile);
@@ -240,13 +305,18 @@ public class Minesweeper implements ActionListener {
                             }
                         }
                         else if (e.getButton() == MouseEvent.BUTTON3){ // right click - setting flag
+                            
                             if (tile.getText() == "" && tile.isEnabled()){ // adding Flag
+                                textLabelFlagged.setText("Flagged tiles : " + Integer.toString(flagged));
                                 tile.setText("O");
                                 tile.setForeground(Color.YELLOW); // Set text color
+                                flagged++;
                             }
                             else if (tile.getText() == "O"){ // removing Flag
                                 tile.setText("");
+                                if (flagged>0) flagged--;
                             }
+                            
                         }
                     }
                 });
@@ -261,7 +331,7 @@ public class Minesweeper implements ActionListener {
     void setBonusTile(){
         questionTileList = new ArrayList<Minetile>();
         
-        questionTiles = 5; // count of bonus tile
+        questionTiles = 2; // count of bonus tile
         
         while (questionTiles > 0){
             // Declare the position
@@ -324,7 +394,7 @@ public class Minesweeper implements ActionListener {
         gameOver = true;
         scoreLabel.setText("Score :" + Integer.toString(timeScore));
         timer.stop();
-        textLabel.setText("Game Over");
+        textLabel1.setText("Game Over");
     }
     
     void checkMine(int r, int c){
@@ -435,7 +505,7 @@ public class Minesweeper implements ActionListener {
     }
     
     // Enable surrounding tiles and possibly add a new bomb (50%)
-    private void enableSurroundingTiles(Minetile tile) {
+    void enableSurroundingTiles(Minetile tile) {
         ArrayList<Minetile> reEnabledTiles = new ArrayList<>();
         // Enable all neighbors (and self) if they are not enabled and not quesionTile
         for (int dr = -1; dr <= 1; dr++) {
@@ -480,7 +550,7 @@ public class Minesweeper implements ActionListener {
         }
     }
     
-    private void updateRevealedTileCounts() {
+    void updateRevealedTileCounts() {
         
         for (int r = 0; r < numRows; r++) {
             for (int c = 0; c < numCols; c++) {
@@ -517,7 +587,7 @@ public class Minesweeper implements ActionListener {
         }
     }
     
-    private void checkWinCondition() {
+    void checkWinCondition() {
     int safeTiles = numRows * numCols - minelist.size();
     int revealedCount = 0;
 
@@ -567,9 +637,84 @@ public class Minesweeper implements ActionListener {
             
         revealMines();
         gameOver = true; // Players cannot click tiles anymore
-        textLabel.setText("Mines Cleared");
+        textLabel1.setText("Mines Cleared");
         JOptionPane.showMessageDialog(frame, "You earned " + coinsEarned + " coins!");
         level = "";
         }
     }
+    
+    String[][] generateQuestion(String difficulty, String questionType){
+//        String question[];
+        String sqlFindQuestions = "select question,answer from questions where diff = '"+difficulty+"' and type = '"+questionType+"' order by id asc";
+        ArrayList<String[]> questionList = new ArrayList<>(); // Temporary list
+        try {
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ViperDB","root","root");
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sqlFindQuestions);
+            
+            while (rs.next()) {
+                String question = rs.getString("question");
+                String answer = rs.getString("answer");
+                questionList.add(new String[]{question, answer});
+            }
+            
+            con.close();
+        }catch (SQLException ex){
+            ex.printStackTrace();
+            System.out.println("Failed");
+        }
+        
+         // Convert ArrayList to String[][]
+        return questionList.toArray(new String[0][0]);
+    }
+    
+    String[][] removeQuestion(String[][] questions, String questionToRemove) {
+        int newSize = 0;
+
+        // Count how many questions will remain
+        for (String[] q : questions) {
+            if (!q[0].equals(questionToRemove)) {
+                newSize++;
+            }
+        }
+
+        // Create a new array with the reduced size
+        String[][] newQuestions = new String[newSize][2];
+        int index = 0;
+
+        // Copy only the questions that should remain
+        for (String[] q : questions) {
+            if (!q[0].equals(questionToRemove)) {
+                newQuestions[index++] = q;
+            }
+        }
+
+        return newQuestions;
+    }
+    
+    // Method to add a new bomb every 60 seconds
+    private void addNewBomb() {
+        ArrayList<Minetile> availableTiles = new ArrayList<>();
+
+        // Collect all enabled tiles that are not mines or question tiles
+        for (int r = 0; r < numRows; r++) {
+            for (int c = 0; c < numCols; c++) {
+                Minetile tile = position[r][c];
+                if (tile.isEnabled() && !minelist.contains(tile) && !questionTileList.contains(tile)) {
+                    availableTiles.add(tile);
+                }
+            }
+        }
+
+        if (!availableTiles.isEmpty()) {
+            // Select a random tile and add it to the mine list
+            int randomIndex = random.nextInt(availableTiles.size());
+            Minetile newBombTile = availableTiles.get(randomIndex);
+            minelist.add(newBombTile);
+            newMine++;
+            textLabel.setText("Minesweeper : " + (mineCount + newMine));
+            updateRevealedTileCounts();
+        }
+    }
+
 }
