@@ -344,7 +344,7 @@ public class Minesweeper implements ActionListener {
     void setQuestionTile(){
         questionTileList = new ArrayList<Minetile>();
         
-        questionTiles = 0; // count of bonus tile
+        questionTiles = 3; // count of bonus tile
         
         while (questionTiles > 0){
             // Declare the position
