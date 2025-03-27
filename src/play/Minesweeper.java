@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package play;
 
 
@@ -37,17 +32,19 @@ public class Minesweeper implements ActionListener {
     int numCols;
     int boardWidth;
     int boardHeight;
-    int tilesClicked = 0;
+//    int tilesClicked = 0;
     int elapsedTime = 0;
     int elapsedTime2 = 0;
     int timeScore;
     int coinsEarned = 50;
     int questionTiles;
+    int newMine = 0;
     
     Timer timer;
     JFrame frame = new JFrame("Minesweeper");
     JLabel timerLabel = new JLabel("Time : 0s");
     JLabel textLabel = new JLabel();
+    JLabel textLabelMineCount = new JLabel();
     JLabel scoreLabel = new JLabel("Score : " + Integer.toString(timeScore));
     JPanel textPanel = new JPanel();
     JPanel boardPanel = new JPanel();
@@ -88,7 +85,7 @@ public class Minesweeper implements ActionListener {
         // "Minesweeper" Text Panel
         textLabel.setFont(new Font("Arial",Font.BOLD,25));
         textLabel.setHorizontalAlignment(JLabel.CENTER);
-        textLabel.setText("Minesweeper : " + Integer.toString(mineCount));
+        textLabel.setText("Minesweeper : " + Integer.toString(mineCount + newMine));
         textLabel.setOpaque(true);
         textLabel.setBounds(30,100,250,25);
         
@@ -197,6 +194,41 @@ public class Minesweeper implements ActionListener {
                                         JOptionPane.showMessageDialog(null, "Question Tile","Question", JOptionPane.WARNING_MESSAGE);
                                         // TODO - IF ANSWERED CORRECTLY GIVE CLUE ELSE IF NOT ENABLE SOME TILE
                                         
+                                        // Remove from minelist and questionTilelist after clicked
+                                        questionTileList.remove(tile);
+                                        minelist.remove(tile);
+ 
+                                        
+                                        // Show question dialog
+                                        String answer = JOptionPane.showInputDialog(frame, 
+                                            "What's 3+3?", 
+                                            "Question Tile", 
+                                            JOptionPane.QUESTION_MESSAGE);
+
+                                        if (answer != null && answer.equals("6")) { // Correct answer
+                                            // Remove from mine list and question list
+//                                            minelist.remove(tile);
+//                                            questionTileList.remove(tile);
+
+                                            // Visual feedback
+                                            tile.setBackground(Color.green);
+                                            tile.setText("✓");
+                                            tile.setForeground(Color.black);
+                                            
+//                                            tilesClicked++;
+
+                                            // Automatically check surrounding tiles
+                                            checkMine(tile.r, tile.c);
+                                            
+                                        } else { // Wrong answer
+                                            enableSurroundingTiles(tile);
+                                            JOptionPane.showMessageDialog(frame, 
+                                                "Wrong answer! Surrounding tiles reactivated.", 
+                                                "Incorrect", 
+                                                JOptionPane.ERROR_MESSAGE);
+                                                textLabel.setText("Minesweeper : " + Integer.toString(mineCount + newMine));
+                                        }
+                                        checkWinCondition();
                                     }else{
                                         // else it's a bomb
                                         revealMines();
@@ -209,10 +241,10 @@ public class Minesweeper implements ActionListener {
                         }
                         else if (e.getButton() == MouseEvent.BUTTON3){ // right click - setting flag
                             if (tile.getText() == "" && tile.isEnabled()){ // adding Flag
-                                tile.setText("F");
+                                tile.setText("O");
                                 tile.setForeground(Color.YELLOW); // Set text color
                             }
-                            else if (tile.getText() == "F"){ // removing Flag
+                            else if (tile.getText() == "O"){ // removing Flag
                                 tile.setText("");
                             }
                         }
@@ -312,7 +344,7 @@ public class Minesweeper implements ActionListener {
         
         tile.setBackground(Color.white); // clicked color
         tile.setEnabled(false); // disabling button
-        tilesClicked += 1; // increment 'tilesClicked' if there's no bomb
+//        tilesClicked += 1; // increment 'tilesClicked' if there's no bomb
         
         int minesFound = 0;
         
@@ -356,48 +388,7 @@ public class Minesweeper implements ActionListener {
             checkMine(r+1,c+1);// bottom-right
             if (gameOver == true) return;
         }
-        // Win if all tiles are clicked except with bombs
-        if (tilesClicked == numRows * numCols - minelist.size()){
-            timer.stop();
-            // Update database score
-            if (numRows == 9 && level.equals("")) level = "easyscore";
-            else if (numRows == 15) level = "mediumscore";
-            else if (numRows == 21) level = "hardscore";
-            else level = "blitzscore";
-            int oldCoin = 0;
-//            String findScore = "select "+level+" from account where username = '"+Login.username1+"'";
-            String findScore = "select * from account where username = '"+Login.username1+"'";
-            
-            try {
-                Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ViperDB", "root", "root");
-                Statement st = con.createStatement();
-                ResultSet rs = st.executeQuery(findScore);
-                
-                // Updating score & coins
-                if (rs.next()){
-                    oldCoin += rs.getInt("coins") + coinsEarned;
-                    if (timeScore > rs.getInt(level)){
-                        st.executeUpdate("update account set "+level+" = "+timeScore+",coins = "+oldCoin+" where username = '"+Login.username1+"'");
-                    } else{
-                        st.executeUpdate("update account set coins = "+oldCoin+" where username = '"+Login.username1+"'");
-                    }
-                }
-                
-                st.close();
-                rs.close();
-                con.close();
-            }catch(SQLException ex){
-                ex.printStackTrace();
-                System.out.println("Failed");
-            }
-            
-            
-            revealMines();
-            gameOver = true; // Players cannot click tiles anymore
-            textLabel.setText("Mines Cleared");
-            JOptionPane.showMessageDialog(frame, "You earned " + coinsEarned + " coins!");
-            level = "";
-        }
+        checkWinCondition();
     }
     
     int countMine(int r, int c){
@@ -443,4 +434,142 @@ public class Minesweeper implements ActionListener {
         }
     }
     
+    // Enable surrounding tiles and possibly add a new bomb (50%)
+    private void enableSurroundingTiles(Minetile tile) {
+        ArrayList<Minetile> reEnabledTiles = new ArrayList<>();
+        // Enable all neighbors (and self) if they are not enabled and not quesionTile
+        for (int dr = -1; dr <= 1; dr++) {
+            for (int dc = -1; dc <= 1; dc++) {
+                int nr = tile.r + dr;
+                int nc = tile.c + dc;
+                if (nr >= 0 && nr < numRows && nc >= 0 && nc < numCols) {
+                    Minetile neighbor = position[nr][nc];
+                    if (!neighbor.isEnabled() && !questionTileList.contains(neighbor)) {
+                        neighbor.setEnabled(true);
+                        neighbor.setBackground(Color.black);
+                        neighbor.setText("");
+//                        tilesClicked--; // Adjust the counter since we are it is unreaveling
+                        reEnabledTiles.add(neighbor);
+                    }
+                }
+            }
+        }
+        // Ensure the questiontile itself is re-enabled.
+        if (!tile.isEnabled()) {
+            tile.setEnabled(true);
+            tile.setText("");
+            tile.setBackground(Color.black);
+            if (!reEnabledTiles.contains(tile)) {
+                reEnabledTiles.add(tile);
+            }
+        }
+        
+        // With 50% chance to add new 1 bomb in 1 of newly enabled tile
+        if (random.nextBoolean() && !reEnabledTiles.isEmpty()) {
+            int idx = random.nextInt(reEnabledTiles.size());
+            Minetile newBombTile = reEnabledTiles.get(idx);
+            if (!minelist.contains(newBombTile)) {
+                minelist.add(newBombTile);
+                // If the chosen tile was a question tile, remove it from the bonus list.
+                questionTileList.remove(newBombTile);
+                newMine++;
+//                textLabel.setText("Minecount : " + minelist.size());
+                updateRevealedTileCounts();
+                checkWinCondition();
+            }
+        }
+    }
+    
+    private void updateRevealedTileCounts() {
+        
+        for (int r = 0; r < numRows; r++) {
+            for (int c = 0; c < numCols; c++) {
+                Minetile tile = position[r][c];
+
+                // If it's disabled (already revealed) && not itself a mine,
+                // then re-calculate how many bombs surround it.
+                if (!tile.isEnabled() && !minelist.contains(tile)) {
+                    int minesFound = 0;
+
+                    // Count bombs in all 8 directions
+                    // top
+                    minesFound += countMine(r - 1, c - 1);
+                    minesFound += countMine(r - 1, c);
+                    minesFound += countMine(r - 1, c + 1);
+                    
+                    // side
+                    minesFound += countMine(r, c - 1);
+                    minesFound += countMine(r, c + 1);
+                    
+                    // bottom
+                    minesFound += countMine(r + 1, c - 1);
+                    minesFound += countMine(r + 1, c);
+                    minesFound += countMine(r + 1, c + 1);
+
+                    // Update the "Minesweeper" count
+                    if (minesFound > 0) {
+                        tile.setText(Integer.toString(minesFound));
+                    } else {
+                        tile.setText("");
+                    }
+                }
+            }
+        }
+    }
+    
+    private void checkWinCondition() {
+    int safeTiles = numRows * numCols - minelist.size();
+    int revealedCount = 0;
+
+    for (int r = 0; r < numRows; r++) {
+        for (int c = 0; c < numCols; c++) {
+            Minetile tile = position[r][c];
+            // tile is revealed if it's disabled and NOT a mine
+            if (!tile.isEnabled() && !minelist.contains(tile)) {
+                revealedCount++;
+            }
+        }
+    }
+
+    // Win if all tiles are clicked except with bombs
+    if (revealedCount == safeTiles) {
+        timer.stop();
+        // Update database score
+        if (numRows == 9 && level.equals("")) level = "easyscore";
+        else if (numRows == 15) level = "mediumscore";
+        else if (numRows == 21) level = "hardscore";
+        else level = "blitzscore";
+        int oldCoin = 0;
+//            String findScore = "select "+level+" from account where username = '"+Login.username1+"'";
+        String findScore = "select * from account where username = '"+Login.username1+"'";
+        try {
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ViperDB", "root", "root");
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(findScore);
+            // Updating score & coins
+            if (rs.next()){
+                oldCoin += rs.getInt("coins") + coinsEarned;
+                if (timeScore > rs.getInt(level)){
+                    st.executeUpdate("update account set "+level+" = "+timeScore+",coins = "+oldCoin+" where username = '"+Login.username1+"'");
+                } else{
+                    st.executeUpdate("update account set coins = "+oldCoin+" where username = '"+Login.username1+"'");
+                }
+            }
+                
+            st.close();
+            rs.close();
+            con.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+            System.out.println("Failed");
+        }
+            
+            
+        revealMines();
+        gameOver = true; // Players cannot click tiles anymore
+        textLabel.setText("Mines Cleared");
+        JOptionPane.showMessageDialog(frame, "You earned " + coinsEarned + " coins!");
+        level = "";
+        }
+    }
 }

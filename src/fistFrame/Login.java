@@ -66,12 +66,10 @@ public class Login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Viper");
-        setPreferredSize(new java.awt.Dimension(1200, 720));
 
         background.setPreferredSize(new java.awt.Dimension(1200, 720));
         background.setLayout(null);
 
-        username.setBackground(null);
         username.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         username.setBorder(null);
         username.setCaretColor(null);
@@ -82,21 +80,17 @@ public class Login extends javax.swing.JFrame {
         background.add(username);
         username.setBounds(390, 310, 430, 70);
 
-        password.setBackground(null);
         password.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         password.setBorder(null);
         password.setOpaque(false);
         background.add(password);
         password.setBounds(390, 420, 430, 70);
 
-        BtnLogin.setBackground(null);
         BtnLogin.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        BtnLogin.setForeground(null);
         BtnLogin.setBorder(null);
         BtnLogin.setBorderPainted(false);
         BtnLogin.setContentAreaFilled(false);
         BtnLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        BtnLogin.setOpaque(false);
         BtnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnLoginActionPerformed(evt);
@@ -105,7 +99,6 @@ public class Login extends javax.swing.JFrame {
         background.add(BtnLogin);
         BtnLogin.setBounds(450, 525, 310, 50);
 
-        BtnRegister.setBackground(null);
         BtnRegister.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         BtnRegister.setBorder(null);
         BtnRegister.setContentAreaFilled(false);
