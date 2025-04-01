@@ -18,7 +18,7 @@ public class Main {
      */
     public static void main(String[] args) {
 //        new Login();
-        Minesweeper mine = new Minesweeper(2,9,15,2);
+        Minesweeper mine = new Minesweeper(10,9,15,2);
 
     }
     
