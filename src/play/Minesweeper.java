@@ -384,10 +384,10 @@ public class Minesweeper implements ActionListener {
                                             textLabel.setText("Minesweeper : " + Integer.toString(mineCount + newMine));
                                         }
                                         checkWinCondition();
-                                    } else if (bonusTileList.contains(tile)) {
+                                    } /*else if (bonusTileList.contains(tile)) {
                                         handleBonusTile(tile);
                                         System.out.println("Bonus tile");
-                                    } else {
+                                    } */else {
                                         // else it's a bomb
                                         gameLost = true;
                                         swapBonusWithBomb = true;
@@ -395,10 +395,10 @@ public class Minesweeper implements ActionListener {
                                         JOptionPane.showMessageDialog(null, "Game Over: You dig up a Virus", "Game Over", JOptionPane.ERROR_MESSAGE);
                                         textLabel1.setText("Game Over: You dug up a Virus");
                                     }
-                                }/* else if(bonusTileList.contains(tile)){
+                                } else if(bonusTileList.contains(tile)){
                                     handleBonusTile(tile);
                                         System.out.println("Bonus tile");
-                                }*/ else { // Check neighbor tiles
+                                } else { // Check neighbor tiles
                                     checkMine(tile.r, tile.c);
                                 }
                             }
@@ -894,6 +894,7 @@ public class Minesweeper implements ActionListener {
             minelist.add(newBombTile);
             newMine++;
             textLabel.setText("Minesweeper : " + (mineCount + newMine));
+//            newBombTile.setText("#");
             updateRevealedTileCounts();
         }
     }
@@ -943,30 +944,29 @@ public class Minesweeper implements ActionListener {
     }
 
     // Add the setBonusTile method
-    void setBonusTile() {
-        bonusTileList = new ArrayList<Minetile>();
-        int bonusTiles = 1; // Only 1 Bonus Tile
-        int maxAttempts = 1000; // Prevent infinite loops
-        Minetile bTile;
-        while (bonusTiles > 0 && maxAttempts > 0) {
-            int r = random.nextInt(numRows);
-            int c = random.nextInt(numCols);
-            bTile = position[r][c];
-
-            // Ensure tile is NOT a mine, NOT a question tile, and NOT adjacent to first click
-            if (!minelist.contains(bTile) && !questionTileList.contains(bTile) && !bonusTileList.contains(bTile) && !isNeighbor(firstClick, bTile)) {
-                bonusTileList.add(bTile);
-//                minelist.add(bTile);
-//                bTile.setText("B");
-                bonusTiles--;
-            }
-            maxAttempts--;
-        }
-
-        if (bonusTiles > 0) {
-            System.out.println("Warning: Bonus Tile not placed!");
-        }
-    }
+//    void setBonusTile() {
+//        bonusTileList = new ArrayList<Minetile>();
+//        int bonusTiles = 1; // Only 1 Bonus Tile
+//        int maxAttempts = 1000; // Prevent infinite loops
+//        Minetile bTile;
+//        while (bonusTiles > 0 && maxAttempts > 0) {
+//            int r = random.nextInt(numRows);
+//            int c = random.nextInt(numCols);
+//            bTile = position[r][c];
+//
+//            // Ensure tile is NOT a mine, NOT a question tile, and NOT adjacent to first click
+//            if (!minelist.contains(bTile) && !questionTileList.contains(bTile) && !bonusTileList.contains(bTile) && !isNeighbor(firstClick, bTile)) {
+//                bonusTileList.add(bTile);
+////                minelist.add(bTile);
+//                bonusTiles--;
+//            }
+//            maxAttempts--;
+//        }
+//
+//        if (bonusTiles > 0) {
+//            System.out.println("Warning: Bonus Tile not placed!");
+//        }
+//    }
 
     // Implement handleBonusTile method
     void handleBonusTile(Minetile tile) {
@@ -999,8 +999,8 @@ public class Minesweeper implements ActionListener {
         if (!availableTiles.isEmpty()) {
             currentBonusTile = availableTiles.get(random.nextInt(availableTiles.size()));
             bonusTileList.add(currentBonusTile);
-            minelist.add(currentBonusTile);
-//            currentBonusTile.setText("");
+//            minelist.add(currentBonusTile);
+            currentBonusTile.setText("B");
             currentBonusTile.setForeground(Color.cyan);
         }
     }
