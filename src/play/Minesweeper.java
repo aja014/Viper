@@ -54,10 +54,14 @@ public class Minesweeper implements ActionListener {
     int lastBombTime = -60;
     int bonusTiles;
     int timePaused = 0;
+    int power1 = 1;
+    int power2 = 1;
+    int power3 = 1;
 
     Timer timer;
     Timer removeTimer;
     Timer pauseTimer;
+    Timer power1Timer;
     JFrame frame = new JFrame("Minesweeper");
     JLabel timerLabel = new JLabel("Time : 0s");
     JLabel textLabel = new JLabel(); // number of mines
@@ -70,6 +74,9 @@ public class Minesweeper implements ActionListener {
     JPanel outerPanel = new JPanel(new BorderLayout());
     JButton BtnBack = new JButton("Back");
     JButton BtnRestart = new JButton("Restart");
+    JButton power1Btn = new JButton("Power1");
+    JButton power2Btn = new JButton("Power2");
+    JButton power3Btn = new JButton("Power3");
 
     // Reference of the tile we create
     Minetile[][] position;
@@ -138,10 +145,24 @@ public class Minesweeper implements ActionListener {
         BtnBack.setBounds(30, 600, 65, 30);
         BtnRestart.setBounds(110, 600, 85, 30);
         scoreLabel.setBounds(50, 300, 200, 20);
+        power1Btn.setBounds(30, 400, 150, 30);
+        power2Btn.setBounds(30, 440, 150, 30);
+        power3Btn.setBounds(30, 480, 150, 30);
+
+        //Powers
+        power1Btn.setText("Debugger : " + String.valueOf(power1));
+        power2Btn.setText("Radar : " + String.valueOf(power2));
+        power3Btn.setText("System Restore : " + String.valueOf(power3));
 
         BtnBack.addActionListener(this);
         BtnRestart.addActionListener(this);
+        power1Btn.addActionListener(this);
+        power2Btn.addActionListener(this);
+        power3Btn.addActionListener(this);
 
+        frame.add(power1Btn);
+        frame.add(power2Btn);
+        frame.add(power3Btn);
         frame.add(scoreLabel);
         frame.add(timerLabel);
         frame.add(textLabel);
@@ -329,7 +350,7 @@ public class Minesweeper implements ActionListener {
                             if (allowReveal3x3) {
                                 reveal3x3(tile);
                                 allowReveal3x3 = false;
-                                //return;
+                                return;
                             }
 
                             // "" means Not clicked yet
@@ -492,7 +513,9 @@ public class Minesweeper implements ActionListener {
             Minetile bonusTile;
             if (tile.getText() == "O") {
                 tile.setForeground(Color.yellow);
-            }else tile.setForeground(Color.red); // Set text color
+            } else {
+                tile.setForeground(Color.red); // Set text color
+            }
             tile.setText("#"); // Bomb text
 
             for (int j = 0; j < questionTileList.size(); j++) {
@@ -528,6 +551,10 @@ public class Minesweeper implements ActionListener {
         scoreLabel.setText("Score :" + Integer.toString(timeScore));
         timer.stop();
 //        textLabel1.setText("Game Over");
+
+        if (pauseTimer != null && pauseTimer.isRunning()) {
+            pauseTimer.stop();
+        }
     }
 
     void checkMine(int r, int c) {
@@ -669,6 +696,27 @@ public class Minesweeper implements ActionListener {
                 new Minesweeper(mineCount, numRows, scoreTimeStart, timePerScore);
                 // trye pa ulit
             }
+        } else if (e.getSource() == power1Btn && power1 > 0 && start) {
+//            activatePower1();
+            if (timer.isRunning()) {
+                pauseTimePower();
+                power1--;
+                power1Btn.setText("Debugger : " + String.valueOf(power1));
+            } else {
+                JOptionPane.showMessageDialog(null, "Wait the duration of last debugger", "Debugger", 2);
+            }
+        } else if (e.getSource() == power2Btn && power2 > 0 && start) {
+            if (!allowReveal3x3) {
+                allowReveal3x3 = true;
+                power2--;
+                power2Btn.setText("Radar : " + String.valueOf(power2));
+            } else {
+                JOptionPane.showMessageDialog(null, "Radar is enable!", "Radar", 2);
+            }
+        } else if (e.getSource() == power3Btn && power3 > 0 && start) {
+//            activatePower3();
+            power3--;
+            power3Btn.setText("System Restore : " + String.valueOf(power2));
         }
     }
 
@@ -760,6 +808,9 @@ public class Minesweeper implements ActionListener {
     }
 
     void checkWinCondition() {
+        if (gameOver) {
+            return;
+        }
         int safeTiles = numRows * numCols - minelist.size();
         int revealedCount = 0;
 
@@ -775,14 +826,13 @@ public class Minesweeper implements ActionListener {
 
         // Win if all tiles are clicked except with bombs
         if (revealedCount == safeTiles) {
-
+//            gameOver = true;
             // One last final question
             questionList = generateQuestion(questionLevel, "finalquestion");
             tempQuestion = questionList[0][0];
             tempAnswer = questionList[0][1];
 
             String answer = JOptionPane.showInputDialog(frame, tempQuestion, "Question Tile", JOptionPane.QUESTION_MESSAGE);
-
             if (!timer.isRunning() && gameOver) {
                 revealMines();
                 return;
@@ -791,6 +841,7 @@ public class Minesweeper implements ActionListener {
                 pauseTimer.stop();
             }
 
+            gameOver = true;
             // Correct answer
             if (answer != null && answer.equalsIgnoreCase(tempAnswer)) {
                 // Update database score
@@ -1008,7 +1059,7 @@ public class Minesweeper implements ActionListener {
 //        System.out.println("You got bonus tile");
         Random rand = new Random();
         int chance = rand.nextInt(100); // 0-99
-//        int chance = 64;
+//        int chance = 98;
 
         if (chance < 50) { // 50% chance for 5 coins
             coinsEarned += 5;
@@ -1022,39 +1073,46 @@ public class Minesweeper implements ActionListener {
             JOptionPane.showMessageDialog(frame, "Bonus: +20 Score!");
             timer.start();
         } else if (chance < 80) { // 15% chance for 30s pause
-            if (timer.isRunning()) {
-                timer.stop();
-                JOptionPane.showMessageDialog(frame, "Bonus: Timer paused for 30 seconds!");
-                timer.start();
-                timer.stop();
-                if (pauseTimer != null && pauseTimer.isRunning()) {
-                    pauseTimer.stop();
-                }
-                timePaused += 10000;
-
-                pauseTimer = new Timer(timePaused, e -> {
-                    if (!gameOver) {
-                        timer.start();
-                    }
-                    if (gameOver || gameLost) {
-                        pauseTimer.stop();
-                        return;
-                    }
-//                    JOptionPane.showMessageDialog(frame, "Timer resumed!");
-                });
-                pauseTimer.setRepeats(false);
-                pauseTimer.start();
-            }
+            power1++;
+//            timePaused += 5000;
+//            pauseTimePower();
+//            if (timer.isRunning()) {
+//                timer.stop();
+//                JOptionPane.showMessageDialog(frame, "Bonus: Timer paused for 30 seconds!");
+//                timer.start();
+//                timer.stop();
+//                if (pauseTimer != null && pauseTimer.isRunning()) {
+//                    pauseTimer.stop();
+//                }
+//                timePaused += 10000;
+//
+//                pauseTimer = new Timer(timePaused, e -> {
+//                    if (!gameOver) {
+//                        timer.start();
+//                    }
+//                    if (gameOver || gameLost) {
+//                        pauseTimer.stop();
+//                        return;
+//                    }
+////                    JOptionPane.showMessageDialog(frame, "Timer resumed!");
+//                });
+//                pauseTimer.setRepeats(false);
+//                pauseTimer.start();
+//            }
         } else if (chance < 95) { // 15% chance for 3x3 reveal
-            allowReveal3x3 = true;
-            JOptionPane.showMessageDialog(frame, "Bonus: Click any tile to reveal its 3x3 neighbors!");
+            power2++;
+//            allowReveal3x3 = true;
+//            JOptionPane.showMessageDialog(frame, "Bonus: Click any tile to reveal its 3x3 neighbors!");
         } else { // 5% chance for Power 4
+            power3++;
             timeScore += 4;
             coinsEarned += 4;
             scoreLabel.setText("Score : " + timeScore);
             JOptionPane.showMessageDialog(frame, "Power 4! +4 Score and Coins!");
         }
-
+        power1Btn.setText("Debugger : " + String.valueOf(power1));
+        power2Btn.setText("Radar : " + String.valueOf(power2));
+        power3Btn.setText("System Restore : " + String.valueOf(power3));
         // Remove a random non-question mine
 //        checkWinCondition();
     }
@@ -1155,6 +1213,7 @@ public class Minesweeper implements ActionListener {
                     } else {
                         // Safe tile - reveal normally
                         checkMine(tile.r, tile.c);
+//                        return;
 //                        flagged--;
                     }
                 }
@@ -1205,5 +1264,55 @@ public class Minesweeper implements ActionListener {
             textLabel.setText("Minesweeper : " + (mineCount + newMine));
         }
         checkWinCondition();
+    }
+
+//    void activatePower1() {
+//        if (gameOver) {
+//            return;
+//        }
+//
+//        // Cancel existing timer if any
+//        if (power1Timer != null && power1Timer.isRunning()) {
+//            power1Timer.stop();
+//        }
+//
+//        timer.stop();
+//        power1Timer = new Timer(10000, e -> {
+//            if (!gameOver) {  // Only restart if game is still running
+//                timer.start();
+//            }
+//        });
+//        power1Timer.setRepeats(false);
+//        power1Timer.start();
+//    }
+    void pauseTimePower() {
+        if (timer.isRunning()) {
+            timer.stop();
+            JOptionPane.showMessageDialog(frame, "Bonus: Timer paused for 30 seconds!");
+//            timer.start();
+//            timer.stop();
+            if (pauseTimer != null && pauseTimer.isRunning()) {
+                pauseTimer.stop();
+            }
+            timePaused += 30000;
+
+            pauseTimer = new Timer(timePaused, e -> {
+//                if (!gameOver && !timer.isRunning()) {
+//                    timer.start(); // Resume the timer only if the game isn't over
+//                    timePaused = 0;
+//                }
+                if (!gameOver) {
+                    timer.start();
+                    timePaused = 0;
+                }
+                if (gameOver || gameLost) {
+                    pauseTimer.stop();
+                    return;
+                }
+//                    JOptionPane.showMessageDialog(frame, "Timer resumed!");
+            });
+            pauseTimer.setRepeats(false);
+            pauseTimer.start();
+        }
     }
 }
