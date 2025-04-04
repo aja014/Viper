@@ -185,7 +185,7 @@ public class Minesweeper implements ActionListener {
                 }
 
                 // Adds new bomb every 60 seconds
-                if (elapsedTime > 5 && (start && elapsedTime - lastBombTime >= 60)) {
+                if (elapsedTime > 60 && (start && elapsedTime - lastBombTime >= 60)) {
 
                     // Game over, swap bonus with mines if naabutan
                     if (isNoMoreSafeTile()) {
@@ -489,8 +489,10 @@ public class Minesweeper implements ActionListener {
             Minetile tile = minelist.get(i);
             Minetile questionTile;
             Minetile bonusTile;
+            if (tile.getText() == "O") {
+                tile.setForeground(Color.yellow);
+            }else tile.setForeground(Color.red); // Set text color
             tile.setText("#"); // Bomb text
-            tile.setForeground(Color.red); // Set text color
 
             for (int j = 0; j < questionTileList.size(); j++) {
                 questionTile = questionTileList.get(j);
@@ -1004,16 +1006,20 @@ public class Minesweeper implements ActionListener {
 //        scoreLabel.setText("Score : " + timeScore);
 //        System.out.println("You got bonus tile");
         Random rand = new Random();
-//        int chance = rand.nextInt(100); // 0-99
-        int chance = 90;
+        int chance = rand.nextInt(100); // 0-99
+//        int chance = 64;
 
         if (chance < 50) { // 50% chance for 5 coins
             coinsEarned += 5;
+            timer.stop();
             JOptionPane.showMessageDialog(frame, "Bonus: You found 5 coins!");
+            timer.start();
         } else if (chance < 65) { // 15% chance for +20 score
             timeScore += 20;
             scoreLabel.setText("Score : " + timeScore);
+            timer.stop();
             JOptionPane.showMessageDialog(frame, "Bonus: +20 Score!");
+            timer.start();
         } else if (chance < 80) { // 15% chance for 30s pause
             if (timer.isRunning()) {
                 timer.stop();
