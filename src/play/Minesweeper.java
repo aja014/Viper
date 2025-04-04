@@ -53,9 +53,11 @@ public class Minesweeper implements ActionListener {
     int flagged = 0;
     int lastBombTime = -60;
     int bonusTiles;
+    int timePaused = 0;
 
     Timer timer;
     Timer removeTimer;
+    Timer pauseTimer;
     JFrame frame = new JFrame("Minesweeper");
     JLabel timerLabel = new JLabel("Time : 0s");
     JLabel textLabel = new JLabel(); // number of mines
@@ -83,6 +85,7 @@ public class Minesweeper implements ActionListener {
     boolean start = false;
     boolean gameLost = false;
     boolean swapBonusWithBomb = false;
+    boolean allowReveal3x3 = false;
 
     // Minesweeper(int minecout, int rowsNcols, int scoreTimeStart, int timePerScore)
     public Minesweeper(int minecount, int rowsNcols, int scoreTimeStart, int timePerScore) {
@@ -182,14 +185,14 @@ public class Minesweeper implements ActionListener {
                 }
 
                 // Adds new bomb every 60 seconds
-                if (elapsedTime > 60 && (start && elapsedTime - lastBombTime >= 60)) {
+                if (elapsedTime > 5 && (start && elapsedTime - lastBombTime >= 60)) {
 
                     // Game over, swap bonus with mines if naabutan
                     if (isNoMoreSafeTile()) {
                         revealMines();
                         JOptionPane.showMessageDialog(null, "Game Over: Last safe tile is now contained with Virus", "Game Over", JOptionPane.ERROR_MESSAGE);
                         textLabel1.setText("Game Over: You failed to prevent virus");
-                        newMine++;
+//                        newMine++;
                         textLabel.setText("Minesweeper : " + Integer.toString(mineCount + newMine));
 
                         ArrayList<Minetile> availableTiles2 = new ArrayList<>();
@@ -322,72 +325,81 @@ public class Minesweeper implements ActionListener {
 
                         // Left click
                         if (e.getButton() == MouseEvent.BUTTON1) {
+
+                            if (allowReveal3x3) {
+                                reveal3x3(tile);
+                                allowReveal3x3 = false;
+                                return;
+                            }
+
                             // "" means Not clicked yet
-                            if (tile.getText() == "") {
+                            if (tile.getText() == "" || tile.getText() == "?" || tile.getText() == "#") {
                                 // if There's a bomb/bonus tile
                                 if (minelist.contains(tile)) {
                                     //if it's question tile
                                     if (questionTileList.contains(tile)) {
-                                        tile.setText("?"); // Show question mark
-                                        tile.setEnabled(false);
-                                        tile.setBackground(Color.white);
-
-                                        JOptionPane.showMessageDialog(null, "Question Tile", "Question", JOptionPane.WARNING_MESSAGE);
-                                        if (!timer.isRunning()) {
-                                            revealMines();
-                                            return;
-                                        }
-                                        // TODO - IF ANSWERED CORRECTLY GIVE CLUE ELSE IF NOT ENABLE SOME TILE - DONE
-
-                                        // Remove from minelist and questionTilelist after clicked
-                                        questionTileList.remove(tile);
-                                        minelist.remove(tile);
-
-//                                         if all unclicked tile has a bomb
-                                        if (!timer.isRunning()) {
-                                            revealMines();
-                                            return;
-                                        }
-
-                                        if (questionList != null) {
-                                            int randomQuestionIndex = random.nextInt(questionList.length);
-                                            tempQuestion = questionList[randomQuestionIndex][0];
-                                            tempAnswer = questionList[randomQuestionIndex][1];
-                                            questionList = removeQuestion(questionList, tempQuestion);
-                                        }
-                                        // Show question dialog
-                                        String answer = JOptionPane.showInputDialog(frame, tempQuestion, "Question Tile", JOptionPane.QUESTION_MESSAGE);
-
-                                        // if all unclicked tile has a bomb
-                                        if (!timer.isRunning()) {
-                                            revealMines();
-                                            return;
-                                        }
-
-                                        if (answer != null && (answer.equalsIgnoreCase(tempAnswer))) { // Correct answer
-                                            // Remove from mine list and question list
-//                                            minelist.remove(tile);
-//                                            questionTileList.remove(tile);
-
-                                            // Visual feedback
-                                            tile.setBackground(Color.green);
-                                            tile.setText("✓");
-                                            tile.setForeground(Color.black);
-
-//                                            tilesClicked++;
-                                            // Automatically check surrounding tiles
-                                            checkMine(tile.r, tile.c);
-
-                                        } else { // Wrong answer
-                                            enableSurroundingTiles(tile);
-                                            JOptionPane.showMessageDialog(frame, "Wrong answer! Surrounding tiles reactivated.", "Incorrect", JOptionPane.ERROR_MESSAGE);
-                                            textLabel.setText("Minesweeper : " + Integer.toString(mineCount + newMine));
-                                        }
-                                        checkWinCondition();
+                                        handleQuestionTile(tile);
+                                        return;
+//                                        tile.setText("?"); // Show question mark
+//                                        tile.setEnabled(false);
+//                                        tile.setBackground(Color.white);
+//
+//                                        JOptionPane.showMessageDialog(null, "Question Tile", "Question", JOptionPane.WARNING_MESSAGE);
+//                                        if (!timer.isRunning() && gameOver) {
+//                                            revealMines();
+//                                            return;
+//                                        }
+//                                        // TODO - IF ANSWERED CORRECTLY GIVE CLUE ELSE IF NOT ENABLE SOME TILE - DONE
+//
+//                                        // Remove from minelist and questionTilelist after clicked
+//                                        questionTileList.remove(tile);
+//                                        minelist.remove(tile);
+//
+////                                         if all unclicked tile has a bomb
+//                                        if (!timer.isRunning() && gameOver) {
+//                                            revealMines();
+//                                            return;
+//                                        }
+//
+//                                        if (questionList != null) {
+//                                            int randomQuestionIndex = random.nextInt(questionList.length);
+//                                            tempQuestion = questionList[randomQuestionIndex][0];
+//                                            tempAnswer = questionList[randomQuestionIndex][1];
+//                                            questionList = removeQuestion(questionList, tempQuestion);
+//                                        }
+//                                        // Show question dialog
+//                                        String answer = JOptionPane.showInputDialog(frame, tempQuestion, "Question Tile", JOptionPane.QUESTION_MESSAGE);
+//
+//                                        // if all unclicked tile has a bomb
+//                                        if (!timer.isRunning() && gameOver) {
+//                                            revealMines();
+//                                            return;
+//                                        }
+//
+//                                        if (answer != null && (answer.equalsIgnoreCase(tempAnswer))) { // Correct answer
+//                                            // Remove from mine list and question list
+////                                            minelist.remove(tile);
+////                                            questionTileList.remove(tile);
+//
+//                                            // Visual feedback
+//                                            tile.setBackground(Color.green);
+//                                            tile.setText("✓");
+//                                            tile.setForeground(Color.black);
+//
+////                                            tilesClicked++;
+//                                            // Automatically check surrounding tiles
+//                                            checkMine(tile.r, tile.c);
+//
+//                                        } else { // Wrong answer
+//                                            enableSurroundingTiles(tile);
+//                                            JOptionPane.showMessageDialog(frame, "Wrong answer! Surrounding tiles reactivated.", "Incorrect", JOptionPane.ERROR_MESSAGE);
+//                                            textLabel.setText("Minesweeper : " + Integer.toString(mineCount + newMine));
+//                                        }
+//                                        checkWinCondition();
                                     } /*else if (bonusTileList.contains(tile)) {
                                         handleBonusTile(tile);
                                         System.out.println("Bonus tile");
-                                    } */else {
+                                    } */ else {
                                         // else it's a bomb
                                         gameLost = true;
                                         swapBonusWithBomb = true;
@@ -395,9 +407,9 @@ public class Minesweeper implements ActionListener {
                                         JOptionPane.showMessageDialog(null, "Game Over: You dig up a Virus", "Game Over", JOptionPane.ERROR_MESSAGE);
                                         textLabel1.setText("Game Over: You dug up a Virus");
                                     }
-                                } else if(bonusTileList.contains(tile)){
+                                } else if (bonusTileList.contains(tile)) {
                                     handleBonusTile(tile);
-                                        System.out.println("Bonus tile");
+                                    System.out.println("Bonus tile");
                                 } else { // Check neighbor tiles
                                     checkMine(tile.r, tile.c);
                                 }
@@ -431,7 +443,7 @@ public class Minesweeper implements ActionListener {
     void setQuestionTile() {
         questionTileList = new ArrayList<Minetile>();
 
-        questionTiles = 1; // count of bonus tile
+        questionTiles = 5; // count of bonus tile
 
         while (questionTiles > 0) {
             // Declare the position
@@ -530,7 +542,7 @@ public class Minesweeper implements ActionListener {
         if (questionTileList.contains(tile) || bonusTileList.contains(tile)) {
             return;
         }
-        if (tile.isEnabled() && tile.getText() == "O") {
+        if ((tile.isEnabled() && tile.getText() == "O") || tile.getText() == "?") {
             flagged--;
             textLabelFlagged.setText("Flagged tiles : " + Integer.toString(flagged));
         }
@@ -636,13 +648,19 @@ public class Minesweeper implements ActionListener {
                     if (removeTimer != null && removeTimer.isRunning()) {
                         removeTimer.stop();
                     }
+                    if (pauseTimer != null && pauseTimer.isRunning()) {
+                        pauseTimer.stop();
+                    }
                     frame.dispose();
                     new Minesweeper(mineCount, numRows, scoreTimeStart, timePerScore);
                 }
             } else {
                 timer.stop();
                 if (removeTimer != null && removeTimer.isRunning()) {
-                        removeTimer.stop();
+                    removeTimer.stop();
+                }
+                if (pauseTimer != null && pauseTimer.isRunning()) {
+                    pauseTimer.stop();
                 }
                 frame.dispose();
                 new Minesweeper(mineCount, numRows, scoreTimeStart, timePerScore);
@@ -762,9 +780,12 @@ public class Minesweeper implements ActionListener {
 
             String answer = JOptionPane.showInputDialog(frame, tempQuestion, "Question Tile", JOptionPane.QUESTION_MESSAGE);
 
-            if (!timer.isRunning()) {
+            if (!timer.isRunning() && gameOver) {
                 revealMines();
                 return;
+            }
+            if (pauseTimer != null && pauseTimer.isRunning()) {
+                pauseTimer.stop();
             }
 
             // Correct answer
@@ -914,6 +935,7 @@ public class Minesweeper implements ActionListener {
         }
 
         if (availableTiles2.isEmpty()) {
+            gameOver = true;
             return true;
         } else {
             return false;
@@ -934,6 +956,7 @@ public class Minesweeper implements ActionListener {
 
         if (availableTiles2.isEmpty()) {
             if (type == "text") {
+                gameOver = true;
                 JOptionPane.showMessageDialog(null, "Game Over: Last safe tile is now contained with Virus", "Game Over", JOptionPane.ERROR_MESSAGE);
                 textLabel1.setText("Game Over: You failed to prevent virus");
             }
@@ -967,7 +990,6 @@ public class Minesweeper implements ActionListener {
 //            System.out.println("Warning: Bonus Tile not placed!");
 //        }
 //    }
-
     // Implement handleBonusTile method
     void handleBonusTile(Minetile tile) {
         tile.setBackground(Color.WHITE);
@@ -978,12 +1000,56 @@ public class Minesweeper implements ActionListener {
         minelist.remove(tile);
 
         // Add 20 points
-        timeScore += 20;
-        scoreLabel.setText("Score : " + timeScore);
-        System.out.println("You got bonus tile");
+//        timeScore += 20;
+//        scoreLabel.setText("Score : " + timeScore);
+//        System.out.println("You got bonus tile");
+        Random rand = new Random();
+//        int chance = rand.nextInt(100); // 0-99
+        int chance = 90;
+
+        if (chance < 50) { // 50% chance for 5 coins
+            coinsEarned += 5;
+            JOptionPane.showMessageDialog(frame, "Bonus: You found 5 coins!");
+        } else if (chance < 65) { // 15% chance for +20 score
+            timeScore += 20;
+            scoreLabel.setText("Score : " + timeScore);
+            JOptionPane.showMessageDialog(frame, "Bonus: +20 Score!");
+        } else if (chance < 80) { // 15% chance for 30s pause
+            if (timer.isRunning()) {
+                timer.stop();
+                JOptionPane.showMessageDialog(frame, "Bonus: Timer paused for 30 seconds!");
+                timer.start();
+                timer.stop();
+                if (pauseTimer != null && pauseTimer.isRunning()) {
+                    pauseTimer.stop();
+                }
+                timePaused += 10000;
+
+                pauseTimer = new Timer(timePaused, e -> {
+                    if (!gameOver) {
+                        timer.start();
+                    }
+                    if (gameOver || gameLost) {
+                        pauseTimer.stop();
+                        return;
+                    }
+//                    JOptionPane.showMessageDialog(frame, "Timer resumed!");
+                });
+                pauseTimer.setRepeats(false);
+                pauseTimer.start();
+            }
+        } else if (chance < 95) { // 15% chance for 3x3 reveal
+            allowReveal3x3 = true;
+            JOptionPane.showMessageDialog(frame, "Bonus: Click any tile to reveal its 3x3 neighbors!");
+        } else { // 5% chance for Power 4
+            timeScore += 4;
+            coinsEarned += 4;
+            scoreLabel.setText("Score : " + timeScore);
+            JOptionPane.showMessageDialog(frame, "Power 4! +4 Score and Coins!");
+        }
 
         // Remove a random non-question mine
-        checkWinCondition();
+//        checkWinCondition();
     }
 
     private void addBonusTile() {
@@ -1000,7 +1066,8 @@ public class Minesweeper implements ActionListener {
             currentBonusTile = availableTiles.get(random.nextInt(availableTiles.size()));
             bonusTileList.add(currentBonusTile);
 //            minelist.add(currentBonusTile);
-            currentBonusTile.setText("B");
+//            currentBonusTile.setText("B");
+            currentBonusTile.setBackground(Color.yellow);
             currentBonusTile.setForeground(Color.cyan);
         }
     }
@@ -1040,4 +1107,95 @@ public class Minesweeper implements ActionListener {
         }
     }
 
+    // Add reveal3x3 method // YOU HAVE SOMETHING TO FIX HERE
+    private void reveal3x3(Minetile centerTile) {
+        for (int r = centerTile.r - 1; r <= centerTile.r + 1; r++) {
+            for (int c = centerTile.c - 1; c <= centerTile.c + 1; c++) {
+                if (r >= 0 && r < numRows && c >= 0 && c < numCols) {
+                    Minetile tile = position[r][c];
+
+                    if (!tile.isEnabled()) {
+                        continue;
+                    }
+
+                    if (minelist.contains(tile)) {
+                        if (questionTileList.contains(tile)) {
+                            // Handle question tile
+                            tile.setText("?");
+                            tile.setForeground(Color.green);
+//                            flagged--;
+//                            tile.setEnabled(false);
+//                            tile.setBackground(Color.white);
+//                            questionTileList.remove(tile);
+//                            minelist.remove(tile);
+
+                            // Show question dialog
+//                            handleQuestionTile(tile);
+                        } /*else if (bonusTileList.contains(tile)) {
+                            // Handle bonus tile
+                            handleBonusTile(tile);
+                        } */ else {
+                            // Regular mine - just reveal it
+                            tile.setText("#");
+                            tile.setForeground(Color.yellow);
+//                            flagged++;
+//                            tile.setEnabled(false);
+//                            tile.setBackground(Color.white);
+                        }
+                    } else if (bonusTileList.contains(tile)) {
+                        // Handle bonus tile
+                        handleBonusTile(tile);
+                    } else {
+                        // Safe tile - reveal normally
+                        checkMine(tile.r, tile.c);
+//                        flagged--;
+                    }
+                }
+            }
+        }
+        checkWinCondition();
+    }
+
+    void handleQuestionTile(Minetile tile) {
+        tile.setText("?");
+        tile.setEnabled(false);
+        tile.setBackground(Color.white);
+
+        JOptionPane.showMessageDialog(null, "Question Tile", "Question", JOptionPane.WARNING_MESSAGE);
+        if (!timer.isRunning()) {
+            revealMines();
+            return;
+        }
+
+        // Remove from lists
+        questionTileList.remove(tile);
+        minelist.remove(tile);
+
+        // Get question
+        if (questionList != null && questionList.length > 0) {
+            int randomQuestionIndex = random.nextInt(questionList.length);
+            tempQuestion = questionList[randomQuestionIndex][0];
+            tempAnswer = questionList[randomQuestionIndex][1];
+            questionList = removeQuestion(questionList, tempQuestion);
+        }
+
+        String answer = JOptionPane.showInputDialog(frame, tempQuestion, "Question Tile", JOptionPane.QUESTION_MESSAGE);
+
+        if (!timer.isRunning()) {
+            revealMines();
+            return;
+        }
+
+        if (answer != null && answer.equalsIgnoreCase(tempAnswer)) {
+            tile.setBackground(Color.green);
+            tile.setText("✓");
+            tile.setForeground(Color.black);
+            checkMine(tile.r, tile.c);
+        } else {
+            enableSurroundingTiles(tile);
+            JOptionPane.showMessageDialog(frame, "Wrong answer! Surrounding tiles reactivated.", "Incorrect", JOptionPane.ERROR_MESSAGE);
+            textLabel.setText("Minesweeper : " + (mineCount + newMine));
+        }
+        checkWinCondition();
+    }
 }
