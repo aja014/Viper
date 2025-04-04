@@ -329,7 +329,7 @@ public class Minesweeper implements ActionListener {
                             if (allowReveal3x3) {
                                 reveal3x3(tile);
                                 allowReveal3x3 = false;
-                                return;
+                                //return;
                             }
 
                             // "" means Not clicked yet
@@ -339,7 +339,7 @@ public class Minesweeper implements ActionListener {
                                     //if it's question tile
                                     if (questionTileList.contains(tile)) {
                                         handleQuestionTile(tile);
-                                        return;
+//                                        return;
 //                                        tile.setText("?"); // Show question mark
 //                                        tile.setEnabled(false);
 //                                        tile.setBackground(Color.white);
@@ -409,6 +409,7 @@ public class Minesweeper implements ActionListener {
                                     }
                                 } else if (bonusTileList.contains(tile)) {
                                     handleBonusTile(tile);
+                                    checkWinCondition();
                                     System.out.println("Bonus tile");
                                 } else { // Check neighbor tiles
                                     checkMine(tile.r, tile.c);
@@ -1197,6 +1198,7 @@ public class Minesweeper implements ActionListener {
             tile.setText("✓");
             tile.setForeground(Color.black);
             checkMine(tile.r, tile.c);
+            updateRevealedTileCounts();
         } else {
             enableSurroundingTiles(tile);
             JOptionPane.showMessageDialog(frame, "Wrong answer! Surrounding tiles reactivated.", "Incorrect", JOptionPane.ERROR_MESSAGE);
