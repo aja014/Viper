@@ -56,7 +56,7 @@ public class Minesweeper implements ActionListener {
     int timePaused = 0;
     int power1 = 1;
     int power2 = 4;
-    int power3 = 1;
+    int power3 = 5;
 
     Timer timer;
     Timer removeTimer;
@@ -422,11 +422,52 @@ public class Minesweeper implements ActionListener {
                                         System.out.println("Bonus tile");
                                     } */ else {
                                         // else it's a bomb
-                                        gameLost = true;
-                                        swapBonusWithBomb = true;
-                                        revealMines();
-                                        JOptionPane.showMessageDialog(null, "Game Over: You dig up a Virus", "Game Over", JOptionPane.ERROR_MESSAGE);
-                                        textLabel1.setText("Game Over: You dug up a Virus");
+
+                                        // revival chance
+                                        if (power3 > 0) {
+                                            timer.stop(); // Pause the game timer
+
+                                            // Create revive dialog
+                                            JPanel panel = new JPanel(new BorderLayout());
+                                            JLabel label = new JLabel("Do you want to revive? (10 seconds remaining)");
+                                            panel.add(label, BorderLayout.CENTER);
+
+                                            JOptionPane optionPane = new JOptionPane(panel, JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION);
+                                            JDialog dialog = optionPane.createDialog(frame, "Revive");
+                                            dialog.setModal(true);
+
+                                            final int[] secondsRemaining = {10};
+                                            Timer countdownTimer = new Timer(1000, f -> {
+                                                secondsRemaining[0]--;
+                                                label.setText("Do you want to revive? (" + secondsRemaining[0] + " seconds remaining)");
+                                                if (secondsRemaining[0] <= 0 && !gameLost) {
+                                                    ((Timer) f.getSource()).stop();
+                                                    dialog.dispose();
+                                                    handleReviveResponse(tile, false);
+                                                }
+                                            });
+                                            countdownTimer.start();
+
+                                            dialog.setVisible(true);
+
+                                            // Check user response after dialog closes
+                                            Object selectedValue = optionPane.getValue();
+                                            if (!gameOver) {
+                                                if (selectedValue != "uninitializedValue" && (Integer) selectedValue == 0) {
+                                                    countdownTimer.stop();
+                                                    handleReviveResponse(tile, true);
+                                                } else {
+                                                    countdownTimer.stop();
+                                                    handleReviveResponse(tile, false);
+                                                }
+                                            }
+                                        } else {
+                                            gameLost = true;
+                                            swapBonusWithBomb = true;
+                                            revealMines();
+                                            JOptionPane.showMessageDialog(frame, "Game Over: You dug up a Virus", "Game Over", JOptionPane.ERROR_MESSAGE);
+                                            textLabel1.setText("Game Over: You dug up a Virus");
+                                        }
                                     }
                                 } else if (bonusTileList.contains(tile)) {
                                     handleBonusTile(tile);
@@ -696,7 +737,7 @@ public class Minesweeper implements ActionListener {
                 new Minesweeper(mineCount, numRows, scoreTimeStart, timePerScore);
                 // trye pa ulit
             }
-        } else if (e.getSource() == power1Btn && power1 > 0 && start) {
+        } else if (e.getSource() == power1Btn && power1 > 0 && start && !gameOver) {
 //            activatePower1();
             if (timer.isRunning()) {
                 pauseTimePower();
@@ -705,7 +746,7 @@ public class Minesweeper implements ActionListener {
             } else if (pauseTimer.isRunning() && !gameOver) {
                 JOptionPane.showMessageDialog(null, "Wait the duration of last debugger", "Debugger", 2);
             }
-        } else if (e.getSource() == power2Btn && (power2 > 0 && start) || allowReveal3x3) {
+        } else if (e.getSource() == power2Btn && !gameOver && (power2 > 0 && start) || allowReveal3x3) {
             if (!allowReveal3x3) {
                 allowReveal3x3 = true;
                 power2--;
@@ -717,7 +758,8 @@ public class Minesweeper implements ActionListener {
             } else {
                 JOptionPane.showMessageDialog(null, "Radar is enable!", "Radar", 2);
             }
-        } /*else if (e.getSource() == power3Btn && power3 > 0 && start) {
+        }
+        /*else if (e.getSource() == power3Btn && power3 > 0 && start) {
 //            activatePower3();
             power3--;
             power3Lbl.setText("System Restore : " + String.valueOf(power2));
@@ -831,6 +873,44 @@ public class Minesweeper implements ActionListener {
         // Win if all tiles are clicked except with bombs
         if (revealedCount == safeTiles) {
 //            gameOver = true;
+
+            timer.stop(); // Pause the game timer
+
+            // Create revive dialog
+            JPanel panel = new JPanel(new BorderLayout());
+            JLabel label = new JLabel("Do you want to revive? (10 seconds remaining)");
+            panel.add(label, BorderLayout.CENTER);
+
+            JOptionPane optionPane = new JOptionPane(panel, JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION);
+            JDialog dialog = optionPane.createDialog(frame, "Revive");
+            dialog.setModal(true);
+
+            final int[] secondsRemaining = {10};
+            Timer countdownTimer = new Timer(1000, f -> {
+                secondsRemaining[0]--;
+                label.setText("Do you want to revive? (" + secondsRemaining[0] + " seconds remaining)");
+                if (secondsRemaining[0] <= 0 && !gameLost) {
+                    ((Timer) f.getSource()).stop();
+                    dialog.dispose();
+//                    handleReviveResponse(tile, false);
+                }
+            });
+            countdownTimer.start();
+
+            dialog.setVisible(true);
+
+            // Check user response after dialog closes
+            Object selectedValue = optionPane.getValue();
+            if (!gameOver) {
+                if (selectedValue != "uninitializedValue" && (Integer) selectedValue == 0) {
+                    countdownTimer.stop();
+//                    handleReviveResponse(tile, true);
+                } else {
+                    countdownTimer.stop();
+//                    handleReviveResponse(tile, false);
+                }
+            }
+
             // One last final question
             questionList = generateQuestion(questionLevel, "finalquestion");
             tempQuestion = questionList[0][0];
@@ -1320,4 +1400,28 @@ public class Minesweeper implements ActionListener {
             pauseTimer.start();
         }
     }
+
+    private void handleReviveResponse(Minetile tile, boolean revive) {
+        if (revive) {
+            power3--;
+            power3Lbl.setText("System Restore : " + power3);
+            gameLost = false;
+            gameOver = false;
+            swapBonusWithBomb = false;
+            tile.setEnabled(true);
+//            tile.setBackground(Color.black);
+            tile.setText("#");
+            tile.setForeground(Color.yellow);
+            flagged++;
+            textLabelFlagged.setText("Flagged tiles : " + Integer.toString(flagged));
+            timer.start(); // Resume the game timer
+        } else {
+            gameLost = true;
+            swapBonusWithBomb = true;
+            revealMines();
+            JOptionPane.showMessageDialog(frame, "Game Over: You dug up a Virus", "Game Over", JOptionPane.ERROR_MESSAGE);
+            textLabel1.setText("Game Over: You dug up a Virus");
+        }
+    }
+
 }
