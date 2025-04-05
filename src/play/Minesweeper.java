@@ -55,7 +55,7 @@ public class Minesweeper implements ActionListener {
     int bonusTiles;
     int timePaused = 0;
     int power1 = 1;
-    int power2 = 1;
+    int power2 = 4;
     int power3 = 1;
 
     Timer timer;
@@ -76,7 +76,7 @@ public class Minesweeper implements ActionListener {
     JButton BtnRestart = new JButton("Restart");
     JButton power1Btn = new JButton("Power1");
     JButton power2Btn = new JButton("Power2");
-    JButton power3Btn = new JButton("Power3");
+    JLabel power3Lbl = new JLabel("Power3");
 
     // Reference of the tile we create
     Minetile[][] position;
@@ -147,22 +147,22 @@ public class Minesweeper implements ActionListener {
         scoreLabel.setBounds(50, 300, 200, 20);
         power1Btn.setBounds(30, 400, 150, 30);
         power2Btn.setBounds(30, 440, 150, 30);
-        power3Btn.setBounds(30, 480, 150, 30);
+        power3Lbl.setBounds(30, 480, 150, 30);
 
         //Powers
         power1Btn.setText("Debugger : " + String.valueOf(power1));
         power2Btn.setText("Radar : " + String.valueOf(power2));
-        power3Btn.setText("System Restore : " + String.valueOf(power3));
+        power3Lbl.setText("System Restore : " + String.valueOf(power3));
 
         BtnBack.addActionListener(this);
         BtnRestart.addActionListener(this);
         power1Btn.addActionListener(this);
         power2Btn.addActionListener(this);
-        power3Btn.addActionListener(this);
+//        power3Btn.addActionListener(this);
 
         frame.add(power1Btn);
         frame.add(power2Btn);
-        frame.add(power3Btn);
+        frame.add(power3Lbl);
         frame.add(scoreLabel);
         frame.add(timerLabel);
         frame.add(textLabel);
@@ -511,7 +511,7 @@ public class Minesweeper implements ActionListener {
             Minetile tile = minelist.get(i);
             Minetile questionTile;
             Minetile bonusTile;
-            if (tile.getText() == "O") {
+            if (tile.getText() == "O" || Color.yellow.equals(tile.getForeground())) {
                 tile.setForeground(Color.yellow);
             } else {
                 tile.setForeground(Color.red); // Set text color
@@ -702,22 +702,26 @@ public class Minesweeper implements ActionListener {
                 pauseTimePower();
                 power1--;
                 power1Btn.setText("Debugger : " + String.valueOf(power1));
-            } else {
+            } else if (pauseTimer.isRunning() && !gameOver) {
                 JOptionPane.showMessageDialog(null, "Wait the duration of last debugger", "Debugger", 2);
             }
-        } else if (e.getSource() == power2Btn && power2 > 0 && start) {
+        } else if (e.getSource() == power2Btn && (power2 > 0 && start) || allowReveal3x3) {
             if (!allowReveal3x3) {
                 allowReveal3x3 = true;
                 power2--;
                 power2Btn.setText("Radar : " + String.valueOf(power2));
+            } else if (allowReveal3x3) {
+                allowReveal3x3 = false;
+                power2++;
+                power2Btn.setText("Radar : " + String.valueOf(power2));
             } else {
                 JOptionPane.showMessageDialog(null, "Radar is enable!", "Radar", 2);
             }
-        } else if (e.getSource() == power3Btn && power3 > 0 && start) {
+        } /*else if (e.getSource() == power3Btn && power3 > 0 && start) {
 //            activatePower3();
             power3--;
-            power3Btn.setText("System Restore : " + String.valueOf(power2));
-        }
+            power3Lbl.setText("System Restore : " + String.valueOf(power2));
+        }*/
     }
 
     // Enable surrounding tiles and possibly add a new bomb (50%)
@@ -1112,7 +1116,7 @@ public class Minesweeper implements ActionListener {
         }
         power1Btn.setText("Debugger : " + String.valueOf(power1));
         power2Btn.setText("Radar : " + String.valueOf(power2));
-        power3Btn.setText("System Restore : " + String.valueOf(power3));
+        power3Lbl.setText("System Restore : " + String.valueOf(power3));
         // Remove a random non-question mine
 //        checkWinCondition();
     }
@@ -1203,7 +1207,8 @@ public class Minesweeper implements ActionListener {
                             // Regular mine - just reveal it
                             tile.setText("#");
                             tile.setForeground(Color.yellow);
-//                            flagged++;
+                            flagged++;
+                            textLabelFlagged.setText("Flagged tiles : " + Integer.toString(flagged));
 //                            tile.setEnabled(false);
 //                            tile.setBackground(Color.white);
                         }
