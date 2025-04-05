@@ -29,6 +29,16 @@ public class Login extends javax.swing.JFrame {
 
     public static String username1;
     public static String password1;
+    public static int easyscore;
+    public static int mediumscore;
+    public static int hardscore;
+    public static int blitzscore;
+    public static int coins;
+    public static int pwr1;
+    public static int pwr2;
+    public static int pwr3;
+    public static int sound;
+    public static int music;
 
     public Login() {
         initComponents();
@@ -154,16 +164,26 @@ public class Login extends javax.swing.JFrame {
 
                 if (rs.next()){
                     JOptionPane.showMessageDialog(null, "Login Successfuly", "Login Successful", JOptionPane.INFORMATION_MESSAGE);
+                    while (rs1.next()){
+                        username1 = rs1.getString("username");
+                        password1 = rs1.getString("password");
+                        easyscore = rs1.getInt("easyscore");
+                        mediumscore = rs1.getInt("mediumscore");
+                        hardscore = rs1.getInt("hardscore");
+                        blitzscore = rs1.getInt("blitzscore");
+                        coins = rs1.getInt("coins");
+                        pwr1 = rs1.getInt("power1");
+                        pwr2 = rs1.getInt("power2");
+                        pwr3 = rs1.getInt("power3");
+                        sound = rs1.getInt("sound");
+                        music = rs1.getInt("music");
+                    }
+                    
                     menu m1 = new menu();
                     m1.LblAccountUsername.setText(username1);
                     m1.setVisible(true);
                     m1.setLocationRelativeTo(null);
                     m1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                    while (rs1.next()){
-                        m1.sound = rs1.getInt("sound");
-                        m1.music = rs1.getInt("music");
-                    }
-                    
                     
                     dispose();
                 } else {

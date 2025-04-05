@@ -1,5 +1,7 @@
 package play;
 
+import Db.database;
+import Menu.*;
 import Menu.playFrame;
 import fistFrame.*;
 import java.awt.*;
@@ -34,7 +36,7 @@ public class Minesweeper implements ActionListener {
     public int scoreTimeStart;
     public int timePerScore;
 
-    private int lastBonusTime = -60; // Track the last time a bonus was added
+//    private int lastBonusTime = -60; // Track the last time a bonus was added
     private Minetile currentBonusTile = null; // Track the current bonus tile
 
     int tileSize = 70;
@@ -54,9 +56,10 @@ public class Minesweeper implements ActionListener {
     int lastBombTime = -60;
     int bonusTiles;
     int timePaused = 0;
-    int power1 = 1;
-    int power2 = 4;
-    int power3 = 5;
+//    int power1 = 1;
+    int power1 = database.getIntRecord("power1", menu.username);
+    int power2 = database.getIntRecord("power2", menu.username);
+    int power3 = database.getIntRecord("power3", menu.username);
 
     Timer timer;
     Timer removeTimer;
@@ -321,6 +324,7 @@ public class Minesweeper implements ActionListener {
             for (int c = 0; c < numCols; c++) {
                 Minetile tile = new Minetile(r, c);
                 tile.setBackground(Color.black); // unclicked color
+//                tile.setIcon(new ImageIcon("src/images/virusSweeperIcon.png"));
                 position[r][c] = tile;
 
                 tile.setFocusable(false);
@@ -433,7 +437,7 @@ public class Minesweeper implements ActionListener {
                                             panel.add(label, BorderLayout.CENTER);
 
                                             JOptionPane optionPane = new JOptionPane(panel, JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION);
-                                            JDialog dialog = optionPane.createDialog(frame, "Revive");
+                                            JDialog dialog = optionPane.createDialog(frame, "System Restore");
                                             dialog.setModal(true);
 
                                             final int[] secondsRemaining = {10};
@@ -482,7 +486,7 @@ public class Minesweeper implements ActionListener {
                             if (tile.getText() == "" && tile.isEnabled()) { // adding Flag
                                 flagged++;
                                 tile.setText("O");
-                                tile.setForeground(Color.YELLOW); // Set text color
+                                tile.setForeground(Color.cyan); // Set text color
                             } else if (tile.getText() == "O") { // removing Flag
                                 tile.setText("");
                                 if (flagged > 0) {
@@ -552,8 +556,8 @@ public class Minesweeper implements ActionListener {
             Minetile tile = minelist.get(i);
             Minetile questionTile;
             Minetile bonusTile;
-            if (tile.getText() == "O" || Color.yellow.equals(tile.getForeground())) {
-                tile.setForeground(Color.yellow);
+            if (tile.getText() == "O" || Color.cyan.equals(tile.getForeground())) {
+                tile.setForeground(Color.cyan);
             } else {
                 tile.setForeground(Color.red); // Set text color
             }
@@ -759,6 +763,7 @@ public class Minesweeper implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Radar is enable!", "Radar", 2);
             }
         }
+        updatePowerUps();
         /*else if (e.getSource() == power3Btn && power3 > 0 && start) {
 //            activatePower3();
             power3--;
@@ -871,109 +876,191 @@ public class Minesweeper implements ActionListener {
         }
 
         // Win if all tiles are clicked except with bombs
-        if (revealedCount == safeTiles) {
-//            gameOver = true;
+        if (revealedCount == safeTiles && start) {
+            // Try
+            // Last final question (10 seconds)
+            timer.stop();
 
-            timer.stop(); // Pause the game timer
-
-            // Create revive dialog
-            JPanel panel = new JPanel(new BorderLayout());
-            JLabel label = new JLabel("Do you want to revive? (10 seconds remaining)");
-            panel.add(label, BorderLayout.CENTER);
-
-            JOptionPane optionPane = new JOptionPane(panel, JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION);
-            JDialog dialog = optionPane.createDialog(frame, "Revive");
-            dialog.setModal(true);
-
-            final int[] secondsRemaining = {10};
-            Timer countdownTimer = new Timer(1000, f -> {
-                secondsRemaining[0]--;
-                label.setText("Do you want to revive? (" + secondsRemaining[0] + " seconds remaining)");
-                if (secondsRemaining[0] <= 0 && !gameLost) {
-                    ((Timer) f.getSource()).stop();
-                    dialog.dispose();
-//                    handleReviveResponse(tile, false);
-                }
-            });
-            countdownTimer.start();
-
-            dialog.setVisible(true);
-
-            // Check user response after dialog closes
-            Object selectedValue = optionPane.getValue();
-            if (!gameOver) {
-                if (selectedValue != "uninitializedValue" && (Integer) selectedValue == 0) {
-                    countdownTimer.stop();
-//                    handleReviveResponse(tile, true);
-                } else {
-                    countdownTimer.stop();
-//                    handleReviveResponse(tile, false);
-                }
-            }
-
-            // One last final question
-            questionList = generateQuestion(questionLevel, "finalquestion");
-            tempQuestion = questionList[0][0];
-            tempAnswer = questionList[0][1];
-
-            String answer = JOptionPane.showInputDialog(frame, tempQuestion, "Question Tile", JOptionPane.QUESTION_MESSAGE);
-            if (!timer.isRunning() && gameOver) {
-                revealMines();
-                return;
-            }
             if (pauseTimer != null && pauseTimer.isRunning()) {
                 pauseTimer.stop();
             }
 
-            gameOver = true;
-            // Correct answer
-            if (answer != null && answer.equalsIgnoreCase(tempAnswer)) {
-                // Update database score
-                if (numRows == 9 && level.equals("")) {
-                    level = "easyscore";
-                } else if (numRows == 15) {
-                    level = "mediumscore";
-                } else if (numRows == 21) {
-                    level = "hardscore";
-                } else {
-                    level = "blitzscore";
+            questionList = generateQuestion(questionLevel, "finalquestion");
+            tempQuestion = questionList[0][0];
+            tempAnswer = questionList[0][1];
+            JPanel panel = new JPanel(new BorderLayout());
+            JLabel label = new JLabel(tempQuestion + " (10 seconds remaining)");
+            JTextField userAnswer = new JTextField(); // Input field
+            panel.add(label, BorderLayout.NORTH);
+            panel.add(userAnswer, BorderLayout.CENTER);
+
+            JOptionPane optionPane = new JOptionPane(
+                    panel,
+                    JOptionPane.QUESTION_MESSAGE,
+                    JOptionPane.OK_CANCEL_OPTION // Use OK/Cancel buttons
+            );
+            JDialog dialog = optionPane.createDialog(frame, "Final Question");
+            dialog.setModal(true);
+
+            final int[] secondsRemaining = {10};
+            Timer countdownTimer = new Timer(1000, e -> {
+                secondsRemaining[0]--;
+                label.setText(tempQuestion + " (" + secondsRemaining[0] + " seconds remaining)");
+
+                if (secondsRemaining[0] <= 0) {
+                    ((Timer) e.getSource()).stop();
+                    dialog.dispose(); // Auto-close on timeout
                 }
-                int oldCoin = 0;
-                //            String findScore = "select "+level+" from account where username = '"+Login.username1+"'";
-                String findScore = "select * from account where username = '" + Login.username1 + "'";
-                try {
-                    Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ViperDB", "root", "root");
-                    Statement st = con.createStatement();
-                    ResultSet rs = st.executeQuery(findScore);
-                    // Updating score & coins
-                    if (rs.next()) {
-                        oldCoin += rs.getInt("coins") + coinsEarned;
-                        if (timeScore > rs.getInt(level)) {
-                            st.executeUpdate("update account set " + level + " = " + timeScore + ",coins = " + oldCoin + " where username = '" + Login.username1 + "'");
-                        } else {
-                            st.executeUpdate("update account set coins = " + oldCoin + " where username = '" + Login.username1 + "'");
+            });
+
+            dialog.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    countdownTimer.stop();
+                }
+            });
+            countdownTimer.start();
+            dialog.setVisible(true);
+
+            // Get result after dialog closes
+            String userInput = null;
+            Object result = optionPane.getValue();
+            gameOver = true;
+
+            // Capture input if OK clicked
+            if (result != "uninitializedValue" && (Integer) result == 0) {
+                userInput = userAnswer.getText();
+                if (userInput.equalsIgnoreCase(tempAnswer)) { // correct
+                    // Update database score
+                    if (numRows == 9 && level.equals("")) {
+                        level = "easyscore";
+                    } else if (numRows == 15) {
+                        level = "mediumscore";
+                    } else if (numRows == 21) {
+                        level = "hardscore";
+                    } else {
+                        level = "blitzscore";
+                    }
+//                    int oldCoin = menu.coins;
+                    int oldCoin = 0;
+                    // String findScore = "select "+level+" from account where username = '"+Login.username1+"'";
+                    String findScore = "select * from account where username = '" + Login.username1 + "'";
+                    try {
+                        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ViperDB", "root", "root");
+                        Statement st = con.createStatement();
+                        ResultSet rs = st.executeQuery(findScore);
+                        // Updating score & coins
+                        if (rs.next()) {
+                            oldCoin += rs.getInt("coins") + coinsEarned;
+                            if (timeScore > rs.getInt(level)) {
+                                st.executeUpdate("update account set " + level + " = " + timeScore + ",coins = " + oldCoin + " where username = '" + Login.username1 + "'");
+                            } else {
+                                st.executeUpdate("update account set coins = " + oldCoin + " where username = '" + Login.username1 + "'");
+                            }
                         }
+
+                        st.close();
+                        rs.close();
+                        con.close();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                        System.out.println("Failed");
                     }
 
-                    st.close();
-                    rs.close();
-                    con.close();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                    System.out.println("Failed");
+                    revealMines();
+                    gameOver = true; // Players cannot click tiles anymore
+                    textLabel1.setText("Mines Cleared");
+                    JOptionPane.showMessageDialog(frame, "You earned " + coinsEarned + " coins!");
+                    level = "";
+                    countdownTimer.stop();
+                } else { // wrong
+//                    timer.stop();
+                    JOptionPane.showMessageDialog(null, "Game Over: Your answer is wrong", "Game Over", JOptionPane.ERROR_MESSAGE);
+                    textLabel1.setText("Game Over: You failed to answer the final question");
+                    revealMines();
+                    countdownTimer.stop();
                 }
-
-                revealMines();
-                gameOver = true; // Players cannot click tiles anymore
-                textLabel1.setText("Mines Cleared");
-                JOptionPane.showMessageDialog(frame, "You earned " + coinsEarned + " coins!");
-                level = "";
-            } else {
-                timer.stop();
-                JOptionPane.showMessageDialog(null, "Game Over: Your answer is wrong", "Game Over", JOptionPane.ERROR_MESSAGE);
+            } // Handle result (if user pressed Cancel)
+            else if (result != "uninitializedValue" && (Integer) result == 2) {
+//                processInput(userInput);
+                JOptionPane.showMessageDialog(null, "Game Over: You failed!", "Game Over", JOptionPane.ERROR_MESSAGE);
                 textLabel1.setText("Game Over: You failed to answer the final question");
                 revealMines();
+                countdownTimer.stop();
+            } else {
+//                processTimeout();
+//                timer.stop();
+                JOptionPane.showMessageDialog(null, "Game Over: Time's Up!", "Game Over", JOptionPane.ERROR_MESSAGE);
+                textLabel1.setText("Game Over: You failed to answer the final question");
+                revealMines();
+                countdownTimer.stop();
             }
+
+            // End
+//            gameOver = true;
+            // One last final question
+//            questionList = generateQuestion(questionLevel, "finalquestion");
+//            tempQuestion = questionList[0][0];
+//            tempAnswer = questionList[0][1];
+//
+//            String answer = JOptionPane.showInputDialog(frame, tempQuestion, "Question Tile", JOptionPane.QUESTION_MESSAGE);
+//            if (!timer.isRunning() && gameOver) {
+//                revealMines();
+//                return;
+//            }
+//            if (pauseTimer != null && pauseTimer.isRunning()) {
+//                pauseTimer.stop();
+//            }
+//
+//            gameOver = true;
+//            // Correct answer
+//            if (answer != null && answer.equalsIgnoreCase(tempAnswer)) {
+//                // Update database score
+//                if (numRows == 9 && level.equals("")) {
+//                    level = "easyscore";
+//                } else if (numRows == 15) {
+//                    level = "mediumscore";
+//                } else if (numRows == 21) {
+//                    level = "hardscore";
+//                } else {
+//                    level = "blitzscore";
+//                }
+//                int oldCoin = 0;
+//                //            String findScore = "select "+level+" from account where username = '"+Login.username1+"'";
+//                String findScore = "select * from account where username = '" + Login.username1 + "'";
+//                try {
+//                    Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ViperDB", "root", "root");
+//                    Statement st = con.createStatement();
+//                    ResultSet rs = st.executeQuery(findScore);
+//                    // Updating score & coins
+//                    if (rs.next()) {
+//                        oldCoin += rs.getInt("coins") + coinsEarned;
+//                        if (timeScore > rs.getInt(level)) {
+//                            st.executeUpdate("update account set " + level + " = " + timeScore + ",coins = " + oldCoin + " where username = '" + Login.username1 + "'");
+//                        } else {
+//                            st.executeUpdate("update account set coins = " + oldCoin + " where username = '" + Login.username1 + "'");
+//                        }
+//                    }
+//
+//                    st.close();
+//                    rs.close();
+//                    con.close();
+//                } catch (SQLException ex) {
+//                    ex.printStackTrace();
+//                    System.out.println("Failed");
+//                }
+//
+//                revealMines();
+//                gameOver = true; // Players cannot click tiles anymore
+//                textLabel1.setText("Mines Cleared");
+//                JOptionPane.showMessageDialog(frame, "You earned " + coinsEarned + " coins!");
+//                level = "";
+//            } else {
+//                timer.stop();
+//                JOptionPane.showMessageDialog(null, "Game Over: Your answer is wrong", "Game Over", JOptionPane.ERROR_MESSAGE);
+//                textLabel1.setText("Game Over: You failed to answer the final question");
+//                revealMines();
+//            }
         }
     }
 
@@ -1132,8 +1219,8 @@ public class Minesweeper implements ActionListener {
     void handleBonusTile(Minetile tile) {
         tile.setBackground(Color.WHITE);
         tile.setEnabled(false);
-        tile.setText("★");
-        tile.setForeground(Color.BLUE);
+//        tile.setText("★");
+        tile.setForeground(Color.yellow);
         bonusTileList.remove(tile);
         minelist.remove(tile);
 
@@ -1143,12 +1230,23 @@ public class Minesweeper implements ActionListener {
 //        System.out.println("You got bonus tile");
         Random rand = new Random();
         int chance = rand.nextInt(100); // 0-99
-//        int chance = 98;
+//        int chance = 94;
 
         if (chance < 50) { // 50% chance for 5 coins
-            coinsEarned += 5;
+            int bonusCoin = 5;
             timer.stop();
             JOptionPane.showMessageDialog(frame, "Bonus: You found 5 coins!");
+
+            String sqlCoin = "update account set coins = " + (database.getIntRecord("coins", menu.username) + bonusCoin) + " where username = '" + menu.username + "'";
+            try {
+                Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ViperDB", "root", "root");
+                Statement st = con.createStatement();
+                st.executeUpdate(sqlCoin);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                System.out.println("Failed");
+            }
+
             timer.start();
         } else if (chance < 65) { // 15% chance for +20 score
             timeScore += 20;
@@ -1158,11 +1256,11 @@ public class Minesweeper implements ActionListener {
             timer.start();
         } else if (chance < 80) { // 15% chance for 30s pause
             power1++;
+            JOptionPane.showMessageDialog(null, "Bonus: +1 Debugger!", "Bonus", JOptionPane.INFORMATION_MESSAGE);
 //            timePaused += 5000;
 //            pauseTimePower();
 //            if (timer.isRunning()) {
 //                timer.stop();
-//                JOptionPane.showMessageDialog(frame, "Bonus: Timer paused for 30 seconds!");
 //                timer.start();
 //                timer.stop();
 //                if (pauseTimer != null && pauseTimer.isRunning()) {
@@ -1185,18 +1283,22 @@ public class Minesweeper implements ActionListener {
 //            }
         } else if (chance < 95) { // 15% chance for 3x3 reveal
             power2++;
+            JOptionPane.showMessageDialog(null, "Bonus: +1 Radar!", "Bonus", JOptionPane.INFORMATION_MESSAGE);
 //            allowReveal3x3 = true;
 //            JOptionPane.showMessageDialog(frame, "Bonus: Click any tile to reveal its 3x3 neighbors!");
         } else { // 5% chance for Power 4
             power3++;
-            timeScore += 4;
-            coinsEarned += 4;
-            scoreLabel.setText("Score : " + timeScore);
-            JOptionPane.showMessageDialog(frame, "Power 4! +4 Score and Coins!");
+            JOptionPane.showMessageDialog(null, "Bonus: +1 System Restore!", "Bonus", JOptionPane.INFORMATION_MESSAGE);
+//            timeScore += 4;
+//            coinsEarned += 4;
+//            scoreLabel.setText("Score : " + timeScore);
+//            JOptionPane.showMessageDialog(frame, "Power 4! +4 Score and Coins!");
         }
         power1Btn.setText("Debugger : " + String.valueOf(power1));
         power2Btn.setText("Radar : " + String.valueOf(power2));
         power3Lbl.setText("System Restore : " + String.valueOf(power3));
+        updateRevealedTileCounts();
+        updatePowerUps();
         // Remove a random non-question mine
 //        checkWinCondition();
     }
@@ -1216,7 +1318,7 @@ public class Minesweeper implements ActionListener {
             bonusTileList.add(currentBonusTile);
 //            minelist.add(currentBonusTile);
 //            currentBonusTile.setText("B");
-            currentBonusTile.setBackground(Color.yellow);
+            currentBonusTile.setBackground(Color.cyan);
             currentBonusTile.setForeground(Color.cyan);
         }
     }
@@ -1270,6 +1372,9 @@ public class Minesweeper implements ActionListener {
                     if (minelist.contains(tile)) {
                         if (questionTileList.contains(tile)) {
                             // Handle question tile
+                            if (tile.getText().equals("O")) {
+                                flagged--;
+                            }
                             tile.setText("?");
                             tile.setForeground(Color.green);
 //                            flagged--;
@@ -1285,13 +1390,18 @@ public class Minesweeper implements ActionListener {
                             handleBonusTile(tile);
                         } */ else {
                             // Regular mine - just reveal it
+                            if (!tile.getText().equals("#")) {
+                                if (!tile.getText().equals("O")) {
+                                    flagged++;
+                                }
+                            }
+
                             tile.setText("#");
-                            tile.setForeground(Color.yellow);
-                            flagged++;
-                            textLabelFlagged.setText("Flagged tiles : " + Integer.toString(flagged));
+                            tile.setForeground(Color.cyan);
 //                            tile.setEnabled(false);
 //                            tile.setBackground(Color.white);
                         }
+                        textLabelFlagged.setText("Flagged tiles : " + Integer.toString(flagged));
                     } else if (bonusTileList.contains(tile)) {
                         // Handle bonus tile
                         handleBonusTile(tile);
@@ -1313,10 +1423,10 @@ public class Minesweeper implements ActionListener {
         tile.setBackground(Color.white);
 
         JOptionPane.showMessageDialog(null, "Question Tile", "Question", JOptionPane.WARNING_MESSAGE);
-        if (!timer.isRunning()) {
-            revealMines();
-            return;
-        }
+//        if (!timer.isRunning()) {
+//            revealMines();
+//            return;
+//        }
 
         // Remove from lists
         questionTileList.remove(tile);
@@ -1403,6 +1513,9 @@ public class Minesweeper implements ActionListener {
 
     private void handleReviveResponse(Minetile tile, boolean revive) {
         if (revive) {
+            if (!tile.getText().equals("#")) {
+                flagged++;
+            }
             power3--;
             power3Lbl.setText("System Restore : " + power3);
             gameLost = false;
@@ -1411,8 +1524,7 @@ public class Minesweeper implements ActionListener {
             tile.setEnabled(true);
 //            tile.setBackground(Color.black);
             tile.setText("#");
-            tile.setForeground(Color.yellow);
-            flagged++;
+            tile.setForeground(Color.cyan);
             textLabelFlagged.setText("Flagged tiles : " + Integer.toString(flagged));
             timer.start(); // Resume the game timer
         } else {
@@ -1421,6 +1533,19 @@ public class Minesweeper implements ActionListener {
             revealMines();
             JOptionPane.showMessageDialog(frame, "Game Over: You dug up a Virus", "Game Over", JOptionPane.ERROR_MESSAGE);
             textLabel1.setText("Game Over: You dug up a Virus");
+        }
+    }
+
+    void updatePowerUps() {
+        String sql = "update account set power1 = " + power1 + ", power2 = " + power2 + ", power3 = " + power3 + " where username = '" + menu.username + "'";
+        try {
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ViperDB", "root", "root");
+            Statement st = con.createStatement();
+            st.executeUpdate(sql);
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("Failed");
         }
     }
 

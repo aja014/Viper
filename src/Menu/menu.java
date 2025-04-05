@@ -5,38 +5,69 @@
  */
 package Menu;
 
+import Db.database;
 import fistFrame.*;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
 public class menu extends javax.swing.JFrame {
 
     /**
      * Creates new form menu
      */
+    public static String username;
+    public static String password;
+    public static int easyscore;
+    public static int mediumscore;
+    public static int hardscore;
+    public static int blitzscore;
+    public static int coins;
+    public static int pwr1;
+    public static int pwr2;
+    public static int pwr3;
     public static int sound;
     public static int music;
-     
-    
+
     public menu() {
         initComponents();
         setResizable(false);
-        
+
+        username = Login.username1;
+        password = Login.password1;
+        easyscore = Login.easyscore;
+        mediumscore = Login.mediumscore;
+        hardscore = Login.hardscore;
+        blitzscore = Login.blitzscore;
+        coins = database.getIntRecord("coins", menu.username);
+        pwr1 = database.getIntRecord("power1", menu.username);
+        pwr2 = database.getIntRecord("power2", menu.username);
+        pwr3 = database.getIntRecord("power3", menu.username);
+        sound = Login.sound;
+        music = Login.music;
+
         URL iconURL = getClass().getResource("/images/virusSweeperIcon.png");
-        if (iconURL == null) {
+        if (iconURL
+                == null) {
             System.out.println("Image not found! Check the path.");
         } else {
             ImageIcon frameIcon = new ImageIcon(iconURL);
             setIconImage(frameIcon.getImage());
         }
-        
-        setSize(1200,720);
-        setVisible(true);
-        setLocationRelativeTo(null);
+
+        setSize(
+                1200, 720);
+        setVisible(
+                true);
+        setLocationRelativeTo(
+                null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         LblAccountUsername.setText(Login.username1);
-        
+
+        System.out.println(coins);
+
     }
 
     /**
@@ -203,16 +234,24 @@ public class menu extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(menu.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(menu.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(menu.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(menu.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 

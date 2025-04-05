@@ -5,6 +5,7 @@
  */
 package fistFrame;
 
+import Db.database;
 import Menu.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -181,6 +182,7 @@ public class createAcc extends javax.swing.JFrame {
                         System.out.println("Added");
                         JOptionPane.showMessageDialog(null, "Added Successfully!", "Successful",JOptionPane.INFORMATION_MESSAGE);
                         Login.username1 = username1;
+                        menu.username = database.getStringRecord("username", username1);
                         menu.sound = 50;
                         menu.music = 50;
                         
