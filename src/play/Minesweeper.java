@@ -1220,7 +1220,7 @@ public class Minesweeper implements ActionListener {
         tile.setBackground(Color.WHITE);
         tile.setEnabled(false);
 //        tile.setText("★");
-        tile.setForeground(Color.yellow);
+//        tile.setForeground(Color.yellow);
         bonusTileList.remove(tile);
         minelist.remove(tile);
 
