@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 /**
  *
  * @author Asus
+ * YOU ARE HERE DOING FUNCTIONALITY THE SHOP
  */
 public class shopFrame extends javax.swing.JFrame {
 
