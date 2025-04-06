@@ -44,8 +44,8 @@ public class menu extends javax.swing.JFrame {
         pwr1 = database.getIntRecord("power1", menu.username);
         pwr2 = database.getIntRecord("power2", menu.username);
         pwr3 = database.getIntRecord("power3", menu.username);
-        sound = Login.sound;
-        music = Login.music;
+        sound = database.getIntRecord("sound", menu.username);
+        music = database.getIntRecord("music", menu.username);
 
         URL iconURL = getClass().getResource("/images/virusSweeperIcon.png");
         if (iconURL

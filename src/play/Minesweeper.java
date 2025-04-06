@@ -343,7 +343,6 @@ public class Minesweeper implements ActionListener {
                             timer.start();
                             setMines(firstClick);
                             setQuestionTile();
-//                            setBonusTile(); // Add this line
                         }
 
                         Minetile tile = (Minetile) e.getSource();
@@ -1191,30 +1190,7 @@ public class Minesweeper implements ActionListener {
         }
     }
 
-    // Add the setBonusTile method
-//    void setBonusTile() {
-//        bonusTileList = new ArrayList<Minetile>();
-//        int bonusTiles = 1; // Only 1 Bonus Tile
-//        int maxAttempts = 1000; // Prevent infinite loops
-//        Minetile bTile;
-//        while (bonusTiles > 0 && maxAttempts > 0) {
-//            int r = random.nextInt(numRows);
-//            int c = random.nextInt(numCols);
-//            bTile = position[r][c];
-//
-//            // Ensure tile is NOT a mine, NOT a question tile, and NOT adjacent to first click
-//            if (!minelist.contains(bTile) && !questionTileList.contains(bTile) && !bonusTileList.contains(bTile) && !isNeighbor(firstClick, bTile)) {
-//                bonusTileList.add(bTile);
-////                minelist.add(bTile);
-//                bonusTiles--;
-//            }
-//            maxAttempts--;
-//        }
-//
-//        if (bonusTiles > 0) {
-//            System.out.println("Warning: Bonus Tile not placed!");
-//        }
-//    }
+
     // Implement handleBonusTile method
     void handleBonusTile(Minetile tile) {
         tile.setBackground(Color.WHITE);
@@ -1318,8 +1294,8 @@ public class Minesweeper implements ActionListener {
             bonusTileList.add(currentBonusTile);
 //            minelist.add(currentBonusTile);
 //            currentBonusTile.setText("B");
-            currentBonusTile.setBackground(Color.cyan);
-            currentBonusTile.setForeground(Color.cyan);
+//            currentBonusTile.setBackground(Color.cyan);
+//            currentBonusTile.setForeground(Color.cyan);
         }
     }
     // you have problem here if mine swapped with bomb, the bomb disappear
@@ -1442,10 +1418,10 @@ public class Minesweeper implements ActionListener {
 
         String answer = JOptionPane.showInputDialog(frame, tempQuestion, "Question Tile", JOptionPane.QUESTION_MESSAGE);
 
-        if (!timer.isRunning()) {
-            revealMines();
-            return;
-        }
+//        if (!timer.isRunning()) {
+//            revealMines();
+//            return;
+//        }
 
         if (answer != null && answer.equalsIgnoreCase(tempAnswer)) {
             tile.setBackground(Color.green);

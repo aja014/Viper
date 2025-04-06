@@ -5,6 +5,7 @@
  */
 package Menu;
 
+import Db.database;
 import fistFrame.*;
 import java.net.URL;
 import java.sql.Connection;
@@ -168,6 +169,9 @@ public class settingsFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        
+        database.saveIntRecord("sound", JSSound.getValue(), menu.username);
+        database.saveIntRecord("music", JSMusic.getValue(), menu.username);
         
         menu.sound = JSSound.getValue();
         menu.music = JSMusic.getValue();

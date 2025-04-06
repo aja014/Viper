@@ -38,7 +38,7 @@ public class database {
             return retValue;
         }
     }
-    
+
     // return Integer value from database
     public static int getIntRecord(String column, String name) {
         String sql = "select " + column + " from account where username = '" + name + "'";
@@ -61,4 +61,37 @@ public class database {
         }
     }
 
+    // return Integer value from database
+    public static void saveIntRecord(String column,int val, String name) {
+        String sql = "update account set " + column + " = "+val+" where username = '" + name + "'";
+        try {
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ViperDB", "root", "root");
+            Statement st = con.createStatement();
+            st.executeUpdate(sql);
+//            ResultSet rs = st.executeQuery(sql);
+//            while (rs.next()) {
+//                retValue = rs.getInt(column);
+//            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("Failed");
+        }
+    }
+    
+    public static void saveStringRecord(String column,String val, String name) {
+        String sql = "update account set " + column + " = "+val+" where username = '" + name + "'";
+        try {
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ViperDB", "root", "root");
+            Statement st = con.createStatement();
+            st.executeUpdate(sql);
+//            ResultSet rs = st.executeQuery(sql);
+//            while (rs.next()) {
+//                retValue = rs.getInt(column);
+//            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("Failed");
+        }
+    }
+    
 }

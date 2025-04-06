@@ -5,6 +5,7 @@
  */
 package Menu;
 
+import Db.database;
 import fistFrame.Login;
 import java.net.URL;
 import java.sql.Connection;
@@ -15,11 +16,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
- * @author Asus
- * YOU ARE HERE DOING FUNCTIONALITY THE SHOP
+ * @author Asus YOU ARE HERE DOING FUNCTIONALITY THE SHOP
  */
 public class shopFrame extends javax.swing.JFrame {
 
@@ -29,7 +30,7 @@ public class shopFrame extends javax.swing.JFrame {
     public shopFrame() {
         initComponents();
         setResizable(false);
-        
+
         URL iconURL = getClass().getResource("/images/virusSweeperIcon.png");
         if (iconURL == null) {
             System.out.println("Image not found! Check the path.");
@@ -37,29 +38,41 @@ public class shopFrame extends javax.swing.JFrame {
             ImageIcon frameIcon = new ImageIcon(iconURL);
             setIconImage(frameIcon.getImage());
         }
-        
+
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        
-        String getCoins = "Select coins from account where username = '" + Login.username1+"'";
-        
-        try{
-            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ViperDB","root","root");
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(getCoins);
-            rs.next();
-            LblAccountCoin.setText(String.valueOf(rs.getInt("coins")));
-            con.close();
-            st.close();
-            rs.close();
-            
-        } catch(SQLException ex){
-            ex.printStackTrace();
-            System.out.println("Failed");
-        }
-        
-        setSize(1200,720);        
+
+        menu.coins = database.getIntRecord("coins", menu.username);
+        menu.pwr1 = database.getIntRecord("power1", menu.username);
+        menu.pwr2 = database.getIntRecord("power2", menu.username);
+        menu.pwr3 = database.getIntRecord("power3", menu.username);
+
+        LblAccountCoin.setText(String.valueOf(menu.coins));
+        ownedDebugger.setText("Owned : " + String.valueOf(menu.pwr1));
+        ownedRadar.setText("Owned : " + String.valueOf(menu.pwr2));
+        ownedSystemRestore.setText("Owned : " + String.valueOf(menu.pwr3));
+
+//        String getCoins = "Select coins from account where username = '" + Login.username1+"'";
+//        try{
+//            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ViperDB","root","root");
+//            Statement st = con.createStatement();
+//            ResultSet rs = st.executeQuery(getCoins);
+//            rs.next();
+//            LblAccountCoin.setText(String.valueOf(rs.getInt("coins")));
+//            con.close();
+//            st.close();
+//            rs.close();
+//            
+//        } catch(SQLException ex){
+//            ex.printStackTrace();
+//            System.out.println("Failed");
+//        }
+        System.out.println(menu.pwr1);
+        System.out.println(menu.pwr2);
+        System.out.println(menu.pwr3);
+
+        setSize(1200, 720);
     }
 
     /**
@@ -72,10 +85,13 @@ public class shopFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         background = new javax.swing.JPanel();
+        ownedDebugger = new javax.swing.JLabel();
+        ownedSystemRestore = new javax.swing.JLabel();
+        ownedRadar = new javax.swing.JLabel();
         LblAccountCoin = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        buyDebugger = new javax.swing.JButton();
+        buyRadar = new javax.swing.JButton();
+        buySystemRestore = new javax.swing.JButton();
         BtnBack = new javax.swing.JButton();
         BtnSettings3 = new javax.swing.JButton();
         image = new javax.swing.JLabel();
@@ -86,42 +102,65 @@ public class shopFrame extends javax.swing.JFrame {
         background.setPreferredSize(new java.awt.Dimension(1200, 720));
         background.setLayout(null);
 
+        ownedDebugger.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        ownedDebugger.setForeground(new java.awt.Color(153, 0, 0));
+        ownedDebugger.setText("0");
+        background.add(ownedDebugger);
+        ownedDebugger.setBounds(750, 570, 90, 30);
+
+        ownedSystemRestore.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        ownedSystemRestore.setForeground(new java.awt.Color(153, 0, 0));
+        ownedSystemRestore.setText("0");
+        background.add(ownedSystemRestore);
+        ownedSystemRestore.setBounds(570, 570, 90, 30);
+
+        ownedRadar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        ownedRadar.setForeground(new java.awt.Color(153, 0, 0));
+        ownedRadar.setText("0");
+        background.add(ownedRadar);
+        ownedRadar.setBounds(370, 570, 90, 30);
+
         LblAccountCoin.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         LblAccountCoin.setForeground(new java.awt.Color(153, 0, 0));
         LblAccountCoin.setText("0");
         background.add(LblAccountCoin);
         LblAccountCoin.setBounds(810, 310, 90, 30);
 
-        jButton1.setBorder(null);
-        jButton1.setBorderPainted(false);
-        jButton1.setContentAreaFilled(false);
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        buyDebugger.setBorder(null);
+        buyDebugger.setBorderPainted(false);
+        buyDebugger.setContentAreaFilled(false);
+        buyDebugger.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        buyDebugger.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                buyDebuggerActionPerformed(evt);
             }
         });
-        background.add(jButton1);
-        jButton1.setBounds(720, 530, 130, 30);
+        background.add(buyDebugger);
+        buyDebugger.setBounds(720, 530, 130, 30);
 
-        jButton2.setBorder(null);
-        jButton2.setBorderPainted(false);
-        jButton2.setContentAreaFilled(false);
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        background.add(jButton2);
-        jButton2.setBounds(350, 530, 130, 30);
-
-        jButton3.setBorder(null);
-        jButton3.setBorderPainted(false);
-        jButton3.setContentAreaFilled(false);
-        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        buyRadar.setBorder(null);
+        buyRadar.setBorderPainted(false);
+        buyRadar.setContentAreaFilled(false);
+        buyRadar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        buyRadar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                buyRadarActionPerformed(evt);
             }
         });
-        background.add(jButton3);
-        jButton3.setBounds(540, 530, 120, 30);
+        background.add(buyRadar);
+        buyRadar.setBounds(350, 530, 130, 30);
+
+        buySystemRestore.setBorder(null);
+        buySystemRestore.setBorderPainted(false);
+        buySystemRestore.setContentAreaFilled(false);
+        buySystemRestore.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        buySystemRestore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buySystemRestoreActionPerformed(evt);
+            }
+        });
+        background.add(buySystemRestore);
+        buySystemRestore.setBounds(540, 530, 120, 30);
 
         BtnBack.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         BtnBack.setBorder(null);
@@ -167,9 +206,21 @@ public class shopFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void buyDebuggerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyDebuggerActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        if (menu.coins >= 50) {
+            menu.coins -= 50;
+            menu.pwr1++;
+
+            database.saveIntRecord("coins", menu.coins, menu.username);
+            database.saveIntRecord("power1", menu.pwr1, menu.username);
+        } else {
+            JOptionPane.showMessageDialog(null, "Insufficient coins!", "Shop", 2);
+        }
+        menu.pwr1 = database.getIntRecord("power1", menu.username);
+        ownedDebugger.setText("Owned : " + String.valueOf(menu.pwr1));
+        LblAccountCoin.setText(String.valueOf(menu.coins));
+    }//GEN-LAST:event_buyDebuggerActionPerformed
 
     private void BtnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBackActionPerformed
         // TODO add your handling code here:
@@ -177,15 +228,43 @@ public class shopFrame extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_BtnBackActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void buySystemRestoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buySystemRestoreActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+        if (menu.coins >= 500) {
+            menu.coins -= 500;
+            menu.pwr3++;
+
+            database.saveIntRecord("coins", menu.coins, menu.username);
+            database.saveIntRecord("power3", menu.pwr3, menu.username);
+        } else {
+            JOptionPane.showMessageDialog(null, "Insufficient coins!", "Shop", 2);
+        }
+        menu.pwr3 = database.getIntRecord("power3", menu.username);
+        ownedSystemRestore.setText("Owned : " + String.valueOf(menu.pwr3));
+        LblAccountCoin.setText(String.valueOf(menu.coins));
+    }//GEN-LAST:event_buySystemRestoreActionPerformed
 
     private void BtnSettings3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSettings3ActionPerformed
         // TODO add your handling code here:
         new settingsFrame("shopFrame");
         dispose();
     }//GEN-LAST:event_BtnSettings3ActionPerformed
+
+    private void buyRadarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyRadarActionPerformed
+        // TODO add your handling code here:
+        if (menu.coins >= 100) {
+            menu.coins -= 100;
+            menu.pwr2++;
+
+            database.saveIntRecord("coins", menu.coins, menu.username);
+            database.saveIntRecord("power2", menu.pwr2, menu.username);
+        } else {
+            JOptionPane.showMessageDialog(null, "Insufficient coins!", "Shop", 2);
+        }
+        menu.pwr2 = database.getIntRecord("power2", menu.username);
+        ownedRadar.setText("Owned : " + String.valueOf(menu.pwr2));
+        LblAccountCoin.setText(String.valueOf(menu.coins));
+    }//GEN-LAST:event_buyRadarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -224,15 +303,15 @@ public class shopFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnBack;
-    private javax.swing.JButton BtnSettings;
-    private javax.swing.JButton BtnSettings1;
-    private javax.swing.JButton BtnSettings2;
     private javax.swing.JButton BtnSettings3;
     private javax.swing.JLabel LblAccountCoin;
     private javax.swing.JPanel background;
+    private javax.swing.JButton buyDebugger;
+    private javax.swing.JButton buyRadar;
+    private javax.swing.JButton buySystemRestore;
     private javax.swing.JLabel image;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JLabel ownedDebugger;
+    private javax.swing.JLabel ownedRadar;
+    private javax.swing.JLabel ownedSystemRestore;
     // End of variables declaration//GEN-END:variables
 }
