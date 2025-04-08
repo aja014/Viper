@@ -17,8 +17,9 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new Login();
-//        Minesweeper mine = new Minesweeper(3,9,15,2);
+//        new Login();
+        new opening();
+//        Minesweeper mine = new Minesweeper(10,9,15,2);
 
     }
     

@@ -1,0 +1,183 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package fistFrame;
+
+/**
+ *
+ * @author Asus
+ */
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class opening extends JFrame implements ActionListener {
+
+    public static final int SCREEN_WIDTH = 1200;
+    public static final int SCREEN_HEIGHT = 720;
+    public static final int SPLASH_DELAY = 20;
+    public static final int LOADING_DELAY = 50;
+
+    public final Font ButtonFont = new Font("Verdana", Font.BOLD, 14);
+    public final Font ProgressBar = new Font("Verdana", Font.BOLD, 18);
+    public final Font infoFont = new Font("Verdana", Font.BOLD, 15);
+    public final Color navyBlue = new Color(0, 0, 128);
+
+    public JProgressBar progressBar;
+    public JLabel lbLogo;
+    public JButton proceedButton;
+    public JPanel topPanel, bottomPanel;
+    public Timer splashTimer, progressTimer;
+    public int splashHeight = SCREEN_HEIGHT / 2;
+
+    public opening() {
+
+        lbLogo = new JLabel();
+        ImageIcon VSBG = new ImageIcon(getClass().getResource("/images/1_loading.png"));
+        ImageIcon frameIcon = new ImageIcon(getClass().getResource(""));
+        setIconImage(frameIcon.getImage());
+        Image img3 = VSBG.getImage();
+        Image img4 = img3.getScaledInstance(SCREEN_WIDTH, SCREEN_HEIGHT, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(img4);
+        lbLogo.setIcon(new ImageIcon(img4));
+        lbLogo.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+        setTitle("Virus Sweeper");
+        setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+        setLayout(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        layeredPane.add(lbLogo, Integer.valueOf(0));
+
+        topPanel = new JPanel();
+        topPanel.setBackground(Color.white);
+        layeredPane.add(topPanel, Integer.valueOf(1));
+
+        bottomPanel = new JPanel();
+        bottomPanel.setBackground(Color.white);
+        layeredPane.add(bottomPanel, Integer.valueOf(1));
+
+        JLabel verControl = new JLabel("Version 1.25.0");
+        verControl.setFont(infoFont);
+        verControl.setForeground(Color.WHITE);
+        verControl.setBounds(1000, 600, 300, 50);
+        layeredPane.add(verControl, Integer.valueOf(1));
+        /*
+        JLabel copyright = new JLabel("© 2025 ELCS Innovations, Inc.");
+        copyright.setFont(infoFont);
+        copyright.setForeground(navyBlue);
+        copyright.setBounds(920, 620, 300, 50);
+        layeredPane.add(copyright, Integer.valueOf(1));
+
+        JLabel ALR = new JLabel("All rights reserved.");
+        ALR.setFont(infoFont);
+        ALR.setForeground(navyBlue);
+        ALR.setBounds(980, 640, 300, 50);
+        layeredPane.add(ALR, Integer.valueOf(1));
+         */
+        progressBar = new JProgressBar();
+        progressBar.setStringPainted(true);
+        progressBar.setForeground(new Color(255, 186, 186));
+        progressBar.setBackground(Color.white);
+        progressBar.setFont(ProgressBar);
+        progressBar.setBounds(380, 470, 700, 40);
+        progressBar.setVisible(false);
+        layeredPane.add(progressBar, Integer.valueOf(1));
+
+        proceedButton = new JButton("Proceed");
+        proceedButton.setFont(ButtonFont);
+        proceedButton.setForeground(Color.WHITE);
+        proceedButton.setBackground(new Color(255, 123, 123));
+        proceedButton.setBounds(650, 540, 150, 40);
+        proceedButton.setVisible(false);
+        proceedButton.addActionListener(this);
+        layeredPane.add(proceedButton, Integer.valueOf(1));
+
+        add(layeredPane);
+
+        setVisible(true);
+        
+        intro();
+    }
+
+    public void intro() {
+        Timer splashTimer = new Timer(SPLASH_DELAY, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ev) {
+                splashHeight -= 10;
+                topPanel.setBounds(0, 0, SCREEN_WIDTH, splashHeight);
+                bottomPanel.setBounds(0, SCREEN_HEIGHT - splashHeight, SCREEN_WIDTH, splashHeight);
+
+                if (splashHeight <= 0) {
+                    ((Timer) ev.getSource()).stop();
+                    loadingProgress();
+                }
+            }
+        });
+        splashTimer.start();
+    }
+
+    public void loadingProgress() {
+        progressBar.setVisible(true);
+        Timer progressTimer = new Timer(LOADING_DELAY, new ActionListener() {
+            private int progress = 0;
+
+            @Override
+            public void actionPerformed(ActionEvent ev) {
+                if (progress < 100) {
+                    progress += 2;
+                    progressBar.setValue(progress);
+                }
+
+                if (progress >= 100) {
+                    ((Timer) ev.getSource()).stop();
+                    proceedButton.setVisible(true);
+                }
+            }
+        });
+        progressTimer.start();
+    }
+
+    public void endSplashScreen() {
+        Timer splashTimer = new Timer(SPLASH_DELAY, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ev) {
+                splashHeight += 10;
+                topPanel.setBounds(0, 0, SCREEN_WIDTH, splashHeight);
+                bottomPanel.setBounds(0, SCREEN_HEIGHT - splashHeight, SCREEN_WIDTH, splashHeight);
+
+                if (splashHeight >= SCREEN_HEIGHT / 2) {
+                    ((Timer) ev.getSource()).stop();
+                    dispose();
+                    dispose();
+//               new JavaApply();
+                    /*if (Database.getAccess()) {
+                   new JavaApply();
+                }
+                else {
+                    Login.openLogin();
+                }*/
+                }
+            }
+        });
+
+        splashTimer.start();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent ev) {
+        if (ev.getSource() == proceedButton) {
+            dispose();
+            new Login();
+        }
+    }
+
+    public static void main(String[] args) {
+        new opening();
+    }
+}
