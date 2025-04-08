@@ -5,6 +5,7 @@
  */
 package fistFrame;
 
+import Menu.leaderboardsScoreFrame;
 import play.*;
 
 /**
@@ -17,9 +18,11 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-//        new Login();
-        new opening();
-//        Minesweeper mine = new Minesweeper(10,9,15,2);
+        new Login();
+//        new opening();
+//        new leaderboardsScoreFrame("blitzscore");
+//        new Minesweeper(20,9,0,0, "blitz"); // BLITZ
+//        new Minesweeper(2,9,15,1, ""); // NORMAL MODE
 
     }
     

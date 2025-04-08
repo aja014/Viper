@@ -26,11 +26,11 @@ public class leaderboardsScoreFrame extends javax.swing.JFrame {
      */
     private DefaultTableModel model;
     private String lvl;
-    
+
     public leaderboardsScoreFrame(String level) {
         initComponents();
         setResizable(false);
-        
+
         URL iconURL = getClass().getResource("/images/virusSweeperIcon.png");
         if (iconURL == null) {
             System.out.println("Image not found! Check the path.");
@@ -38,9 +38,9 @@ public class leaderboardsScoreFrame extends javax.swing.JFrame {
             ImageIcon frameIcon = new ImageIcon(iconURL);
             setIconImage(frameIcon.getImage());
         }
-        
+
         this.lvl = level;
-        
+
 //        if (lvl.equals("easyscore")){
 //            LblLevel.setText("Easy");
 //        }else if (lvl.equals("mediumscore")){
@@ -50,32 +50,36 @@ public class leaderboardsScoreFrame extends javax.swing.JFrame {
 //        }else {
 //            LblLevel.setText("Blitz");
 //        }
-        
-        
-        
         // Declare the table
         model = (DefaultTableModel) tableScore.getModel();
-        
+
         // Database Connection
-        try{
-            String getScores = "select * from account order by "+lvl+" desc";
-            
+        try {
+            String getScores = "select * from account order by " + lvl + " desc";
+
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ViperDB", "root", "root");
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(getScores);
-            while (rs.next()){
-                model.addRow(new Object[]{rs.getString("username"),rs.getInt(lvl)});
+            while (rs.next()) {
+                if (lvl.equals("blitzscore")) {
+                    String score = rs.getString(lvl);
+                    String mmss = score.substring(3); // get from index 3 → "03:45"
+                    // adding
+                    model.addRow(new Object[]{rs.getString("username"), mmss});
+                } else {
+                    model.addRow(new Object[]{rs.getString("username"), rs.getInt(lvl)});
+                }
             }
-            
+
             con.close();
             st.close();
             rs.close();
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             ex.printStackTrace();
             System.out.println("Failed");
         }
-        
-          setSize(1200,720);
+
+        setSize(1200, 720);
 //        setVisible(true);
 //        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //        setLocationRelativeTo(null);
@@ -194,7 +198,7 @@ public class leaderboardsScoreFrame extends javax.swing.JFrame {
 
     private void BtnSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSettingsActionPerformed
         // TODO add your handling code here:
-        new settingsFrame("leaderboardsScoreFrame",lvl);
+        new settingsFrame("leaderboardsScoreFrame", lvl);
         dispose();
     }//GEN-LAST:event_BtnSettingsActionPerformed
 

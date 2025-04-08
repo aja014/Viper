@@ -22,13 +22,13 @@ public class menu extends javax.swing.JFrame {
     public static int easyscore;
     public static int mediumscore;
     public static int hardscore;
-    public static int blitzscore;
     public static int coins;
     public static int pwr1;
     public static int pwr2;
     public static int pwr3;
     public static int sound;
     public static int music;
+    public static String blitzscore;
 
     public menu() {
         initComponents();
