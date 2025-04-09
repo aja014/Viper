@@ -202,14 +202,14 @@ public class loadingPerLevel extends JFrame {
 
                     if (progress == 20 || progress == 21) {
                         delay = 500;
-                        currentLoadingMessage = "Setting up sounds";
+                        currentLoadingMessage = "Loading assets";
                         loadingText.setText(currentLoadingMessage + ".");
                     } else if (progress >= 30 && progress <= 38) {
                         delay = 50;
-                        currentLoadingMessage = "Loading assets";
+                        currentLoadingMessage = "Optimizing resources";
                         loadingText.setText(currentLoadingMessage + ".");
                     } else if (progress >= 50 && progress <= 56) {
-                        currentLoadingMessage = "Optimizing performance";
+                        currentLoadingMessage = "Setting tiles";
                         loadingText.setText(currentLoadingMessage + ".");
                         switch (progress) {
                             case 50:
@@ -223,6 +223,8 @@ public class loadingPerLevel extends JFrame {
                                 break;
                             case 54:
                                 delay = 1000;
+                                currentLoadingMessage = "Setting up sounds";
+                                loadingText.setText(currentLoadingMessage + ".");
                                 break;
                             default:
                                 delay = 100;

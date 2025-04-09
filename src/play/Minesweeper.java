@@ -375,8 +375,10 @@ public class Minesweeper implements ActionListener {
         // Setting Tiles
         for (int r = 0; r < numRows; r++) {
             for (int c = 0; c < numCols; c++) {
+//                ImageIcon frameIcon = new ImageIcon(getClass().getResource("/images/virusSweeperIcon.png"));
                 Minetile tile = new Minetile(r, c);
                 tile.setBackground(Color.black); // unclicked color
+//                tile.setIcon(frameIcon);
 //                tile.setIcon(new ImageIcon("src/images/virusSweeperIcon.png"));
                 position[r][c] = tile;
 
