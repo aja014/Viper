@@ -243,7 +243,7 @@ public class loadingPerLevel extends JFrame {
                         currentLoadingMessage = "Almost there";
                         loadingText.setText(currentLoadingMessage + ".");
                     } else if (progress == 100) {
-                        delay = 500; // 1 second delay at 99%
+                        delay = 1000; // 1 second delay at 99%
                         currentLoadingMessage = "Launching";
                         loadingText.setText(currentLoadingMessage + ".");
                     }
