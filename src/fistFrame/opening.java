@@ -34,15 +34,14 @@ public class opening extends JFrame implements ActionListener {
     public int splashHeight = SCREEN_HEIGHT / 2;
 
     public opening() {
-
         lbLogo = new JLabel();
-        ImageIcon VSBG = new ImageIcon(getClass().getResource("/images/1_loading.png"));
-        ImageIcon frameIcon = new ImageIcon(getClass().getResource(""));
+        ImageIcon VSBG = new ImageIcon(getClass().getResource("/images/splashscreen.gif")); 
+        ImageIcon frameIcon = new ImageIcon(getClass().getResource("/images/virusSweeperIcon.png"));
         setIconImage(frameIcon.getImage());
-        Image img3 = VSBG.getImage();
-        Image img4 = img3.getScaledInstance(SCREEN_WIDTH, SCREEN_HEIGHT, Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(img4);
-        lbLogo.setIcon(new ImageIcon(img4));
+
+        lbLogo.setIcon(VSBG);
+        lbLogo.setHorizontalAlignment(SwingConstants.CENTER);
+        lbLogo.setVerticalAlignment(SwingConstants.CENTER);
         lbLogo.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         setTitle("Virus Sweeper");
@@ -50,16 +49,19 @@ public class opening extends JFrame implements ActionListener {
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         layeredPane.add(lbLogo, Integer.valueOf(0));
 
         topPanel = new JPanel();
         topPanel.setBackground(Color.white);
+        topPanel.setBounds(0, 0, SCREEN_WIDTH, splashHeight);
         layeredPane.add(topPanel, Integer.valueOf(1));
 
         bottomPanel = new JPanel();
         bottomPanel.setBackground(Color.white);
+        bottomPanel.setBounds(0, SCREEN_HEIGHT - splashHeight, SCREEN_WIDTH, splashHeight);
         layeredPane.add(bottomPanel, Integer.valueOf(1));
 
         JLabel verControl = new JLabel("Version 1.25.0");
@@ -67,19 +69,7 @@ public class opening extends JFrame implements ActionListener {
         verControl.setForeground(Color.WHITE);
         verControl.setBounds(1000, 600, 300, 50);
         layeredPane.add(verControl, Integer.valueOf(1));
-        /*
-        JLabel copyright = new JLabel("© 2025 ELCS Innovations, Inc.");
-        copyright.setFont(infoFont);
-        copyright.setForeground(navyBlue);
-        copyright.setBounds(920, 620, 300, 50);
-        layeredPane.add(copyright, Integer.valueOf(1));
 
-        JLabel ALR = new JLabel("All rights reserved.");
-        ALR.setFont(infoFont);
-        ALR.setForeground(navyBlue);
-        ALR.setBounds(980, 640, 300, 50);
-        layeredPane.add(ALR, Integer.valueOf(1));
-         */
         progressBar = new JProgressBar();
         progressBar.setStringPainted(true);
         progressBar.setForeground(new Color(255, 186, 186));
@@ -99,10 +89,22 @@ public class opening extends JFrame implements ActionListener {
         layeredPane.add(proceedButton, Integer.valueOf(1));
 
         add(layeredPane);
-
         setVisible(true);
-        
+
         intro();
+        /*
+        JLabel copyright = new JLabel("© 2025 ELCS Innovations, Inc.");
+        copyright.setFont(infoFont);
+        copyright.setForeground(navyBlue);
+        copyright.setBounds(920, 620, 300, 50);
+        layeredPane.add(copyright, Integer.valueOf(1));
+
+        JLabel ALR = new JLabel("All rights reserved.");
+        ALR.setFont(infoFont);
+        ALR.setForeground(navyBlue);
+        ALR.setBounds(980, 640, 300, 50);
+        layeredPane.add(ALR, Integer.valueOf(1));
+         */
     }
 
     public void intro() {
