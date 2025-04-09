@@ -188,7 +188,7 @@ public class playFrame extends javax.swing.JFrame {
 
     private void blitzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blitzActionPerformed
         // TODO add your handling code here:
-        Minesweeper blitz = new Minesweeper(2,9,20,3,"blitz");
+        Minesweeper blitz = new Minesweeper(15,9,20,3,"blitz");
 //        blitz.level = "blitz";
         dispose();
     }//GEN-LAST:event_blitzActionPerformed

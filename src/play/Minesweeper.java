@@ -57,17 +57,18 @@ public class Minesweeper implements ActionListener {
     int lastBombTime = -60;
     int bonusTiles;
     int timePaused = 0;
-    int power1 = 99;
-    int power2 = 99;
-    int power3 = 99;
-//    int power1 = database.getIntRecord("power1", menu.username);
-//    int power2 = database.getIntRecord("power2", menu.username);
-//    int power3 = database.getIntRecord("power3", menu.username);
+//    int power1 = 99;
+//    int power2 = 99;
+//    int power3 = 99;
+    int power1 = database.getIntRecord("power1", menu.username);
+    int power2 = database.getIntRecord("power2", menu.username);
+    int power3 = database.getIntRecord("power3", menu.username);
 
     Timer timer;
     Timer removeTimer;
     Timer pauseTimer;
     Timer power1Timer;
+    Timer countdownTimer;
     JFrame frame = new JFrame("Minesweeper");
     JLabel timerLabel = new JLabel("Time : 0s");
     JLabel textLabel = new JLabel(); // number of mines
@@ -188,7 +189,7 @@ public class Minesweeper implements ActionListener {
 
             // Set initial timer text to MM:SS
             if (!start) {
-                timerLabel.setText("Time: 02:00");
+                timerLabel.setText("Time: 01:00");
             } else {
                 timerLabel.setText(String.format("Time: %02d:%02d", minutes, seconds));
             }
@@ -501,7 +502,7 @@ public class Minesweeper implements ActionListener {
                                             dialog.setModal(true);
 
                                             final int[] secondsRemaining = {10};
-                                            Timer countdownTimer = new Timer(1000, f -> {
+                                            countdownTimer = new Timer(1000, f -> {
                                                 secondsRemaining[0]--;
                                                 label.setText("Do you want to revive? (" + secondsRemaining[0] + " seconds remaining)");
                                                 if (secondsRemaining[0] <= 0 && !gameLost) {
@@ -666,6 +667,9 @@ public class Minesweeper implements ActionListener {
         scoreLabel.setText("Score :" + Integer.toString(timeScore));
         textLabelFlagged.setText("Flagged tiles : " + Integer.toString(flagged));
         timer.stop();
+
+        // here
+        removeAllTimers();
 //        textLabel1.setText("Game Over");
 
         if (pauseTimer != null && pauseTimer.isRunning()) {
@@ -784,21 +788,33 @@ public class Minesweeper implements ActionListener {
         if (e.getSource() == BtnBack) {
             int x = JOptionPane.showConfirmDialog(null, "Are you sure?", "Quit", JOptionPane.YES_NO_OPTION);
             if (x == 0) {
+                timer.stop();
+                removeAllTimers();
                 new playFrame();
                 frame.dispose();
             }
         } else if (e.getSource() == BtnRestart) {
             int x;
+
+//            Timer timer;
+//            Timer removeTimer;
+//            Timer pauseTimer;
+//            Timer power1Timer;
             if (!gameOver) {
                 x = JOptionPane.showConfirmDialog(null, "Are you sure?", "Restart", JOptionPane.YES_NO_OPTION);
                 if (x == 0) {
                     timer.stop();
-                    if (removeTimer != null && removeTimer.isRunning()) {
-                        removeTimer.stop();
-                    }
-                    if (pauseTimer != null && pauseTimer.isRunning()) {
-                        pauseTimer.stop();
-                    }
+                    removeAllTimers();
+//                    removeTimer.stop();
+//                    pauseTimer.stop();
+//                    power1Timer.stop();
+//                    countdownTimer.stop();
+//                    if (removeTimer != null && removeTimer.isRunning()) {
+//                        removeTimer.stop();
+//                    }
+//                    if (pauseTimer != null && pauseTimer.isRunning()) {
+//                        pauseTimer.stop();
+//                    }
                     frame.dispose();
                     if (level == "blitz") {
                         new Minesweeper(mineCount, numRows, scoreTimeStart, timePerScore, "blitz");
@@ -808,12 +824,13 @@ public class Minesweeper implements ActionListener {
                 }
             } else {
                 timer.stop();
-                if (removeTimer != null && removeTimer.isRunning()) {
-                    removeTimer.stop();
-                }
-                if (pauseTimer != null && pauseTimer.isRunning()) {
-                    pauseTimer.stop();
-                }
+                removeAllTimers();
+//                if (removeTimer != null && removeTimer.isRunning()) {
+//                    removeTimer.stop();
+//                }
+//                if (pauseTimer != null && pauseTimer.isRunning()) {
+//                    pauseTimer.stop();
+//                }
                 frame.dispose();
                 if (level == "blitz") {
                     new Minesweeper(mineCount, numRows, scoreTimeStart, timePerScore, "blitz");
@@ -996,7 +1013,7 @@ public class Minesweeper implements ActionListener {
             dialog.setModal(true);
 
             final int[] secondsRemaining = {10};
-            Timer countdownTimer = new Timer(1000, e -> {
+            countdownTimer = new Timer(1000, e -> {
                 secondsRemaining[0]--;
                 label.setText(tempQuestion + " (" + secondsRemaining[0] + " seconds remaining)");
 
@@ -1717,4 +1734,18 @@ public class Minesweeper implements ActionListener {
 //        timerLabel.setText(timeText + "s");
 //        scoreLabel.setText("Score: " + timeScore);
 //    }
+    void removeAllTimers() {
+        if (removeTimer != null && removeTimer.isRunning()) {
+            removeTimer.stop();
+        }
+        if (pauseTimer != null && pauseTimer.isRunning()) {
+            pauseTimer.stop();
+        }
+        if (power1Timer != null && power1Timer.isRunning()) {
+            power1Timer.stop();
+        }
+        if (countdownTimer != null && countdownTimer.isRunning()) {
+            countdownTimer.stop();
+        }
+    }
 }
