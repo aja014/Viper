@@ -6,6 +6,7 @@
 package fistFrame;
 
 import Menu.leaderboardsScoreFrame;
+import Menu.loadingPerLevel;
 import play.*;
 
 /**
@@ -18,6 +19,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+//        new loadingPerLevel("easy");
 //        new Login();
         new opening();
 //        new leaderboardsScoreFrame("blitzscore");

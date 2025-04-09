@@ -9,6 +9,7 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import play.*;
+import Menu.loadingPerLevel;
 
 /**
  *
@@ -164,19 +165,22 @@ public class playFrame extends javax.swing.JFrame {
 
     private void easyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_easyActionPerformed
         // TODO add your handling code here:
-        Minesweeper easy = new Minesweeper(10,9,15,1,"");
+        new loadingPerLevel("easy");
+//        Minesweeper easy = new Minesweeper(10,9,15,1,"");
         dispose();
     }//GEN-LAST:event_easyActionPerformed
 
     private void mediumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mediumActionPerformed
         // TODO add your handling code here:
-        Minesweeper medium = new Minesweeper(20,15,25, 3,"");
+        new loadingPerLevel("medium");
+//        Minesweeper medium = new Minesweeper(20,15,25, 3,"");
         dispose();
     }//GEN-LAST:event_mediumActionPerformed
 
     private void hard1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hard1ActionPerformed
         // TODO add your handling code here:
-        Minesweeper hard = new Minesweeper(30,21,45, 5,"");
+        new loadingPerLevel("hard");
+//        Minesweeper hard = new Minesweeper(30,21,45, 5,"");
         dispose();
     }//GEN-LAST:event_hard1ActionPerformed
 
@@ -188,7 +192,8 @@ public class playFrame extends javax.swing.JFrame {
 
     private void blitzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blitzActionPerformed
         // TODO add your handling code here:
-        Minesweeper blitz = new Minesweeper(15,9,20,3,"blitz");
+        new loadingPerLevel("blitz");
+//        Minesweeper blitz = new Minesweeper(15,9,20,3,"blitz");
 //        blitz.level = "blitz";
         dispose();
     }//GEN-LAST:event_blitzActionPerformed
