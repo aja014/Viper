@@ -60,13 +60,13 @@ public class loadingPerLevel extends JFrame {
 
         // Different kinds of bg dito
         if (level.equals("easy")) {
-            VSBG = new ImageIcon(getClass().getResource("/images/splashscreen.gif"));// Modify mo path
+            VSBG = new ImageIcon(getClass().getResource("/images/easymode.gif"));// Modify mo path
         } else if (level.equals("medium")) {
-            VSBG = new ImageIcon(getClass().getResource("/images/splashscreen.gif"));// Modify mo path
+            VSBG = new ImageIcon(getClass().getResource("/images/mediummode.gif"));// Modify mo path
         } else if (level.equals("hard")) {
-            VSBG = new ImageIcon(getClass().getResource("/images/splashscreen.gif"));// Modify mo path
+            VSBG = new ImageIcon(getClass().getResource("/images/hardmode.gif"));// Modify mo path
         } else if (level.equals("blitz")) {
-            VSBG = new ImageIcon(getClass().getResource("/images/splashscreen.gif"));// Modify mo path
+            VSBG = new ImageIcon(getClass().getResource("/images/blitzmode.gif"));// Modify mo path
         } else {
             VSBG = new ImageIcon(getClass().getResource("/images/splashscreen.gif"));//  default path
         }
@@ -78,7 +78,7 @@ public class loadingPerLevel extends JFrame {
         lbLogo.setVerticalAlignment(SwingConstants.CENTER);
         lbLogo.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-        setTitle("Virus Sweeper");
+        setTitle("Viper");
         setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
