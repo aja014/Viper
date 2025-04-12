@@ -69,21 +69,24 @@ public class Minesweeper implements ActionListener {
     Timer pauseTimer;
     Timer power1Timer;
     Timer countdownTimer;
-    JFrame frame = new JFrame("Minesweeper");
+    JFrame frame = new JFrame("Viper");
     JLabel timerLabel = new JLabel("Time : 0s");
     JLabel textLabel = new JLabel(); // number of mines
     JLabel textLabel1 = new JLabel(); // "Mines Cleared"
     JLabel textLabelFlagged = new JLabel(); // flagged
     JLabel textLabelMineCount = new JLabel();
-    JLabel scoreLabel = new JLabel("Score : " + Integer.toString(timeScore));
+    JLabel scoreLabel = new JLabel(Integer.toString(timeScore));
     JPanel textPanel = new JPanel();
     JPanel boardPanel = new JPanel();
     JPanel outerPanel = new JPanel(new BorderLayout());
-    JButton BtnBack = new JButton("Back");
-    JButton BtnRestart = new JButton("Restart");
-    JButton power1Btn = new JButton("Power1");
-    JButton power2Btn = new JButton("Power2");
+    JButton BtnBack = new JButton("");
+    JButton BtnRestart = new JButton("");
+    JButton power1Btn = new JButton("");
+    JButton power2Btn = new JButton("");
+    JLabel power1Lbl = new JLabel("Power1");
+    JLabel power2Lbl = new JLabel("Power2");
     JLabel power3Lbl = new JLabel("Power3");
+    
 
     // Reference of the tile we create
     Minetile[][] position;
@@ -110,9 +113,10 @@ public class Minesweeper implements ActionListener {
         this.timePerScore = timePerScore;
         numCols = numRows;
         position = new Minetile[numRows][numCols];
-        boardWidth = 1100;
-        boardHeight = 700;
+        boardWidth = 1200;
+        boardHeight = 720;
         timeScore = 100;
+        Color darkPinkRed = new Color(250, 20, 60);
 
         frame.setSize(boardWidth, boardHeight);
         frame.setLocationRelativeTo(null);
@@ -121,26 +125,75 @@ public class Minesweeper implements ActionListener {
         frame.setLayout(new BorderLayout());
 
         // "Minesweeper" Text Panel
-        textLabel.setFont(new Font("Arial", Font.BOLD, 25));
-        textLabel.setText("Minesweeper : " + Integer.toString(mineCount + newMine));
+        textLabel.setFont(new Font("Arial", Font.BOLD, 40));
+        textLabel.setText(Integer.toString(mineCount + newMine));
         textLabel.setOpaque(true);
-        textLabel.setBounds(30, 100, 250, 25);
+        textLabel.setBounds(885, 12, 200, 40);
+        textLabel.setOpaque(false);
+        textLabel.setForeground(darkPinkRed);
 
         // Gameover Text
-        textLabel1.setFont(new Font("Arial", Font.BOLD, 25));
+        textLabel1.setFont(new Font("Arial", Font.BOLD, 40));
         textLabel1.setText("");
         textLabel1.setOpaque(true);
-        textLabel1.setBounds(30, 25, 650, 25);
+        textLabel1.setBounds(30, 25, 650, 40);
+        textLabel1.setOpaque(false);
+        textLabel1.setForeground(darkPinkRed);
 
         // Flagged text
-        textLabelFlagged.setFont(new Font("Arial", Font.BOLD, 30));
-        textLabelFlagged.setText("Flagged tiles : " + Integer.toString(flagged));
+        textLabelFlagged.setFont(new Font("Arial", Font.BOLD, 40));
+        textLabelFlagged.setText(Integer.toString(flagged));
         textLabelFlagged.setOpaque(true);
-        textLabelFlagged.setBounds(30, 150, 250, 25);
+        textLabelFlagged.setBounds(980, 12, 200, 40);
+        textLabelFlagged.setOpaque(false);
+        textLabelFlagged.setForeground(darkPinkRed);
 
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(new Dimension(boardWidth, boardHeight));
+        layeredPane.setLayout(null); // Very important for absolute positioning
+
+        ImageIcon VSBG;
+        if (mineCount == 10) {
+            VSBG = new ImageIcon(getClass().getResource("/images/easymodeenvi.png"));
+        } else if (mineCount == 20) {
+            VSBG = new ImageIcon(getClass().getResource("/images/mediummodeenvi.png"));
+        } else if (mineCount == 30) {
+            VSBG = new ImageIcon(getClass().getResource("/images/hardmodeenvi.png"));
+        } else if (mineCount == 15) {
+            VSBG = new ImageIcon(getClass().getResource("/images/blitzmodeenvi.png"));
+        } else {
+            VSBG = new ImageIcon(getClass().getResource("/images/splashscreen.gif"));
+        }
+
+        JLabel backgroundLabel = new JLabel(VSBG);
+        backgroundLabel.setBounds(0, 0, 1200, 720);
+        layeredPane.add(backgroundLabel, JLayeredPane.DEFAULT_LAYER); // Background at base layer
+
+        boardPanel.setBounds(0, 0, boardWidth, boardHeight); // Adjust if needed
+        layeredPane.add(boardPanel, JLayeredPane.PALETTE_LAYER); // Add above background
+
+        boardPanel.setOpaque(false);
+        boardPanel.setBackground(new Color(0, 0, 0, 0)); // Fully transparent
+
+        textPanel.setBounds(0, 0, boardWidth, 100);
+        layeredPane.add(textPanel, JLayeredPane.MODAL_LAYER);
+
+        textPanel.setOpaque(false);
+
+        frame.setContentPane(layeredPane);
+        frame.pack();
+
+
+        ImageIcon frameIcon = new ImageIcon(getClass().getResource("/images/virusSweeperIcon.png"));
+        frame.setIconImage(frameIcon.getImage()); // Correct usage
+
+// Create and set background/logo label
+
+      
         //timer
-        timerLabel.setFont(new Font("Arial", Font.BOLD, 20));
-        timerLabel.setBounds(50, 250, 200, 20);
+        timerLabel.setFont(new Font("Arial", Font.BOLD, 40));
+        timerLabel.setBounds(1085, 12, 200, 40);
+        timerLabel.setForeground(darkPinkRed);
 
         // Board panel
         boardPanel.setLayout(new GridLayout(numRows, numCols)); // Declaring tiles rows and colums
@@ -149,18 +202,49 @@ public class Minesweeper implements ActionListener {
         outerPanel.setBorder(BorderFactory.createEmptyBorder(50, 400, 50, 50)); // Margin
         outerPanel.add(boardPanel, BorderLayout.CENTER);
 
+        scoreLabel.setFont(new Font("Arial", Font.BOLD, 40));
+        scoreLabel.setForeground(darkPinkRed);
+        
+        BtnBack.setContentAreaFilled(false);
+        BtnBack.setBorderPainted(false);
+        BtnBack.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        BtnRestart.setContentAreaFilled(false);
+        BtnRestart.setBorderPainted(false);
+        BtnRestart.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        power1Btn.setContentAreaFilled(false);
+        power1Btn.setBorderPainted(false);
+        power1Btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        power2Btn.setContentAreaFilled(false);
+        power2Btn.setBorderPainted(false);
+        power2Btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
         //Button
-        BtnBack.setBounds(30, 600, 65, 30);
-        BtnRestart.setBounds(110, 600, 85, 30);
-        scoreLabel.setBounds(50, 300, 200, 20);
-        power1Btn.setBounds(30, 400, 150, 30);
-        power2Btn.setBounds(30, 440, 150, 30);
-        power3Lbl.setBounds(30, 480, 150, 30);
+        BtnBack.setBounds(45, 3, 60, 55);
+        BtnRestart.setBounds(130, 3, 60, 55);
+        scoreLabel.setBounds(300, 12, 200, 40);
+        power1Btn.setBounds(1092, 337, 65, 62);
+        power2Btn.setBounds(1092, 435, 65, 60);
+        power1Lbl.setBounds(1115, 402, 60, 30);
+        power2Lbl.setBounds(1115, 495, 60, 30);
+        power3Lbl.setBounds(1115, 590, 60, 30);
 
         //Powers
-        power1Btn.setText("Debugger : " + String.valueOf(power1));
-        power2Btn.setText("Radar : " + String.valueOf(power2));
-        power3Lbl.setText("System Restore : " + String.valueOf(power3));
+        power1Btn.setText("");
+        power2Btn.setText("");
+        BtnBack.setText("");
+        BtnRestart.setText("");
+        power1Lbl.setText(String.valueOf(power1));
+        power1Lbl.setFont(new Font("Arial", Font.BOLD, 30));
+        power1Lbl.setForeground(darkPinkRed);
+        power2Lbl.setText(String.valueOf(power2));
+        power2Lbl.setFont(new Font("Arial", Font.BOLD, 30));
+        power2Lbl.setForeground(darkPinkRed);
+        power3Lbl.setText(String.valueOf(power3));
+        power3Lbl.setFont(new Font("Arial", Font.BOLD, 30));
+        power3Lbl.setForeground(darkPinkRed);
 
         BtnBack.addActionListener(this);
         BtnRestart.addActionListener(this);
@@ -168,7 +252,7 @@ public class Minesweeper implements ActionListener {
         power2Btn.addActionListener(this);
 //        power3Btn.addActionListener(this);
 
-        frame.add(power1Btn);
+       /* frame.add(power1Btn);
         frame.add(power2Btn);
         frame.add(power3Lbl);
         frame.add(scoreLabel);
@@ -178,7 +262,21 @@ public class Minesweeper implements ActionListener {
         frame.add(textLabelFlagged);
         frame.add(BtnRestart);
         frame.add(BtnBack);
-        frame.add(outerPanel);
+        frame.add(outerPanel); */
+        layeredPane.add(power1Btn, JLayeredPane.MODAL_LAYER);
+        layeredPane.add(power2Btn, JLayeredPane.MODAL_LAYER);
+        layeredPane.add(power1Lbl, JLayeredPane.MODAL_LAYER);
+        layeredPane.add(power2Lbl, JLayeredPane.MODAL_LAYER);
+        layeredPane.add(power3Lbl, JLayeredPane.MODAL_LAYER);
+        layeredPane.add(scoreLabel, JLayeredPane.MODAL_LAYER);
+        layeredPane.add(timerLabel, JLayeredPane.MODAL_LAYER);
+        layeredPane.add(textLabel, JLayeredPane.MODAL_LAYER);
+        layeredPane.add(textLabel1, JLayeredPane.MODAL_LAYER);
+        layeredPane.add(textLabelFlagged, JLayeredPane.MODAL_LAYER);
+        layeredPane.add(BtnRestart, JLayeredPane.MODAL_LAYER);
+        layeredPane.add(BtnBack, JLayeredPane.MODAL_LAYER);
+        layeredPane.add(outerPanel, JLayeredPane.PALETTE_LAYER);
+
 
         // Initialize timer variables based on mode
         int minutes = elapsedTime / 60;
@@ -189,14 +287,14 @@ public class Minesweeper implements ActionListener {
 
             // Set initial timer text to MM:SS
             if (!start) {
-                timerLabel.setText("Time: 01:00");
+                timerLabel.setText("01:00");
             } else {
-                timerLabel.setText(String.format("Time: %02d:%02d", minutes, seconds));
+                timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
             }
         } else {
             elapsedTime = 0;
             timeScore = 100;
-            timerLabel.setText(String.format("Time: %02d:%02d", minutes, seconds));
+            timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
         }
 
         questionLevel = "";
@@ -370,6 +468,7 @@ public class Minesweeper implements ActionListener {
 //                timerLabel.setText("Time : " + elapsedTime + "s");
 //                scoreLabel.setText("Score :" + Integer.toString(timeScore));
             }
+            
         });
 
         // Setting Tiles
@@ -561,6 +660,8 @@ public class Minesweeper implements ActionListener {
                 });
 
                 boardPanel.add(tile);
+                
+                
             }
         }
 
@@ -1748,4 +1849,6 @@ public class Minesweeper implements ActionListener {
             countdownTimer.stop();
         }
     }
+    
+    
 }

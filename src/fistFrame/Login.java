@@ -15,9 +15,12 @@ import java.sql.Statement;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import Menu.*;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Image;
 import java.net.URL;
 import javax.swing.ImageIcon;
+import javax.swing.UIManager;
 
 /**
  *
@@ -148,7 +151,7 @@ public class Login extends javax.swing.JFrame {
     private void BtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLoginActionPerformed
         username1 = username.getText();
         password1 = new String(password.getPassword());
-        
+           
         if (!username1.isEmpty() && !password1.isEmpty()){
             try {
                 String sqlFindAcc = "Select * from account where username = ? and password = ?";
@@ -163,7 +166,8 @@ public class Login extends javax.swing.JFrame {
                 ResultSet rs1 = st.executeQuery(sqlSoundMusic);
 
                 if (rs.next()){
-                    JOptionPane.showMessageDialog(null, "Login Successfuly", "Login Successful", JOptionPane.INFORMATION_MESSAGE);
+                    showCustomSuccess("Login Successful!");
+                    //JOptionPane.showMessageDialog(null, "Login Successfuly", "Login Successful", JOptionPane.INFORMATION_MESSAGE);
                     while (rs1.next()){
                         username1 = rs1.getString("username");
                         password1 = rs1.getString("password");
@@ -187,7 +191,8 @@ public class Login extends javax.swing.JFrame {
                     
                     dispose();
                 } else {
-                    JOptionPane.showMessageDialog(null, "Account does not exist", "Error", JOptionPane.ERROR_MESSAGE);
+                    showCustomError("Account does not exist");
+                    //JOptionPane.showMessageDialog(null, "Account does not exist", "Error", JOptionPane.ERROR_MESSAGE);
                     username.setText("");
                     password.setText("");
                 }
@@ -199,9 +204,68 @@ public class Login extends javax.swing.JFrame {
                 ex.printStackTrace();
             }
         }else {
-            JOptionPane.showMessageDialog(null, "Fields cannot be Empty", "Error", JOptionPane.ERROR_MESSAGE);
+
+            showCustomError("Fields cannot be Empty");
+//            JOptionPane.showMessageDialog(null, "Fields cannot be Empty", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_BtnLoginActionPerformed
+
+    private void showCustomError(String messageText) {
+        javax.swing.JDialog dialog = new javax.swing.JDialog(this, true);
+        dialog.setUndecorated(true);
+        dialog.setSize(400, 150);
+        dialog.setLocationRelativeTo(this);
+
+        javax.swing.JPanel panel = new javax.swing.JPanel();
+        panel.setBackground(new java.awt.Color(255, 240, 245)); // Light pink
+        panel.setLayout(new java.awt.BorderLayout());
+
+        javax.swing.JLabel message = new javax.swing.JLabel(messageText, javax.swing.SwingConstants.CENTER);
+        message.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 30));
+        message.setForeground(java.awt.Color.RED);
+
+        javax.swing.JButton okButton = new javax.swing.JButton("OK");
+        okButton.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 18));
+        okButton.setBackground(new java.awt.Color(255, 182, 193)); // Soft pastel red-pink
+        okButton.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 18));
+        okButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        okButton.addActionListener(e -> dialog.dispose());
+
+        panel.add(message, java.awt.BorderLayout.CENTER);
+        panel.add(okButton, java.awt.BorderLayout.SOUTH);
+
+        dialog.add(panel);
+        dialog.setVisible(true);
+    }
+    
+    private void showCustomSuccess(String messageText) {
+        javax.swing.JDialog dialog = new javax.swing.JDialog(this, true);
+        dialog.setUndecorated(true);
+        dialog.setSize(400, 150);
+        dialog.setLocationRelativeTo(this);
+
+        javax.swing.JPanel panel = new javax.swing.JPanel();
+        panel.setBackground(new java.awt.Color(220, 255, 220)); // Soft green
+        panel.setLayout(new java.awt.BorderLayout());
+
+        javax.swing.JLabel message = new javax.swing.JLabel(messageText, javax.swing.SwingConstants.CENTER);
+        message.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 30));
+        message.setForeground(new java.awt.Color(34, 139, 34)); // Forest green
+
+        javax.swing.JButton okButton = new javax.swing.JButton("OK");
+        okButton.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 18));
+        okButton.setBackground(new java.awt.Color(144, 238, 144)); // Light green
+        okButton.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 18));
+        okButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        okButton.addActionListener(e -> dialog.dispose());
+
+        panel.add(message, java.awt.BorderLayout.CENTER);
+        panel.add(okButton, java.awt.BorderLayout.SOUTH);
+
+        dialog.add(panel);
+        dialog.setVisible(true);
+    }
+
 
     /**
      * @param args the command line arguments
