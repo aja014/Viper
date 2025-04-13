@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
@@ -305,6 +306,118 @@ public class loadingPerLevel extends JFrame {
 //            new Login();
 //        }
 //    }
+    
+    private void showCustomError(String messageText) {
+        javax.swing.JDialog dialog = new javax.swing.JDialog(this, true);
+        dialog.setUndecorated(true);
+        dialog.setSize(400, 150);
+        dialog.setLocationRelativeTo(this);
+
+        javax.swing.JPanel panel = new javax.swing.JPanel();
+        panel.setBackground(new java.awt.Color(255, 240, 245)); // Light pink
+        panel.setLayout(new java.awt.BorderLayout());
+
+        javax.swing.JLabel message = new javax.swing.JLabel(messageText, javax.swing.SwingConstants.CENTER);
+        message.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 30));
+        message.setForeground(java.awt.Color.RED);
+
+        javax.swing.JButton okButton = new javax.swing.JButton("OK");
+        okButton.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 18));
+        okButton.setBackground(new java.awt.Color(255, 182, 193)); // Soft pastel red-pink
+        okButton.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 18));
+        okButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        okButton.addActionListener(e -> dialog.dispose());
+
+        panel.add(message, java.awt.BorderLayout.CENTER);
+        panel.add(okButton, java.awt.BorderLayout.SOUTH);
+
+        dialog.add(panel);
+        dialog.setVisible(true);
+    }
+    
+    private void showCustomSuccess(String messageText) {
+        javax.swing.JDialog dialog = new javax.swing.JDialog(this, true);
+        dialog.setUndecorated(true);
+        dialog.setSize(400, 150);
+        dialog.setLocationRelativeTo(this);
+
+        javax.swing.JPanel panel = new javax.swing.JPanel();
+        panel.setBackground(new java.awt.Color(220, 255, 220)); // Soft green
+        panel.setLayout(new java.awt.BorderLayout());
+
+        javax.swing.JLabel message = new javax.swing.JLabel(messageText, javax.swing.SwingConstants.CENTER);
+        message.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 30));
+        message.setForeground(new java.awt.Color(34, 139, 34)); // Forest green
+
+        javax.swing.JButton okButton = new javax.swing.JButton("OK");
+        okButton.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 18));
+        okButton.setBackground(new java.awt.Color(144, 238, 144)); // Light green
+        okButton.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 18));
+        okButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        okButton.addActionListener(e -> dialog.dispose());
+
+        panel.add(message, java.awt.BorderLayout.CENTER);
+        panel.add(okButton, java.awt.BorderLayout.SOUTH);
+
+        dialog.add(panel);
+        dialog.setVisible(true);
+    }
+    
+    private int showCustomConfirmation(String messageText, String titleText) {
+        final int[] result = { -1 };
+
+        javax.swing.JDialog dialog = new javax.swing.JDialog(this, true);
+        dialog.setUndecorated(true);
+        dialog.setSize(400, 180);
+        dialog.setLocationRelativeTo(this);
+
+        javax.swing.JPanel panel = new javax.swing.JPanel();
+        panel.setBackground(new java.awt.Color(240, 240, 255)); // light bluish
+        panel.setLayout(new java.awt.BorderLayout());
+
+        javax.swing.JLabel title = new javax.swing.JLabel(titleText, javax.swing.SwingConstants.CENTER);
+        title.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 40));
+        title.setForeground(new java.awt.Color(60, 60, 120));
+        panel.add(title, java.awt.BorderLayout.NORTH);
+
+        javax.swing.JLabel message = new javax.swing.JLabel(messageText, javax.swing.SwingConstants.CENTER);
+        message.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 25));
+        message.setForeground(new java.awt.Color(80, 80, 80));
+        panel.add(message, java.awt.BorderLayout.CENTER);
+
+        javax.swing.JPanel buttonPanel = new javax.swing.JPanel();
+        buttonPanel.setBackground(new java.awt.Color(240, 240, 255));
+
+        javax.swing.JButton yesButton = new javax.swing.JButton("YES");
+        yesButton.setBackground(new java.awt.Color(144, 238, 144)); // light green
+        yesButton.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 25));
+        yesButton.setForeground(Color.BLACK);
+        yesButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        yesButton.addActionListener(e -> {
+            result[0] = JOptionPane.YES_OPTION;
+            dialog.dispose();
+        });
+
+        javax.swing.JButton noButton = new javax.swing.JButton("NO");
+        noButton.setBackground(new java.awt.Color(255, 182, 193)); // light red/pink
+        noButton.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 25));
+        noButton.setForeground(Color.BLACK);
+        noButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        noButton.addActionListener(e -> {
+            result[0] = JOptionPane.NO_OPTION;
+            dialog.dispose();
+        });
+
+        buttonPanel.add(yesButton);
+        buttonPanel.add(noButton);
+        panel.add(buttonPanel, java.awt.BorderLayout.SOUTH);
+
+        dialog.add(panel);
+        dialog.setVisible(true);
+
+        return result[0];
+    }
+    
     public static void main(String[] args) {
         new loadingPerLevel("");
     }

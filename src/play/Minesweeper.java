@@ -11,12 +11,17 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
+import javax.swing.JOptionPane;
+import play.CustomDialog;
+
+
 
 // STILL FIND BUG IN BONUS TILE PLACEMENT
 public class Minesweeper implements ActionListener {
 
     // adding new class with overriding the Jbutton(row number, col number)
-    private class Minetile extends JButton {
+    
+      private class Minetile extends JButton {
 
         int r, c;
 
@@ -40,7 +45,7 @@ public class Minesweeper implements ActionListener {
 //    private int lastBonusTime = -60; // Track the last time a bonus was added
     private Minetile currentBonusTile = null; // Track the current bonus tile
 
-    int tileSize = 70;
+    int tileSize = 50;
     int numRows;
     int mineCount;
     int numCols;
@@ -117,6 +122,7 @@ public class Minesweeper implements ActionListener {
         boardHeight = 720;
         timeScore = 100;
         Color darkPinkRed = new Color(250, 20, 60);
+        Color darkRed = new Color(240, 20, 60);
 
         frame.setSize(boardWidth, boardHeight);
         frame.setLocationRelativeTo(null);
@@ -133,12 +139,12 @@ public class Minesweeper implements ActionListener {
         textLabel.setForeground(darkPinkRed);
 
         // Gameover Text
-        textLabel1.setFont(new Font("Arial", Font.BOLD, 40));
+        textLabel1.setFont(new Font("Arial", Font.BOLD, 25));
         textLabel1.setText("");
         textLabel1.setOpaque(true);
-        textLabel1.setBounds(30, 25, 650, 40);
+        textLabel1.setBounds(30, 70, 650, 40);
         textLabel1.setOpaque(false);
-        textLabel1.setForeground(darkPinkRed);
+        textLabel1.setForeground(darkRed);
 
         // Flagged text
         textLabelFlagged.setFont(new Font("Arial", Font.BOLD, 40));
@@ -172,8 +178,11 @@ public class Minesweeper implements ActionListener {
         boardPanel.setBounds(0, 0, boardWidth, boardHeight); // Adjust if needed
         layeredPane.add(boardPanel, JLayeredPane.PALETTE_LAYER); // Add above background
 
-        boardPanel.setOpaque(false);
-        boardPanel.setBackground(new Color(0, 0, 0, 0)); // Fully transparent
+        //boardPanel.setOpaque(false);
+        //boardPanel.setBackground(new Color(0, 0, 0, 0)); // Fully transparent
+
+        boardPanel.setOpaque(true);
+        boardPanel.setBackground(Color.PINK); // test color
 
         textPanel.setBounds(0, 0, boardWidth, 100);
         layeredPane.add(textPanel, JLayeredPane.MODAL_LAYER);
@@ -183,13 +192,9 @@ public class Minesweeper implements ActionListener {
         frame.setContentPane(layeredPane);
         frame.pack();
 
-
         ImageIcon frameIcon = new ImageIcon(getClass().getResource("/images/virusSweeperIcon.png"));
         frame.setIconImage(frameIcon.getImage()); // Correct usage
 
-// Create and set background/logo label
-
-      
         //timer
         timerLabel.setFont(new Font("Arial", Font.BOLD, 40));
         timerLabel.setBounds(1085, 12, 200, 40);
@@ -199,8 +204,18 @@ public class Minesweeper implements ActionListener {
         boardPanel.setLayout(new GridLayout(numRows, numCols)); // Declaring tiles rows and colums
 
         // Outer Panel
-        outerPanel.setBorder(BorderFactory.createEmptyBorder(50, 400, 50, 50)); // Margin
+        outerPanel.setBorder(BorderFactory.createEmptyBorder(120, 80, 100, 240)); 
+    //    outerPanel.add(boardPanel, BorderLayout.CENTER);
+
+        outerPanel.setLayout(new BorderLayout()); // <-- THIS IS MISSING!
+        outerPanel.setBounds(0, 0, boardWidth, boardHeight); // Ensure it's the right size
+        outerPanel.setOpaque(false); // Optional if background shows through
+
+        // Add boardPanel to outerPanel
         outerPanel.add(boardPanel, BorderLayout.CENTER);
+
+        // Add outerPanel to layeredPane (on higher layer than background)
+        layeredPane.add(outerPanel, JLayeredPane.PALETTE_LAYER);
 
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 40));
         scoreLabel.setForeground(darkPinkRed);
@@ -275,8 +290,7 @@ public class Minesweeper implements ActionListener {
         layeredPane.add(textLabelFlagged, JLayeredPane.MODAL_LAYER);
         layeredPane.add(BtnRestart, JLayeredPane.MODAL_LAYER);
         layeredPane.add(BtnBack, JLayeredPane.MODAL_LAYER);
-        layeredPane.add(outerPanel, JLayeredPane.PALETTE_LAYER);
-
+       // layeredPane.add(outerPanel, JLayeredPane.PALETTE_LAYER);
 
         // Initialize timer variables based on mode
         int minutes = elapsedTime / 60;
@@ -321,7 +335,8 @@ public class Minesweeper implements ActionListener {
 
 //                    timeScore = elapsedTime;
                     if (elapsedTime <= 0) {
-                        JOptionPane.showMessageDialog(frame, "Time's up! Game Over.", "Game Over", JOptionPane.ERROR_MESSAGE);
+                        CustomDialog.showCustomError(frame, "Time's up!\nGame Over.");
+                        //JOptionPane.showMessageDialog(frame, "Time's up! Game Over.", "Game Over", JOptionPane.ERROR_MESSAGE);
                         textLabel1.setText("Game Over: Time's up");
                         timer.stop();
                         gameOver = true;
@@ -351,10 +366,11 @@ public class Minesweeper implements ActionListener {
                         // Game over, swap bonus with mines if naabutan
                         if (isNoMoreSafeTile()) {
                             revealMines();
-                            JOptionPane.showMessageDialog(null, "Game Over: Last safe tile is now contained with Virus", "Game Over", JOptionPane.ERROR_MESSAGE);
+                            CustomDialog.showCustomError(null, "Game Over:\nLast safe tile is now\ncontained with Virus");
+                            //JOptionPane.showMessageDialog(null, "Game Over: Last safe tile is now contained with Virus", "Game Over", JOptionPane.ERROR_MESSAGE);
                             textLabel1.setText("Game Over: You failed to prevent virus");
 //                        newMine++;
-                            textLabel.setText("Minesweeper : " + Integer.toString(mineCount + newMine));
+                            textLabel.setText(Integer.toString(mineCount + newMine));
 
                             ArrayList<Minetile> availableTiles2 = new ArrayList<>();
                             for (int r = 0; r < numRows; r++) {
@@ -462,9 +478,9 @@ public class Minesweeper implements ActionListener {
 //                } else {
 //                    timeText = elapsedTime + "s";
 //                }
-                timerLabel.setText(String.format("Time: %02d:%02d", minutes, seconds));
+                timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
 //                timerLabel.setText("Time: " + timeText);
-                scoreLabel.setText("Score : " + timeScore);
+                scoreLabel.setText("" + timeScore);
 //                timerLabel.setText("Time : " + elapsedTime + "s");
 //                scoreLabel.setText("Score :" + Integer.toString(timeScore));
             }
@@ -593,31 +609,27 @@ public class Minesweeper implements ActionListener {
 
                                             // Create revive dialog
                                             JPanel panel = new JPanel(new BorderLayout());
-                                            JLabel label = new JLabel("Do you want to revive? (10 seconds remaining)");
+                                            JLabel label = new JLabel("<html>Do you want to revive?<br>(10 seconds remaining)</html>");
                                             panel.add(label, BorderLayout.CENTER);
 
-                                            JOptionPane optionPane = new JOptionPane(panel, JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION);
-                                            JDialog dialog = optionPane.createDialog(frame, "System Restore");
-                                            dialog.setModal(true);
-
+                                            // Use your custom dialog function instead of JOptionPane
                                             final int[] secondsRemaining = {10};
                                             countdownTimer = new Timer(1000, f -> {
                                                 secondsRemaining[0]--;
-                                                label.setText("Do you want to revive? (" + secondsRemaining[0] + " seconds remaining)");
+                                                label.setText("<html>Do you want to revive?<br>(" + secondsRemaining[0] + " seconds remaining)</html>");
+                                                //label.setText("Do you want to revive?\n(" + secondsRemaining[0] + " seconds remaining)");
                                                 if (secondsRemaining[0] <= 0 && !gameLost) {
                                                     ((Timer) f.getSource()).stop();
-                                                    dialog.dispose();
-                                                    handleReviveResponse(tile, false);
+                                                    handleReviveResponse(tile, false); // Auto-handle revive if time is up
                                                 }
                                             });
                                             countdownTimer.start();
 
-                                            dialog.setVisible(true);
+                                            // Show the custom question panel and handle the result
+                                            int dialogResult = CustomDialog.showCustomQuestionPanel(frame, panel, "System Restore");
 
-                                            // Check user response after dialog closes
-                                            Object selectedValue = optionPane.getValue();
                                             if (!gameOver) {
-                                                if (selectedValue != "uninitializedValue" && (Integer) selectedValue == 0) {
+                                                if (dialogResult == JOptionPane.YES_OPTION) {
                                                     countdownTimer.stop();
                                                     handleReviveResponse(tile, true);
                                                 } else {
@@ -625,11 +637,45 @@ public class Minesweeper implements ActionListener {
                                                     handleReviveResponse(tile, false);
                                                 }
                                             }
+//                                            JPanel panel = new JPanel(new BorderLayout());
+//                                            JLabel label = new JLabel("Do you want to revive? (10 seconds remaining)");
+//                                            panel.add(label, BorderLayout.CENTER);
+//
+//                                            JOptionPane optionPane = new JOptionPane(panel, JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION);
+//                                            JDialog dialog = optionPane.createDialog(frame, "System Restore");
+//                                            dialog.setModal(true);
+//
+//                                            final int[] secondsRemaining = {10};
+//                                            countdownTimer = new Timer(1000, f -> {
+//                                                secondsRemaining[0]--;
+//                                                label.setText("Do you want to revive? (" + secondsRemaining[0] + " seconds remaining)");
+//                                                if (secondsRemaining[0] <= 0 && !gameLost) {
+//                                                    ((Timer) f.getSource()).stop();
+//                                                    dialog.dispose();
+//                                                    handleReviveResponse(tile, false);
+//                                                }
+//                                            });
+//                                            countdownTimer.start();
+//
+//                                            //dialog.setVisible(true);
+//
+//                                            // Check user response after dialog closes
+//                                            Object selectedValue = optionPane.getValue();
+//                                            if (!gameOver) {
+//                                                if (selectedValue != "uninitializedValue" && (Integer) selectedValue == 0) {
+//                                                    countdownTimer.stop();
+//                                                    handleReviveResponse(tile, true);
+//                                                } else {
+//                                                    countdownTimer.stop();
+//                                                    handleReviveResponse(tile, false);
+//                                                }
+//                                            }
                                         } else {
                                             gameLost = true;
                                             swapBonusWithBomb = true;
                                             revealMines();
-                                            JOptionPane.showMessageDialog(frame, "Game Over: You dug up a Virus", "Game Over", JOptionPane.ERROR_MESSAGE);
+                                            CustomDialog.showCustomError(frame, "Game Over:\nYou dug up a Virus");
+                                            //JOptionPane.showMessageDialog(frame, "Game Over: You dug up a Virus", "Game Over", JOptionPane.ERROR_MESSAGE);
                                             textLabel1.setText("Game Over: You dug up a Virus");
                                         }
                                     }
@@ -653,19 +699,18 @@ public class Minesweeper implements ActionListener {
                                     flagged--;
                                 }
                             }
-                            textLabelFlagged.setText("Flagged tiles : " + Integer.toString(flagged));
+                            textLabelFlagged.setText(Integer.toString(flagged));
 
                         }
                     }
                 });
 
                 boardPanel.add(tile);
-                
-                
             }
-        }
-
+        }        
         frame.setVisible(true);
+        
+        
     }
 
     // Setting Bonus/Question tiles
@@ -765,8 +810,8 @@ public class Minesweeper implements ActionListener {
         BtnBack.setEnabled(true);
         BtnRestart.setEnabled(true);
         gameOver = true;
-        scoreLabel.setText("Score :" + Integer.toString(timeScore));
-        textLabelFlagged.setText("Flagged tiles : " + Integer.toString(flagged));
+        scoreLabel.setText(Integer.toString(timeScore));
+        textLabelFlagged.setText(Integer.toString(flagged));
         timer.stop();
 
         // here
@@ -862,7 +907,7 @@ public class Minesweeper implements ActionListener {
             }
         }
         checkWinCondition();
-        textLabelFlagged.setText("Flagged tiles : " + Integer.toString(flagged));
+        textLabelFlagged.setText(Integer.toString(flagged));
     }
 
     int countMine(int r, int c) {
@@ -887,7 +932,9 @@ public class Minesweeper implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == BtnBack) {
-            int x = JOptionPane.showConfirmDialog(null, "Are you sure?", "Quit", JOptionPane.YES_NO_OPTION);
+        int x = CustomDialog.showCustomConfirmation(null, "Are you sure?", "Quit");
+
+            //int x = JOptionPane.showConfirmDialog(null, "Are you sure?", "Quit", JOptionPane.YES_NO_OPTION);
             if (x == 0) {
                 timer.stop();
                 removeAllTimers();
@@ -902,7 +949,8 @@ public class Minesweeper implements ActionListener {
 //            Timer pauseTimer;
 //            Timer power1Timer;
             if (!gameOver) {
-                x = JOptionPane.showConfirmDialog(null, "Are you sure?", "Restart", JOptionPane.YES_NO_OPTION);
+                x = CustomDialog.showCustomConfirmation(null, "Are you sure?", "Restart");
+                //x = JOptionPane.showConfirmDialog(null, "Are you sure?", "Restart", JOptionPane.YES_NO_OPTION);
                 if (x == 0) {
                     timer.stop();
                     removeAllTimers();
@@ -947,7 +995,8 @@ public class Minesweeper implements ActionListener {
                 power1--;
                 power1Btn.setText("Debugger : " + String.valueOf(power1));
             } else if (pauseTimer.isRunning() && !gameOver) {
-                JOptionPane.showMessageDialog(null, "Wait the duration of last debugger", "Debugger", 2);
+                CustomDialog.showCustomWarning(null, "Wait the duration of\nlast debugger");
+                //JOptionPane.showMessageDialog(null, "Wait the duration of last debugger", "Debugger", 2);
             }
         } else if (e.getSource() == power2Btn && !gameOver && (power2 > 0 && start) || allowReveal3x3) {
             if (!allowReveal3x3) {
@@ -959,7 +1008,8 @@ public class Minesweeper implements ActionListener {
                 power2++;
                 power2Btn.setText("Radar : " + String.valueOf(power2));
             } else {
-                JOptionPane.showMessageDialog(null, "Radar is enable!", "Radar", 2);
+                CustomDialog.showCustomWarning(null, "Radar is enable!");
+                //JOptionPane.showMessageDialog(null, "Radar is enable!", "Radar", 2);
             }
         }
         updatePowerUps();
@@ -1198,7 +1248,9 @@ public class Minesweeper implements ActionListener {
                     countdownTimer.stop();
                 } else { // wrong
 //                    timer.stop();
-                    JOptionPane.showMessageDialog(null, "Game Over: Your answer is wrong", "Game Over", JOptionPane.ERROR_MESSAGE);
+                    CustomDialog.showCustomError(null, "Game Over:\nYour answer is wrong!");
+
+                    //JOptionPane.showMessageDialog(null, "Game Over: Your answer is wrong", "Game Over", JOptionPane.ERROR_MESSAGE);
                     textLabel1.setText("Game Over: You failed to answer the final question");
                     revealMines();
                     countdownTimer.stop();
@@ -1206,14 +1258,16 @@ public class Minesweeper implements ActionListener {
             } // Handle result (if user pressed Cancel)
             else if (result != "uninitializedValue" && (Integer) result == 2) {
 //                processInput(userInput);
-                JOptionPane.showMessageDialog(null, "Game Over: You failed!", "Game Over", JOptionPane.ERROR_MESSAGE);
+                CustomDialog.showCustomError(null, "Game Over:\nYou failed!");
+                //JOptionPane.showMessageDialog(null, "Game Over: You failed!", "Game Over", JOptionPane.ERROR_MESSAGE);
                 textLabel1.setText("Game Over: You failed to answer the final question");
                 revealMines();
                 countdownTimer.stop();
             } else {
 //                processTimeout();
 //                timer.stop();
-                JOptionPane.showMessageDialog(null, "Game Over: Time's Up!", "Game Over", JOptionPane.ERROR_MESSAGE);
+                CustomDialog.showCustomError(null, "Game Over:\nTime's Up!");
+                //JOptionPane.showMessageDialog(null, "Game Over: Time's Up!", "Game Over", JOptionPane.ERROR_MESSAGE);
                 textLabel1.setText("Game Over: You failed to answer the final question");
                 revealMines();
                 countdownTimer.stop();
@@ -1429,7 +1483,8 @@ public class Minesweeper implements ActionListener {
         if (availableTiles2.isEmpty()) {
             if (type == "text") {
                 gameOver = true;
-                JOptionPane.showMessageDialog(null, "Game Over: Last safe tile is now contained with Virus", "Game Over", JOptionPane.ERROR_MESSAGE);
+                CustomDialog.showCustomError(null, "Game Over:\nLast safe tile is now\ncontained with Virus!");
+                //JOptionPane.showMessageDialog(null, "Game Over: Last safe tile is now contained with Virus", "Game Over", JOptionPane.ERROR_MESSAGE);
                 textLabel1.setText("Game Over: You failed to prevent virus");
             }
             return true;
@@ -1458,7 +1513,8 @@ public class Minesweeper implements ActionListener {
         if (chance < 50) { // 50% chance for 5 coins
             int bonusCoin = 5;
             timer.stop();
-            JOptionPane.showMessageDialog(frame, "Bonus: You found 5 coins!");
+            CustomDialog.showCustomMessage(frame, "You found 5 coins!", "Bonus");
+            //JOptionPane.showMessageDialog(frame, "Bonus: You found 5 coins!");
 
             String sqlCoin = "update account set coins = " + (database.getIntRecord("coins", menu.username) + bonusCoin) + " where username = '" + menu.username + "'";
             try {
@@ -1473,13 +1529,15 @@ public class Minesweeper implements ActionListener {
             timer.start();
         } else if (chance < 65) { // 15% chance for +20 score
             timeScore += 20;
-            scoreLabel.setText("Score : " + timeScore);
+            scoreLabel.setText("" + timeScore);
             timer.stop();
-            JOptionPane.showMessageDialog(frame, "Bonus: +20 Score!");
+            CustomDialog.showCustomMessage(frame, "+20 Score!", "Bonus");
+            //JOptionPane.showMessageDialog(frame, "Bonus: +20 Score!");
             timer.start();
         } else if (chance < 80) { // 15% chance for 30s pause
             power1++;
-            JOptionPane.showMessageDialog(null, "Bonus: +1 Debugger!", "Bonus", JOptionPane.INFORMATION_MESSAGE);
+            CustomDialog.showCustomInformation(null, "+1 Debugger!", "Bonus");
+            //JOptionPane.showMessageDialog(null, "Bonus: +1 Debugger!", "Bonus", JOptionPane.INFORMATION_MESSAGE);
 //            timePaused += 5000;
 //            pauseTimePower();
 //            if (timer.isRunning()) {
@@ -1506,12 +1564,16 @@ public class Minesweeper implements ActionListener {
 //            }
         } else if (chance < 95) { // 15% chance for 3x3 reveal
             power2++;
-            JOptionPane.showMessageDialog(null, "Bonus: +1 Radar!", "Bonus", JOptionPane.INFORMATION_MESSAGE);
+            //CustomDialog.showCustomInformation(null, "Bonus: +1 Radar!", "Bonus");
+            CustomDialog.showCustomMessage(null, "+1 Radar!", "Bonus");
+            //JOptionPane.showMessageDialog(null, "Bonus: +1 Radar!", "Bonus", JOptionPane.INFORMATION_MESSAGE);
 //            allowReveal3x3 = true;
 //            JOptionPane.showMessageDialog(frame, "Bonus: Click any tile to reveal its 3x3 neighbors!");
         } else { // 5% chance for Power 4
             power3++;
-            JOptionPane.showMessageDialog(null, "Bonus: +1 System Restore!", "Bonus", JOptionPane.INFORMATION_MESSAGE);
+              CustomDialog.showCustomMessage(null, "+1 System Restore!", "Bonus");
+            //CustomDialog.showCustomInformation(null, "Bonus: +1 System Restore!", "Bonus");
+            //JOptionPane.showMessageDialog(null, "Bonus: +1 System Restore!", "Bonus", JOptionPane.INFORMATION_MESSAGE);
 //            timeScore += 4;
 //            coinsEarned += 4;
 //            scoreLabel.setText("Score : " + timeScore);
@@ -1639,7 +1701,7 @@ public class Minesweeper implements ActionListener {
             }
         }
         checkWinCondition();
-        textLabelFlagged.setText("Flagged tiles : " + Integer.toString(flagged));
+        textLabelFlagged.setText(Integer.toString(flagged));
     }
 
     void handleQuestionTile(Minetile tile) {
@@ -1647,7 +1709,8 @@ public class Minesweeper implements ActionListener {
         tile.setEnabled(false);
         tile.setBackground(Color.white);
 
-        JOptionPane.showMessageDialog(null, "Question Tile", "Question", JOptionPane.WARNING_MESSAGE);
+        CustomDialog.showCustomWarning(null, "Question Tile");
+        //JOptionPane.showMessageDialog(null, "Question Tile", "Question", JOptionPane.WARNING_MESSAGE);
         if (gameOver) { // IF not answered when game ends == set default
             tile.setEnabled(true);
             tile.setText("?");
@@ -1672,7 +1735,8 @@ public class Minesweeper implements ActionListener {
             questionList = removeQuestion(questionList, tempQuestion);
         }
 
-        String answer = JOptionPane.showInputDialog(frame, tempQuestion, "Question Tile", JOptionPane.QUESTION_MESSAGE);
+        String answer = CustomDialog.showCustomInputDialog(frame, tempQuestion, "Question Tile");
+    //    String answer = JOptionPane.showInputDialog(frame, tempQuestion, "Question Tile", JOptionPane.QUESTION_MESSAGE);
         if (gameOver) {
             tile.setEnabled(true);
             tile.setBackground(Color.black);
@@ -1692,7 +1756,8 @@ public class Minesweeper implements ActionListener {
             updateRevealedTileCounts();
         } else {
             enableSurroundingTiles(tile);
-            JOptionPane.showMessageDialog(frame, "Wrong answer! Surrounding tiles reactivated.", "Incorrect", JOptionPane.ERROR_MESSAGE);
+            CustomDialog.showCustomError(frame, "Wrong answer!\nSurrounding tiles reactivated.");
+            //JOptionPane.showMessageDialog(frame, "Wrong answer! Surrounding tiles reactivated.", "Incorrect", JOptionPane.ERROR_MESSAGE);
             textLabel.setText("Minesweeper : " + (mineCount + newMine));
         }
         checkWinCondition();
@@ -1720,7 +1785,8 @@ public class Minesweeper implements ActionListener {
     void pauseTimePower() {
         if (timer.isRunning()) {
             timer.stop();
-            JOptionPane.showMessageDialog(frame, "Bonus: Timer paused for 30 seconds!");
+            CustomDialog.showCustomMessage(frame, "Timer paused for 30 seconds!", "Bonus");
+            //JOptionPane.showMessageDialog(frame, "Bonus: Timer paused for 30 seconds!");
 //            timer.start();
 //            timer.stop();
             if (pauseTimer != null && pauseTimer.isRunning()) {
@@ -1754,7 +1820,7 @@ public class Minesweeper implements ActionListener {
                 flagged++;
             }
             power3--;
-            power3Lbl.setText("System Restore : " + power3);
+            power3Lbl.setText("" + power3);
             gameLost = false;
             gameOver = false;
             swapBonusWithBomb = false;
@@ -1762,13 +1828,14 @@ public class Minesweeper implements ActionListener {
 //            tile.setBackground(Color.black);
             tile.setText("#");
             tile.setForeground(Color.cyan);
-            textLabelFlagged.setText("Flagged tiles : " + Integer.toString(flagged));
+            textLabelFlagged.setText(Integer.toString(flagged));
             timer.start(); // Resume the game timer
         } else {
             gameLost = true;
             swapBonusWithBomb = true;
             revealMines();
-            JOptionPane.showMessageDialog(frame, "Game Over: You dug up a Virus", "Game Over", JOptionPane.ERROR_MESSAGE);
+            CustomDialog.showCustomError(frame, "Game Over:\nYou dug up a Virus!");
+            //JOptionPane.showMessageDialog(frame, "Game Over: You dug up a Virus", "Game Over", JOptionPane.ERROR_MESSAGE);
             textLabel1.setText("Game Over: You dug up a Virus");
         }
     }
@@ -1850,5 +1917,5 @@ public class Minesweeper implements ActionListener {
         }
     }
     
-    
+
 }
