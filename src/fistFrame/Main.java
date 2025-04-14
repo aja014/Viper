@@ -25,8 +25,6 @@ public class Main {
 //        new leaderboardsScoreFrame("blitzscore");
 //        new Minesweeper(20,9,0,0, "blitz"); // BLITZ
 //       new Minesweeper(2,9,15,1, ""); // NORMAL MODE
-
-    
     }
     
 }

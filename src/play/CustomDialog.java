@@ -2,6 +2,8 @@ package play;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class CustomDialog {
 
@@ -157,6 +159,50 @@ public class CustomDialog {
         dialog.add(panel);
         dialog.setVisible(true);
     }
+    
+    public static void showCustomWarningMess(Component parent, String messageText, String titleText) {
+        Frame owner = (parent != null) ? (Frame) SwingUtilities.getWindowAncestor(parent) : new JFrame();
+        JDialog dialog = new JDialog(owner, true);
+        dialog.setUndecorated(true);
+        dialog.setSize(450, 150);
+        dialog.setLocationRelativeTo(parent);
+
+        Color background = new Color(255, 239, 184); // Soft gold
+        Color titleColor = new Color(139, 69, 19);   // Saddle brown
+        Color messageColor = new Color(165, 42, 42); // Brown-red
+
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBackground(background);
+
+        JLabel title = new JLabel(titleText, SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 28));
+        title.setForeground(titleColor);
+        title.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
+        panel.add(title, BorderLayout.NORTH);
+
+        messageText = "<html><div style='text-align: center;'>" + messageText.replace("\n", "<br>") + "</div></html>";
+
+        JLabel message = new JLabel(messageText, SwingConstants.CENTER);
+        message.setFont(new Font("Arial", Font.PLAIN, 30));
+        message.setForeground(messageColor);
+        message.setBorder(BorderFactory.createEmptyBorder(5, 20, 10, 20));
+        panel.add(message, BorderLayout.CENTER);
+
+        JButton okButton = new JButton("OK");
+        okButton.setFont(new Font("Arial", Font.BOLD, 18));
+        okButton.setBackground(new Color(220, 20, 60)); // Crimson red
+        okButton.setForeground(Color.WHITE);
+        okButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        okButton.addActionListener(e -> dialog.dispose());
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(background);
+        buttonPanel.add(okButton);
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+
+        dialog.add(panel);
+        dialog.setVisible(true);
+    }
 
     // Custom information dialog
     public static void showCustomInformation(Component parent, String messageText, String titleText) {
@@ -202,20 +248,25 @@ public class CustomDialog {
         dialog.setSize(450, 250);
         dialog.setLocationRelativeTo(parent);
 
+        // Main panel with a soft golden background
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(new Color(240, 248, 255)); // Light blue
+        Color backgroundColor = new Color(255, 239, 184); // Soft gold
+        panel.setBackground(backgroundColor);
 
+        // Title
         JLabel title = new JLabel(titleText, SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 30));
-        title.setForeground(new Color(25, 25, 112)); // Midnight blue
+        title.setForeground(new Color(139, 69, 19)); // Saddle brown
         title.setBorder(BorderFactory.createEmptyBorder(15, 10, 5, 10));
         panel.add(title, BorderLayout.NORTH);
 
-        // Embed your custom content panel
-        contentPanel.setBackground(new Color(240, 248, 255)); // Match background
+        // Content panel setup
+        contentPanel.setBackground(backgroundColor);
         contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panel.add(contentPanel, BorderLayout.CENTER);
 
+        // Apply consistent style to all JLabels inside the content panel
+        
         for (Component comp : contentPanel.getComponents()) {
             if (comp instanceof JLabel) {
                 JLabel lbl = (JLabel) comp;
@@ -229,15 +280,17 @@ public class CustomDialog {
 
                 lbl.setHorizontalAlignment(SwingConstants.CENTER);
                 lbl.setFont(new Font("Arial", Font.PLAIN, 30));
-                lbl.setForeground(new Color(25, 25, 112));
+                lbl.setForeground(new Color(165, 42, 42)); 
             }
         }
 
+        // Button panel
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setBackground(new Color(240, 248, 255));
+        buttonPanel.setBackground(backgroundColor);
 
         JButton yesButton = new JButton("YES");
-        yesButton.setBackground(new Color(144, 238, 144)); // Light green
+        yesButton.setBackground(new Color(255, 204, 0)); // Strong golden yellow
+        yesButton.setForeground(new Color(102, 51, 0)); // Deep brown text
         yesButton.setFont(new Font("Arial", Font.BOLD, 22));
         yesButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         yesButton.addActionListener(e -> {
@@ -246,7 +299,8 @@ public class CustomDialog {
         });
 
         JButton noButton = new JButton("NO");
-        noButton.setBackground(new Color(255, 182, 193)); // Light pink
+        noButton.setBackground(new Color(220, 20, 60)); // Crimson red
+        noButton.setForeground(Color.WHITE);
         noButton.setFont(new Font("Arial", Font.BOLD, 22));
         noButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         noButton.addActionListener(e -> {
@@ -269,40 +323,45 @@ public class CustomDialog {
 
         JDialog dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(parent), true);
         dialog.setUndecorated(true);
-        dialog.setSize(450, 220);
+        dialog.setSize(450, 230);
         dialog.setLocationRelativeTo(parent);
 
+        Color background = new Color(255, 239, 184); // Soft yellow
+        Color titleColor = new Color(139, 69, 19);   // Saddle brown
+        Color questionColor = new Color(165, 42, 42); // Brown-red
+
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(new Color(240, 248, 255)); // Soft blue
+        panel.setBackground(background);
 
         JLabel title = new JLabel(titleText, SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 30));
-        title.setForeground(new Color(25, 25, 112)); // Midnight blue
+        title.setForeground(titleColor);
         title.setBorder(BorderFactory.createEmptyBorder(15, 10, 5, 10));
         panel.add(title, BorderLayout.NORTH);
 
         JPanel centerPanel = new JPanel(new BorderLayout());
-        centerPanel.setBackground(new Color(240, 248, 255));
+        centerPanel.setBackground(background);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
         JLabel question = new JLabel("<html><div style='text-align:center;'>" + questionText + "</div></html>", SwingConstants.CENTER);
         question.setFont(new Font("Arial", Font.PLAIN, 22));
-        question.setForeground(new Color(50, 50, 50));
+        question.setForeground(questionColor);
 
         JTextField inputField = new JTextField();
         inputField.setFont(new Font("Arial", Font.PLAIN, 20));
-        inputField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        inputField.setBorder(BorderFactory.createLineBorder(new Color(160, 82, 45), 1)); // Sienna
 
         centerPanel.add(question, BorderLayout.NORTH);
         centerPanel.add(inputField, BorderLayout.CENTER);
         panel.add(centerPanel, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setBackground(new Color(240, 248, 255));
+        buttonPanel.setBackground(background);
 
         JButton okButton = new JButton("OK");
         okButton.setFont(new Font("Arial", Font.BOLD, 20));
-        okButton.setBackground(new Color(144, 238, 144));
+        okButton.setBackground(new Color(220, 20, 60)); // Crimson red
+        okButton.setForeground(Color.WHITE);
         okButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         okButton.addActionListener(e -> {
             inputResult[0] = inputField.getText().trim();
@@ -311,7 +370,8 @@ public class CustomDialog {
 
         JButton cancelButton = new JButton("Cancel");
         cancelButton.setFont(new Font("Arial", Font.BOLD, 20));
-        cancelButton.setBackground(new Color(255, 182, 193));
+        cancelButton.setBackground(new Color(160, 82, 45)); // Sienna (warm brown)
+        cancelButton.setForeground(Color.WHITE);
         cancelButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         cancelButton.addActionListener(e -> {
             inputResult[0] = null;
@@ -368,4 +428,70 @@ public class CustomDialog {
         dialog.add(panel);
         dialog.setVisible(true);
     }
+    
+    public static String showCustomFinalQuestion(Component parent, String titleText) {
+        final String[] userInput = {null};
+
+        JDialog dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(parent), true);
+        dialog.setUndecorated(true);
+        dialog.setSize(450, 250);
+        dialog.setLocationRelativeTo(parent);
+
+        // Main panel
+        JPanel panel = new JPanel(new BorderLayout());
+        Color backgroundColor = new Color(255, 239, 184); // Soft gold
+        panel.setBackground(backgroundColor);
+
+        // Title
+        JLabel title = new JLabel(titleText + " (10 seconds remaining)", SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 24));
+        title.setForeground(new Color(139, 69, 19)); // Saddle brown
+        title.setBorder(BorderFactory.createEmptyBorder(15, 10, 10, 10));
+        panel.add(title, BorderLayout.NORTH);
+
+        // Input field
+        JTextField inputField = new JTextField();
+        inputField.setFont(new Font("Arial", Font.PLAIN, 20));
+        inputField.setHorizontalAlignment(JTextField.CENTER);
+        inputField.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+
+        JPanel centerPanel = new JPanel(new BorderLayout());
+        centerPanel.setBackground(backgroundColor);
+        centerPanel.add(inputField, BorderLayout.CENTER);
+        panel.add(centerPanel, BorderLayout.CENTER);
+
+        // Enter key listener
+        inputField.addActionListener(e -> {
+            userInput[0] = inputField.getText().trim();
+            dialog.dispose();
+        });
+
+        // Countdown timer
+        final int[] secondsRemaining = {10};
+        Timer countdownTimer = new Timer(1000, e -> {
+            secondsRemaining[0]--;
+            title.setText(titleText + " (" + secondsRemaining[0] + " seconds remaining)");
+
+            if (secondsRemaining[0] <= 0) {
+                ((Timer) e.getSource()).stop();
+                dialog.dispose(); // Close on timeout
+            }
+        });
+        countdownTimer.start();
+
+        // Stop timer if dialog is closed
+        dialog.addWindowListener(new WindowAdapter() {
+            public void windowClosed(WindowEvent e) {
+                countdownTimer.stop();
+            }
+        });
+
+        dialog.add(panel);
+        dialog.setVisible(true);
+
+        return userInput[0]; // null if timed out, or the user's input
+    }
+
+    
+    
 }

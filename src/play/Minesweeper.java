@@ -1243,7 +1243,8 @@ public class Minesweeper implements ActionListener {
                     revealMines();
                     gameOver = true; // Players cannot click tiles anymore
                     textLabel1.setText("Mines Cleared");
-                    JOptionPane.showMessageDialog(frame, "You earned " + coinsEarned + " coins!");
+                    CustomDialog.showCustomMessage(frame, "You earned " + coinsEarned + " coins!", "Congratulations!");
+                    //JOptionPane.showMessageDialog(frame, "You earned " + coinsEarned + " coins!");
                     level = "";
                     countdownTimer.stop();
                 } else { // wrong
@@ -1251,7 +1252,7 @@ public class Minesweeper implements ActionListener {
                     CustomDialog.showCustomError(null, "Game Over:\nYour answer is wrong!");
 
                     //JOptionPane.showMessageDialog(null, "Game Over: Your answer is wrong", "Game Over", JOptionPane.ERROR_MESSAGE);
-                    textLabel1.setText("Game Over: You failed to answer the final question");
+                    textLabel1.setText("Game Over: You failed to\nanswer the final question");
                     revealMines();
                     countdownTimer.stop();
                 }
@@ -1440,7 +1441,7 @@ public class Minesweeper implements ActionListener {
             Minetile newBombTile = availableTiles1.get(randomIndex);
             minelist.add(newBombTile);
             newMine++;
-            textLabel.setText("Minesweeper : " + (mineCount + newMine));
+            textLabel.setText("" + (mineCount + newMine));
 //            newBombTile.setText("#");
             updateRevealedTileCounts();
         }
@@ -1579,9 +1580,9 @@ public class Minesweeper implements ActionListener {
 //            scoreLabel.setText("Score : " + timeScore);
 //            JOptionPane.showMessageDialog(frame, "Power 4! +4 Score and Coins!");
         }
-        power1Btn.setText("Debugger : " + String.valueOf(power1));
-        power2Btn.setText("Radar : " + String.valueOf(power2));
-        power3Lbl.setText("System Restore : " + String.valueOf(power3));
+        power1Btn.setText(String.valueOf(power1));
+        power2Btn.setText(String.valueOf(power2));
+        power3Lbl.setText(String.valueOf(power3));
         updateRevealedTileCounts();
         updatePowerUps();
         // Remove a random non-question mine
@@ -1709,7 +1710,7 @@ public class Minesweeper implements ActionListener {
         tile.setEnabled(false);
         tile.setBackground(Color.white);
 
-        CustomDialog.showCustomWarning(null, "Question Tile");
+        CustomDialog.showCustomWarningMess(null, "Question Tile", "Question");
         //JOptionPane.showMessageDialog(null, "Question Tile", "Question", JOptionPane.WARNING_MESSAGE);
         if (gameOver) { // IF not answered when game ends == set default
             tile.setEnabled(true);
@@ -1758,7 +1759,7 @@ public class Minesweeper implements ActionListener {
             enableSurroundingTiles(tile);
             CustomDialog.showCustomError(frame, "Wrong answer!\nSurrounding tiles reactivated.");
             //JOptionPane.showMessageDialog(frame, "Wrong answer! Surrounding tiles reactivated.", "Incorrect", JOptionPane.ERROR_MESSAGE);
-            textLabel.setText("Minesweeper : " + (mineCount + newMine));
+            textLabel.setText("" + (mineCount + newMine));
         }
         checkWinCondition();
     }
