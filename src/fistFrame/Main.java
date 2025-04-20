@@ -19,13 +19,12 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-//        new loadingPerLevel("easy");
+    //new loadingPerLevel("easy");
 //        new Login();
-        new opening();
+       new opening();
 //        new leaderboardsScoreFrame("blitzscore");
 //        new Minesweeper(20,9,0,0, "blitz"); // BLITZ
-//        new Minesweeper(2,9,15,1, ""); // NORMAL MODE
-
+//       new Minesweeper(2,9,15,1, ""); // NORMAL MODE
     }
     
 }

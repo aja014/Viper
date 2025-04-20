@@ -149,9 +149,11 @@ public class createAcc extends javax.swing.JFrame {
         if (!username1.isEmpty() && !password1.isEmpty() && !confirmpass.isEmpty()){
             if (username1.length() < 3 || password1.length() < 8){
                 if (username1.length() < 3){
-                    JOptionPane.showMessageDialog(null, "Username must be greater than 3 characters", "Error", JOptionPane.ERROR_MESSAGE);
+                    showCustomError("Username must be greater than 3 characters");
+                    //JOptionPane.showMessageDialog(null, "Username must be greater than 3 characters", "Error", JOptionPane.ERROR_MESSAGE);
                 }else if (password1.length() < 8){
-                    JOptionPane.showMessageDialog(null, "Password must be greater than 8 characters", "Error", JOptionPane.ERROR_MESSAGE);
+                    showCustomError("Username must be greater than 8 characters");
+                    //JOptionPane.showMessageDialog(null, "Password must be greater than 8 characters", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }else{
                 if (password1.equals(confirmpass)){
@@ -180,7 +182,8 @@ public class createAcc extends javax.swing.JFrame {
                         st.close();
                         rs.close();
                         System.out.println("Added");
-                        JOptionPane.showMessageDialog(null, "Added Successfully!", "Successful",JOptionPane.INFORMATION_MESSAGE);
+                        showCustomSuccess("Added Successfully");
+                        //JOptionPane.showMessageDialog(null, "Added Successfully!", "Successful",JOptionPane.INFORMATION_MESSAGE);
                         Login.username1 = username1;
                         menu.username = database.getStringRecord("username", username1);
                         menu.sound = 50;
@@ -194,7 +197,8 @@ public class createAcc extends javax.swing.JFrame {
                         dispose();
                     }catch (SQLException ex){
                         if (ex.getSQLState().equals("23505")){
-                            JOptionPane.showMessageDialog(null, "Username already Exist", "Error",JOptionPane.ERROR_MESSAGE);
+                            showCustomError("Username already Exist");
+                            //JOptionPane.showMessageDialog(null, "Username already Exist", "Error",JOptionPane.ERROR_MESSAGE);
                             ex.printStackTrace();
                         }else {
                             ex.printStackTrace();
@@ -202,11 +206,13 @@ public class createAcc extends javax.swing.JFrame {
                         System.out.println("Failed");
                     }
                 }else{
-                    JOptionPane.showMessageDialog(null, "Password doesn't match", "Error",JOptionPane.ERROR_MESSAGE);
+                    showCustomError("Password doesn't match");
+                    //JOptionPane.showMessageDialog(null, "Password doesn't match", "Error",JOptionPane.ERROR_MESSAGE);
                 }
             }
         }else{
-            JOptionPane.showMessageDialog(null, "Fields cannot be empty!", "Error", JOptionPane.ERROR_MESSAGE);
+            showCustomError("Fields cannot be Empty");
+            //JOptionPane.showMessageDialog(null, "Fields cannot be empty!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_BtnCreateActionPerformed
 
@@ -220,6 +226,62 @@ public class createAcc extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_confirmPasswordActionPerformed
 
+    private void showCustomError(String messageText) {
+        javax.swing.JDialog dialog = new javax.swing.JDialog(this, true);
+        dialog.setUndecorated(true);
+        dialog.setSize(400, 150);
+        dialog.setLocationRelativeTo(this);
+
+        javax.swing.JPanel panel = new javax.swing.JPanel();
+        panel.setBackground(new java.awt.Color(255, 240, 245)); // Light pink
+        panel.setLayout(new java.awt.BorderLayout());
+
+        javax.swing.JLabel message = new javax.swing.JLabel(messageText, javax.swing.SwingConstants.CENTER);
+        message.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 30));
+        message.setForeground(java.awt.Color.RED);
+
+        javax.swing.JButton okButton = new javax.swing.JButton("OK");
+        okButton.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 18));
+        okButton.setBackground(new java.awt.Color(255, 182, 193)); // Soft pastel red-pink
+        okButton.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 18));
+        okButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        okButton.addActionListener(e -> dialog.dispose());
+
+        panel.add(message, java.awt.BorderLayout.CENTER);
+        panel.add(okButton, java.awt.BorderLayout.SOUTH);
+
+        dialog.add(panel);
+        dialog.setVisible(true);
+    }
+    
+    private void showCustomSuccess(String messageText) {
+        javax.swing.JDialog dialog = new javax.swing.JDialog(this, true);
+        dialog.setUndecorated(true);
+        dialog.setSize(400, 150);
+        dialog.setLocationRelativeTo(this);
+
+        javax.swing.JPanel panel = new javax.swing.JPanel();
+        panel.setBackground(new java.awt.Color(220, 255, 220)); // Soft green
+        panel.setLayout(new java.awt.BorderLayout());
+
+        javax.swing.JLabel message = new javax.swing.JLabel(messageText, javax.swing.SwingConstants.CENTER);
+        message.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 30));
+        message.setForeground(new java.awt.Color(34, 139, 34)); // Forest green
+
+        javax.swing.JButton okButton = new javax.swing.JButton("OK");
+        okButton.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 18));
+        okButton.setBackground(new java.awt.Color(144, 238, 144)); // Light green
+        okButton.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 18));
+        okButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        okButton.addActionListener(e -> dialog.dispose());
+
+        panel.add(message, java.awt.BorderLayout.CENTER);
+        panel.add(okButton, java.awt.BorderLayout.SOUTH);
+
+        dialog.add(panel);
+        dialog.setVisible(true);
+    }
+    
     /**
      * @param args the command line arguments
      */

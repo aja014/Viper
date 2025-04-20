@@ -44,7 +44,7 @@ public class opening extends JFrame implements ActionListener {
         lbLogo.setVerticalAlignment(SwingConstants.CENTER);
         lbLogo.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-        setTitle("Virus Sweeper");
+        setTitle("Viper");
         setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

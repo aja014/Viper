@@ -215,7 +215,8 @@ public class shopFrame extends javax.swing.JFrame {
             database.saveIntRecord("coins", menu.coins, menu.username);
             database.saveIntRecord("power1", menu.pwr1, menu.username);
         } else {
-            JOptionPane.showMessageDialog(null, "Insufficient coins!", "Shop", 2);
+            showCustomWarning("Insufficient coins!");
+            //JOptionPane.showMessageDialog(null, "Insufficient coins!", "Shop", 2);
         }
         menu.pwr1 = database.getIntRecord("power1", menu.username);
         ownedDebugger.setText("Owned : " + String.valueOf(menu.pwr1));
@@ -237,7 +238,8 @@ public class shopFrame extends javax.swing.JFrame {
             database.saveIntRecord("coins", menu.coins, menu.username);
             database.saveIntRecord("power3", menu.pwr3, menu.username);
         } else {
-            JOptionPane.showMessageDialog(null, "Insufficient coins!", "Shop", 2);
+            showCustomWarning("Insufficient coins!");
+            //JOptionPane.showMessageDialog(null, "Insufficient coins!", "Shop", 2);
         }
         menu.pwr3 = database.getIntRecord("power3", menu.username);
         ownedSystemRestore.setText("Owned : " + String.valueOf(menu.pwr3));
@@ -259,13 +261,41 @@ public class shopFrame extends javax.swing.JFrame {
             database.saveIntRecord("coins", menu.coins, menu.username);
             database.saveIntRecord("power2", menu.pwr2, menu.username);
         } else {
-            JOptionPane.showMessageDialog(null, "Insufficient coins!", "Shop", 2);
+            showCustomWarning("Insufficient coins!");
+            //JOptionPane.showMessageDialog(null, "Insufficient coins!", "Shop", 2);
         }
         menu.pwr2 = database.getIntRecord("power2", menu.username);
         ownedRadar.setText("Owned : " + String.valueOf(menu.pwr2));
         LblAccountCoin.setText(String.valueOf(menu.coins));
     }//GEN-LAST:event_buyRadarActionPerformed
 
+    private void showCustomWarning(String messageText) {
+        javax.swing.JDialog dialog = new javax.swing.JDialog(this, true);
+        dialog.setUndecorated(true);
+        dialog.setSize(400, 150);
+        dialog.setLocationRelativeTo(this);
+
+        javax.swing.JPanel panel = new javax.swing.JPanel();
+        panel.setBackground(new java.awt.Color(255, 250, 205)); // Lemon Chiffon / light yellow
+        panel.setLayout(new java.awt.BorderLayout());
+
+        javax.swing.JLabel message = new javax.swing.JLabel(messageText, javax.swing.SwingConstants.CENTER);
+        message.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 30));
+        message.setForeground(new java.awt.Color(184, 134, 11)); // Dark goldenrod
+
+        javax.swing.JButton okButton = new javax.swing.JButton("OK");
+        okButton.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 16));
+        okButton.setForeground(java.awt.Color.BLACK); // Black text
+        okButton.setBackground(new java.awt.Color(255, 215, 0)); // Gold
+        okButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        okButton.addActionListener(e -> dialog.dispose());
+
+        panel.add(message, java.awt.BorderLayout.CENTER);
+        panel.add(okButton, java.awt.BorderLayout.SOUTH);
+
+        dialog.add(panel);
+        dialog.setVisible(true);
+    }
     /**
      * @param args the command line arguments
      */
