@@ -5,6 +5,7 @@
  */
 package Menu;
 
+import java.awt.*;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,7 +14,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -29,6 +33,35 @@ public class leaderboardsScoreFrame extends javax.swing.JFrame {
 
     public leaderboardsScoreFrame(String level) {
         initComponents();
+        Color darkRed = new Color(139, 0, 0);
+
+        tableScore.setBackground(Color.PINK);
+        tableScore.setFont(new Font("SansSerif", Font.BOLD, 20));
+
+        ((JViewport) tableScore.getParent()).setBackground(Color.PINK);
+
+        jScrollPane1.setBackground(Color.PINK);
+
+        tableScore.setShowGrid(true);
+        tableScore.setGridColor(Color.WHITE);
+
+        tableScore.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+
+        JTableHeader header = tableScore.getTableHeader();
+        header.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel label = (JLabel) super.getTableCellRendererComponent(
+                        table, value, isSelected, hasFocus, row, column);
+                label.setBackground(darkRed);
+                label.setForeground(Color.WHITE);
+                label.setFont(new Font("SansSerif", Font.BOLD, 40));
+                label.setOpaque(true);
+                label.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+                return label;
+            }
+        });
         setResizable(false);
 
         URL iconURL = getClass().getResource("/images/virusSweeperIcon.png");
@@ -113,6 +146,9 @@ public class leaderboardsScoreFrame extends javax.swing.JFrame {
 
         jScrollPane1.setBackground(java.awt.Color.white);
 
+        tableScore.setBackground(new java.awt.Color(255, 204, 204));
+        tableScore.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        tableScore.setForeground(new java.awt.Color(204, 0, 51));
         tableScore.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 

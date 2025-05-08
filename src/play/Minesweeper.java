@@ -14,14 +14,11 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 import play.CustomDialog;
 
-
-
 // STILL FIND BUG IN BONUS TILE PLACEMENT
 public class Minesweeper implements ActionListener {
 
     // adding new class with overriding the Jbutton(row number, col number)
-    
-      private class Minetile extends JButton {
+    private class Minetile extends JButton {
 
         int r, c;
 
@@ -30,7 +27,23 @@ public class Minesweeper implements ActionListener {
             this.c = c;
         }
     }
-
+    private ImageIcon closedTileIcon;
+    private ImageIcon openedTileIcon;
+    private ImageIcon crack1;
+    private ImageIcon crack2;
+    private ImageIcon crack3;
+    private Timer crackingTimer;
+    private JLabel characterLabel;
+    private ImageIcon standbyGif;
+    private ImageIcon diggingGif;
+    private Timer returnTimer;
+    private boolean isDigging = false;
+    private Point currentTileLocation;
+    int characterWIDTH = 0;
+    int characterHEIGHT = 0;
+    private ImageIcon flagIcon;
+    private ImageIcon questionIcon;
+    private ImageIcon virusIcon;
     String questionLevel = "";
     String[][] questionList;
     String tempQuestion = "";
@@ -91,7 +104,6 @@ public class Minesweeper implements ActionListener {
     JLabel power1Lbl = new JLabel("Power1");
     JLabel power2Lbl = new JLabel("Power2");
     JLabel power3Lbl = new JLabel("Power3");
-    
 
     // Reference of the tile we create
     Minetile[][] position;
@@ -124,6 +136,62 @@ public class Minesweeper implements ActionListener {
         Color darkPinkRed = new Color(250, 20, 60);
         Color darkRed = new Color(240, 20, 60);
 
+        flagIcon = new ImageIcon(getClass().getResource("/images/flag.png"));
+        questionIcon = new ImageIcon(getClass().getResource("/images/question.png"));
+        virusIcon = new ImageIcon(getClass().getResource("/images/virus.png"));
+
+        standbyGif = new ImageIcon(getClass().getResource("/images/character_0_standby.gif"));
+        diggingGif = new ImageIcon(getClass().getResource("/images/character_0_digging.gif"));
+
+        if (mineCount == 10) {
+
+            closedTileIcon = new ImageIcon(getClass().getResource("/images/easyclosed.png"));
+            openedTileIcon = new ImageIcon(getClass().getResource("/images/easyopened.png"));
+            closedTileIcon = new ImageIcon(closedTileIcon.getImage().getScaledInstance(95, 53, Image.SCALE_DEFAULT));
+            openedTileIcon = new ImageIcon(openedTileIcon.getImage().getScaledInstance(95, 53, Image.SCALE_DEFAULT));
+            flagIcon = new ImageIcon(flagIcon.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
+            questionIcon = new ImageIcon(questionIcon.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
+            virusIcon = new ImageIcon(virusIcon.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
+            characterWIDTH = 140;
+            characterHEIGHT = 140;
+        } else if (mineCount == 20) {
+            closedTileIcon = new ImageIcon(getClass().getResource("/images/mediumclosed.png"));
+            openedTileIcon = new ImageIcon(getClass().getResource("/images/mediumopened.png"));
+            closedTileIcon = new ImageIcon(closedTileIcon.getImage().getScaledInstance(56, 31, Image.SCALE_DEFAULT));
+            openedTileIcon = new ImageIcon(openedTileIcon.getImage().getScaledInstance(56, 31, Image.SCALE_DEFAULT));
+            flagIcon = new ImageIcon(flagIcon.getImage().getScaledInstance(35, 35, Image.SCALE_DEFAULT));
+            questionIcon = new ImageIcon(questionIcon.getImage().getScaledInstance(35, 35, Image.SCALE_DEFAULT));
+            virusIcon = new ImageIcon(virusIcon.getImage().getScaledInstance(35, 35, Image.SCALE_DEFAULT));
+            characterWIDTH = 120;
+            characterHEIGHT = 120;
+        } else if (mineCount == 30) {
+            closedTileIcon = new ImageIcon(getClass().getResource("/images/hardclosed.png"));
+            openedTileIcon = new ImageIcon(getClass().getResource("/images/hardopened.png"));           
+            closedTileIcon = new ImageIcon(closedTileIcon.getImage().getScaledInstance(39, 21, Image.SCALE_DEFAULT));
+            openedTileIcon = new ImageIcon(openedTileIcon.getImage().getScaledInstance(39, 21, Image.SCALE_DEFAULT));
+            flagIcon = new ImageIcon(flagIcon.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+            questionIcon = new ImageIcon(questionIcon.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+            virusIcon = new ImageIcon(virusIcon.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));;
+            characterWIDTH = 100;
+            characterHEIGHT = 100;
+        } else if (mineCount == 15) {
+            closedTileIcon = new ImageIcon(getClass().getResource("/images/blitzclosed.png"));
+            openedTileIcon = new ImageIcon(getClass().getResource("/images/blitzopened.png"));          
+            closedTileIcon = new ImageIcon(closedTileIcon.getImage().getScaledInstance(95, 53, Image.SCALE_DEFAULT));
+            openedTileIcon = new ImageIcon(openedTileIcon.getImage().getScaledInstance(95, 53, Image.SCALE_DEFAULT));
+            flagIcon = new ImageIcon(flagIcon.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
+            questionIcon = new ImageIcon(questionIcon.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
+            virusIcon = new ImageIcon(virusIcon.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
+            characterWIDTH = 140;
+            characterHEIGHT = 140;
+        }
+        standbyGif = new ImageIcon(standbyGif.getImage().getScaledInstance(characterHEIGHT, characterWIDTH, Image.SCALE_DEFAULT));
+        diggingGif = new ImageIcon(diggingGif.getImage().getScaledInstance(characterHEIGHT, characterWIDTH, Image.SCALE_DEFAULT));
+
+        // Scale the images to the new size
+        characterLabel = new JLabel(standbyGif);
+        characterLabel.setSize(characterWIDTH, characterHEIGHT);
+        characterLabel.setLocation(boardWidth / 3 - characterWIDTH / 2, boardHeight - characterHEIGHT);
         frame.setSize(boardWidth, boardHeight);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -174,13 +242,14 @@ public class Minesweeper implements ActionListener {
         JLabel backgroundLabel = new JLabel(VSBG);
         backgroundLabel.setBounds(0, 0, 1200, 720);
         layeredPane.add(backgroundLabel, JLayeredPane.DEFAULT_LAYER); // Background at base layer
+        //character
+        layeredPane.add(characterLabel, JLayeredPane.MODAL_LAYER);
 
         boardPanel.setBounds(0, 0, boardWidth, boardHeight); // Adjust if needed
         layeredPane.add(boardPanel, JLayeredPane.PALETTE_LAYER); // Add above background
 
         //boardPanel.setOpaque(false);
         //boardPanel.setBackground(new Color(0, 0, 0, 0)); // Fully transparent
-
         boardPanel.setOpaque(true);
         boardPanel.setBackground(Color.PINK); // test color
 
@@ -204,8 +273,8 @@ public class Minesweeper implements ActionListener {
         boardPanel.setLayout(new GridLayout(numRows, numCols)); // Declaring tiles rows and colums
 
         // Outer Panel
-        outerPanel.setBorder(BorderFactory.createEmptyBorder(120, 80, 100, 240)); 
-    //    outerPanel.add(boardPanel, BorderLayout.CENTER);
+        outerPanel.setBorder(BorderFactory.createEmptyBorder(120, 80, 100, 240));
+        //    outerPanel.add(boardPanel, BorderLayout.CENTER);
 
         outerPanel.setLayout(new BorderLayout()); // <-- THIS IS MISSING!
         outerPanel.setBounds(0, 0, boardWidth, boardHeight); // Ensure it's the right size
@@ -219,7 +288,7 @@ public class Minesweeper implements ActionListener {
 
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 40));
         scoreLabel.setForeground(darkPinkRed);
-        
+
         BtnBack.setContentAreaFilled(false);
         BtnBack.setBorderPainted(false);
         BtnBack.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -227,7 +296,7 @@ public class Minesweeper implements ActionListener {
         BtnRestart.setContentAreaFilled(false);
         BtnRestart.setBorderPainted(false);
         BtnRestart.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
+
         power1Btn.setContentAreaFilled(false);
         power1Btn.setBorderPainted(false);
         power1Btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -267,7 +336,7 @@ public class Minesweeper implements ActionListener {
         power2Btn.addActionListener(this);
 //        power3Btn.addActionListener(this);
 
-       /* frame.add(power1Btn);
+        /* frame.add(power1Btn);
         frame.add(power2Btn);
         frame.add(power3Lbl);
         frame.add(scoreLabel);
@@ -290,7 +359,7 @@ public class Minesweeper implements ActionListener {
         layeredPane.add(textLabelFlagged, JLayeredPane.MODAL_LAYER);
         layeredPane.add(BtnRestart, JLayeredPane.MODAL_LAYER);
         layeredPane.add(BtnBack, JLayeredPane.MODAL_LAYER);
-       // layeredPane.add(outerPanel, JLayeredPane.PALETTE_LAYER);
+        // layeredPane.add(outerPanel, JLayeredPane.PALETTE_LAYER);
 
         // Initialize timer variables based on mode
         int minutes = elapsedTime / 60;
@@ -484,7 +553,7 @@ public class Minesweeper implements ActionListener {
 //                timerLabel.setText("Time : " + elapsedTime + "s");
 //                scoreLabel.setText("Score :" + Integer.toString(timeScore));
             }
-            
+
         });
 
         // Setting Tiles
@@ -497,10 +566,15 @@ public class Minesweeper implements ActionListener {
 //                tile.setIcon(new ImageIcon("src/images/virusSweeperIcon.png"));
                 position[r][c] = tile;
 
+                tile.setIcon(closedTileIcon);
+                tile.setDisabledIcon(openedTileIcon); // Set opened tile when disabled
+                tile.setHorizontalTextPosition(JButton.CENTER);
+                tile.setVerticalTextPosition(JButton.CENTER);
                 tile.setFocusable(false);
                 tile.setMargin(new Insets(0, 0, 0, 0));
                 tile.setFont(new Font("Arial Unicode Ms", Font.PLAIN, 30));
 //                tile.setText("1");
+                tile.setOpaque(false);
                 tile.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mousePressed(MouseEvent e) {
@@ -518,8 +592,31 @@ public class Minesweeper implements ActionListener {
                         Minetile tile = (Minetile) e.getSource();
 
                         // Left click
-                        if (e.getButton() == MouseEvent.BUTTON1) {
+                        if (e.getButton() == MouseEvent.BUTTON1 && tile.isEnabled()) {
+                            if (tile.getText() == "O") {
+                                return;
+                            }
 
+                            Point tileLocation = tile.getLocationOnScreen();
+                            Point frameLocation = frame.getLocationOnScreen();
+                            int x = tileLocation.x - frameLocation.x + tile.getWidth() / 2 - characterWIDTH / 2;
+                            int y = tileLocation.y - frameLocation.y + tile.getHeight() / 2 - characterHEIGHT / 2;
+
+                            characterLabel.setLocation(x, y);
+                            characterLabel.setIcon(diggingGif);
+                            isDigging = true;
+                            currentTileLocation = tile.getLocation();
+                            // Cancel any pending return timer
+                            if (returnTimer != null && returnTimer.isRunning()) {
+                                returnTimer.stop();
+                            }
+                            returnTimer = new Timer(700, evt -> {
+                                returnToOriginalPosition();
+                                // After animation, show the actual content
+
+                            });
+                            returnTimer.setRepeats(false);
+                            returnTimer.start();
                             if (allowReveal3x3) {
                                 reveal3x3(tile);
                                 allowReveal3x3 = false;
@@ -527,10 +624,8 @@ public class Minesweeper implements ActionListener {
                             }
 
                             if (tile.isEnabled() && elapsedTime == 0) {
-                                // SPRITE 1
-                                System.out.println("first");
+                                System.out.println("nabasag");
                             } else if (tile.isEnabled()) {
-                                // SPRITE 2
                                 System.out.println("second");
                             }
 
@@ -709,10 +804,19 @@ public class Minesweeper implements ActionListener {
 
                 boardPanel.add(tile);
             }
-        }        
+        }
         frame.setVisible(true);
-        
-        
+
+    }
+
+    private void returnToOriginalPosition() {
+        // Calculate original position directly here
+        int originalX = boardWidth / 3 - characterWIDTH / 2;
+        int originalY = boardHeight - characterHEIGHT;
+
+        characterLabel.setLocation(originalX, originalY);
+        characterLabel.setIcon(standbyGif);
+        isDigging = false;
     }
 
     // Setting Bonus/Question tiles
@@ -843,7 +947,7 @@ public class Minesweeper implements ActionListener {
             flagged--;
         }
 
-        tile.setBackground(Color.white); // clicked color
+        //tile.setBackground(Color.white); // clicked color
         tile.setEnabled(false); // disabling button
 //        tilesClicked += 1; // increment 'tilesClicked' if there's no bomb
 
@@ -934,7 +1038,7 @@ public class Minesweeper implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == BtnBack) {
-        int x = CustomDialog.showCustomConfirmation(null, "Are you sure?", "Quit");
+            int x = CustomDialog.showCustomConfirmation(null, "Are you sure?", "Quit");
 
             //int x = JOptionPane.showConfirmDialog(null, "Are you sure?", "Quit", JOptionPane.YES_NO_OPTION);
             if (x == 0) {
@@ -995,20 +1099,21 @@ public class Minesweeper implements ActionListener {
             if (timer.isRunning()) {
                 pauseTimePower();
                 power1--;
-                power1Btn.setText("Debugger : " + String.valueOf(power1));
+                power1Lbl.setText("" + String.valueOf(power1));
             } else if (pauseTimer.isRunning() && !gameOver) {
-                CustomDialog.showCustomWarning(null, "Wait the duration of\nlast debugger");
+                //CustomDialog.showCustomWarning(null, "Wait the duration of\nlast debugger");
+                CustomDialog.showCustomInformation(null, "Wait the duration of\nlast debugger", "Debugger");
                 //JOptionPane.showMessageDialog(null, "Wait the duration of last debugger", "Debugger", 2);
             }
         } else if (e.getSource() == power2Btn && !gameOver && (power2 > 0 && start) || allowReveal3x3) {
             if (!allowReveal3x3) {
                 allowReveal3x3 = true;
                 power2--;
-                power2Btn.setText("Radar : " + String.valueOf(power2));
+                power2Lbl.setText("" + String.valueOf(power2));
             } else if (allowReveal3x3) {
                 allowReveal3x3 = false;
                 power2++;
-                power2Btn.setText("Radar : " + String.valueOf(power2));
+                power2Lbl.setText("" + String.valueOf(power2));
             } else {
                 CustomDialog.showCustomWarning(null, "Radar is enable!");
                 //JOptionPane.showMessageDialog(null, "Radar is enable!", "Radar", 2);
@@ -1151,7 +1256,7 @@ public class Minesweeper implements ActionListener {
                 tempQuestion = questionList[questionNum][0];
                 tempAnswer = questionList[questionNum][1];
             }
-            JPanel panel = new JPanel(new BorderLayout());
+            /*JPanel panel = new JPanel(new BorderLayout());
             JLabel label = new JLabel(tempQuestion + " (10 seconds remaining)");
             JTextField userAnswer = new JTextField(); // Input field
             panel.add(label, BorderLayout.NORTH);
@@ -1183,8 +1288,81 @@ public class Minesweeper implements ActionListener {
                 }
             });
             countdownTimer.start();
-            dialog.setVisible(true);
+            dialog.setVisible(true);*/
+            JPanel panel = new JPanel(new BorderLayout());
+            panel.setBackground(new Color(255, 235, 205)); // Light orange
 
+            JLabel label = new JLabel(tempQuestion + " (10 seconds remaining)");
+            label.setForeground(Color.RED);
+            label.setFont(new Font("SansSerif", Font.BOLD, 30));
+            label.setOpaque(true);
+            label.setBackground(new Color(255, 235, 205));
+
+            JTextField userAnswer = new JTextField();
+            userAnswer.setBackground(new Color(255, 250, 240));
+            userAnswer.setForeground(Color.DARK_GRAY);
+            userAnswer.setFont(new Font("SansSerif", Font.PLAIN, 25));
+            userAnswer.setOpaque(true);
+
+            panel.add(label, BorderLayout.NORTH);
+            panel.add(userAnswer, BorderLayout.CENTER);
+
+// Style UIManager (affects buttons and panels globally)
+            UIManager.put("Button.background", new Color(139, 69, 19));
+            UIManager.put("Button.foreground", Color.WHITE);
+            UIManager.put("Button.font", new Font("Arial", Font.BOLD, 25));
+            UIManager.put("OptionPane.background", new Color(255, 235, 205));
+            UIManager.put("Panel.background", new Color(255, 235, 205));
+
+// Create the JOptionPane
+            JOptionPane optionPane = new JOptionPane(
+                    panel,
+                    JOptionPane.QUESTION_MESSAGE,
+                    JOptionPane.OK_CANCEL_OPTION
+            );
+
+// Create custom dialog (undecorated)
+            JDialog dialog = new JDialog((Frame) null, "Final Question", true);
+            dialog.setUndecorated(true);
+            dialog.setContentPane(optionPane);
+            dialog.getRootPane().setBorder(BorderFactory.createLineBorder(Color.RED, 4));
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+
+// Countdown logic
+            final int[] secondsRemaining = {10};
+            Timer countdownTimer = new Timer(1000, e -> {
+                secondsRemaining[0]--;
+                label.setText(tempQuestion + " (" + secondsRemaining[0] + " seconds remaining)");
+                if (secondsRemaining[0] <= 0) {
+                    ((Timer) e.getSource()).stop();
+                    optionPane.setValue(JOptionPane.CLOSED_OPTION); // Triggers dialog to close
+                }
+            });
+
+// Handle OK/Cancel click
+            optionPane.addPropertyChangeListener(evt -> {
+                String prop = evt.getPropertyName();
+                if (dialog.isVisible()
+                        && evt.getSource() == optionPane
+                        && JOptionPane.VALUE_PROPERTY.equals(prop)) {
+                    dialog.setVisible(false);
+                }
+            });
+
+// Stop timer when window is closed manually
+            dialog.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    countdownTimer.stop();
+                }
+            });
+
+// Start countdown and show dialog
+            countdownTimer.start();
+            optionPane.setInitialValue(null);
+            optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
+            dialog.setVisible(true); // Only call ONCE!
             // Get result after dialog closes
             String userInput = null;
             Object result = optionPane.getValue();
@@ -1574,7 +1752,7 @@ public class Minesweeper implements ActionListener {
 //            JOptionPane.showMessageDialog(frame, "Bonus: Click any tile to reveal its 3x3 neighbors!");
         } else { // 5% chance for Power 4
             power3++;
-              CustomDialog.showCustomMessage(null, "+1 System Restore!", "Bonus");
+            CustomDialog.showCustomMessage(null, "+1 System Restore!", "Bonus");
             //CustomDialog.showCustomInformation(null, "Bonus: +1 System Restore!", "Bonus");
             //JOptionPane.showMessageDialog(null, "Bonus: +1 System Restore!", "Bonus", JOptionPane.INFORMATION_MESSAGE);
 //            timeScore += 4;
@@ -1598,6 +1776,7 @@ public class Minesweeper implements ActionListener {
                 Minetile tile = position[r][c];
                 if (tile.isEnabled() && !minelist.contains(tile) && !questionTileList.contains(tile) && !bonusTileList.contains(tile)) {
                     availableTiles.add(tile);
+
                 }
             }
         }
@@ -1739,7 +1918,7 @@ public class Minesweeper implements ActionListener {
         }
 
         String answer = CustomDialog.showCustomInputDialog(frame, tempQuestion, "Question Tile");
-    //    String answer = JOptionPane.showInputDialog(frame, tempQuestion, "Question Tile", JOptionPane.QUESTION_MESSAGE);
+        //    String answer = JOptionPane.showInputDialog(frame, tempQuestion, "Question Tile", JOptionPane.QUESTION_MESSAGE);
         if (gameOver) {
             tile.setEnabled(true);
             tile.setBackground(Color.black);
@@ -1919,6 +2098,5 @@ public class Minesweeper implements ActionListener {
             countdownTimer.stop();
         }
     }
-    
 
 }

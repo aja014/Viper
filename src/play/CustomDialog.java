@@ -79,40 +79,40 @@ public class CustomDialog {
         dialog.setLocationRelativeTo(parent);
 
         JPanel panel = new JPanel();
-        panel.setBackground(new Color(240, 240, 255)); // light bluish
+        panel.setBackground(new Color(255, 204, 128)); // light orange/yellowish
         panel.setLayout(new BorderLayout());
 
         JLabel title = new JLabel(titleText, SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 40));
-        title.setForeground(new Color(60, 60, 120));
+        title.setForeground(new Color(220, 20, 60)); // Crimson red
         panel.add(title, BorderLayout.NORTH);
 
-        // Convert newlines to <br> for multi-line support
         messageText = "<html><div align='center'>" + messageText.replace("\n", "<br>") + "</div></html>";
-
         JLabel message = new JLabel(messageText, SwingConstants.CENTER);
         message.setFont(new Font("Arial", Font.PLAIN, 25));
-        message.setForeground(new Color(80, 80, 80));
+        message.setForeground(new Color(255, 87, 34)); // Dark orange
         panel.add(message, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setBackground(new Color(240, 240, 255));
+        buttonPanel.setBackground(new Color(255, 235, 205)); // light yellow-orange
 
         JButton yesButton = new JButton("YES");
-        yesButton.setBackground(new Color(144, 238, 144)); // light green
+        yesButton.setBackground(new Color(255, 215, 0)); // Gold/Yellow
         yesButton.setFont(new Font("Arial", Font.BOLD, 25));
-        yesButton.setForeground(Color.BLACK);
+        yesButton.setForeground(Color.WHITE);
         yesButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        yesButton.setBorder(BorderFactory.createLineBorder(Color.ORANGE, 2));
         yesButton.addActionListener(e -> {
             result[0] = JOptionPane.YES_OPTION;
             dialog.dispose();
         });
 
         JButton noButton = new JButton("NO");
-        noButton.setBackground(new Color(255, 182, 193)); // light red/pink
+        noButton.setBackground(new Color(220, 20, 60)); // Crimson red
         noButton.setFont(new Font("Arial", Font.BOLD, 25));
-        noButton.setForeground(Color.BLACK);
+        noButton.setForeground(Color.WHITE);
         noButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        noButton.setBorder(BorderFactory.createLineBorder(Color.ORANGE, 2));
         noButton.addActionListener(e -> {
             result[0] = JOptionPane.NO_OPTION;
             dialog.dispose();
@@ -206,31 +206,31 @@ public class CustomDialog {
 
     // Custom information dialog
     public static void showCustomInformation(Component parent, String messageText, String titleText) {
-        JDialog dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(parent), true);
+        Window window = (parent != null) ? SwingUtilities.getWindowAncestor(parent) : null;
+        JDialog dialog = new JDialog(window instanceof Frame ? (Frame) window : null, true);
+
         dialog.setUndecorated(true);
         dialog.setSize(400, 180);
         dialog.setLocationRelativeTo(parent);
 
         JPanel panel = new JPanel();
-        panel.setBackground(new Color(225, 245, 254)); // light blue
+        panel.setBackground(new Color(255, 235, 205)); // Light orange
         panel.setLayout(new BorderLayout());
 
         JLabel title = new JLabel(titleText, SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 35));
-        title.setForeground(new Color(25, 118, 210)); // blue
+        title.setForeground(new Color(220, 20, 60)); // Red
         panel.add(title, BorderLayout.NORTH);
 
-        // Convert newlines to <br> for multi-line support
-        messageText = "<html><div align='center'>" + messageText.replace("\n", "<br>") + "</div></html>";
-
+        messageText = "<html><div align='center' style='color: #CC5500;'>" + messageText.replace("\n", "<br>") + "</div></html>";
         JLabel message = new JLabel(messageText, SwingConstants.CENTER);
         message.setFont(new Font("Arial", Font.PLAIN, 25));
-        message.setForeground(new Color(33, 33, 33));
         panel.add(message, BorderLayout.CENTER);
 
         JButton okButton = new JButton("OK");
-        okButton.setFont(new Font("Arial", Font.PLAIN, 18));
-        okButton.setBackground(new Color(144, 202, 249)); // pastel blue
+        okButton.setFont(new Font("Arial", Font.BOLD, 18));
+        okButton.setBackground(new Color(255, 215, 0)); // Yellow
+        okButton.setForeground(new Color(139, 0, 0)); // Dark red
         okButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         okButton.addActionListener(e -> dialog.dispose());
 
