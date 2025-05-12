@@ -7,6 +7,8 @@ package Menu;
 
 import Db.database;
 import fistFrame.Login;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,6 +16,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -74,7 +81,20 @@ public class shopFrame extends javax.swing.JFrame {
 
         setSize(1200, 720);
     }
-
+     
+    public void playSound(String soundFileName) 
+    {
+        try {
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFileName).getAbsoluteFile());
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+                clip.start();
+            } 
+        catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) 
+        {
+        ex.printStackTrace();
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -208,6 +228,7 @@ public class shopFrame extends javax.swing.JFrame {
 
     private void buyDebuggerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyDebuggerActionPerformed
         // TODO add your handling code here:
+        playSound("clickButton.wav");
         if (menu.coins >= 50) {
             menu.coins -= 50;
             menu.pwr1++;
@@ -225,12 +246,14 @@ public class shopFrame extends javax.swing.JFrame {
 
     private void BtnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBackActionPerformed
         // TODO add your handling code here:
+        playSound("clickButton.wav");
         new menu();
         dispose();
     }//GEN-LAST:event_BtnBackActionPerformed
 
     private void buySystemRestoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buySystemRestoreActionPerformed
         // TODO add your handling code here:
+        playSound("clickButton.wav");
         if (menu.coins >= 500) {
             menu.coins -= 500;
             menu.pwr3++;
@@ -248,12 +271,14 @@ public class shopFrame extends javax.swing.JFrame {
 
     private void BtnSettings3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSettings3ActionPerformed
         // TODO add your handling code here:
+        playSound("clickButton.wav");
         new settingsFrame("shopFrame");
         dispose();
     }//GEN-LAST:event_BtnSettings3ActionPerformed
 
     private void buyRadarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyRadarActionPerformed
         // TODO add your handling code here:
+        playSound("clickButton.wav");
         if (menu.coins >= 100) {
             menu.coins -= 100;
             menu.pwr2++;

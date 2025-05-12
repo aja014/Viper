@@ -6,11 +6,18 @@ import Menu.playFrame;
 import fistFrame.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 import java.sql.*;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JOptionPane;
 import play.CustomDialog;
 
@@ -120,6 +127,20 @@ public class Minesweeper implements ActionListener {
     boolean gameLost = false;
     boolean swapBonusWithBomb = false;
     boolean allowReveal3x3 = false;
+    
+    public void playSound(String soundFileName) 
+    {
+        try {
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFileName).getAbsoluteFile());
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+                clip.start();
+            } 
+        catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) 
+        {
+        ex.printStackTrace();
+        }
+    }
 
     // Minesweeper(int minecout, int rowsNcols, int scoreTimeStart, int timePerScore)
     public Minesweeper(int minecount, int rowsNcols, int scoreTimeStart, int timePerScore, String gameMode) {
@@ -434,6 +455,7 @@ public class Minesweeper implements ActionListener {
 
                         // Game over, swap bonus with mines if naabutan
                         if (isNoMoreSafeTile()) {
+                            playSound("gameOver.wav");
                             revealMines();
                             CustomDialog.showCustomError(null, "Game Over:\nLast safe tile is now\ncontained with Virus");
                             //JOptionPane.showMessageDialog(null, "Game Over: Last safe tile is now contained with Virus", "Game Over", JOptionPane.ERROR_MESSAGE);
@@ -771,6 +793,7 @@ public class Minesweeper implements ActionListener {
                                             gameLost = true;
                                             swapBonusWithBomb = true;
                                             revealMines();
+                                            playSound("gameover.wav");
                                             CustomDialog.showCustomError(frame, "Game Over:\nYou dug up a Virus");
                                             //JOptionPane.showMessageDialog(frame, "Game Over: You dug up a Virus", "Game Over", JOptionPane.ERROR_MESSAGE);
                                             textLabel1.setText("Game Over: You dug up a Virus");
@@ -789,15 +812,18 @@ public class Minesweeper implements ActionListener {
                             if (tile.getText() == "" && tile.isEnabled()) { // adding Flag
                                 flagged++;
                                 tile.setText("O");
+                                playSound("flag.wav");
                                 tile.setForeground(Color.cyan); // Set text color
+                                playSound("buttonn.wav");
                             } else if (tile.getText() == "O") { // removing Flag
                                 tile.setText("");
+                                playSound("unflag.wav");
                                 if (flagged > 0) {
                                     flagged--;
                                 }
                             }
                             textLabelFlagged.setText(Integer.toString(flagged));
-
+                            playSound("efects.wav");
                         }
                     }
                 });
@@ -930,6 +956,7 @@ public class Minesweeper implements ActionListener {
     }
 
     void checkMine(int r, int c) {
+        playSound("tileclick.wav");
         // if the neighbor tiles is out of bounds = exit
         if (r < 0 || r >= numRows || c < 0 || c >= numCols) {
             return;
@@ -975,6 +1002,7 @@ public class Minesweeper implements ActionListener {
 
         } else {
             tile.setText("");
+            playSound("unflag.wav");
 
             //Check neighboring mine
             checkMine(r - 1, c - 1); // top-left
@@ -1038,6 +1066,7 @@ public class Minesweeper implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == BtnBack) {
+             playSound("clickButton.wav");
             int x = CustomDialog.showCustomConfirmation(null, "Are you sure?", "Quit");
 
             //int x = JOptionPane.showConfirmDialog(null, "Are you sure?", "Quit", JOptionPane.YES_NO_OPTION);
@@ -1048,6 +1077,7 @@ public class Minesweeper implements ActionListener {
                 frame.dispose();
             }
         } else if (e.getSource() == BtnRestart) {
+            playSound("clickButton.wav");
             int x;
 
 //            Timer timer;
@@ -1095,6 +1125,7 @@ public class Minesweeper implements ActionListener {
                 // trye pa ulit
             }
         } else if (e.getSource() == power1Btn && power1 > 0 && start && !gameOver) {
+            playSound("clickButton.wav");
 //            activatePower1();
             if (timer.isRunning()) {
                 pauseTimePower();
@@ -1106,6 +1137,7 @@ public class Minesweeper implements ActionListener {
                 //JOptionPane.showMessageDialog(null, "Wait the duration of last debugger", "Debugger", 2);
             }
         } else if (e.getSource() == power2Btn && !gameOver && (power2 > 0 && start) || allowReveal3x3) {
+            playSound("clickButton.wav");
             if (!allowReveal3x3) {
                 allowReveal3x3 = true;
                 power2--;
@@ -1151,6 +1183,7 @@ public class Minesweeper implements ActionListener {
         if (!tile.isEnabled()) {
             tile.setEnabled(true);
             tile.setText("");
+            playSound("unflag.wav");
             tile.setBackground(Color.black);
             if (!reEnabledTiles.contains(tile)) {
                 reEnabledTiles.add(tile);
@@ -1207,6 +1240,7 @@ public class Minesweeper implements ActionListener {
                             return;
                         } else {
                             tile.setText("");
+                             playSound("unflag.wav");
                         }
                     }
                 }
@@ -1235,6 +1269,7 @@ public class Minesweeper implements ActionListener {
         if (revealedCount == safeTiles && start) {
             // Try
             // Last final question (10 seconds)
+             playSound("byouWin.wav");
             timer.stop();
 
             if ("blitz".equals(level)) {
@@ -1796,6 +1831,7 @@ public class Minesweeper implements ActionListener {
             if (tile.isEnabled() && !swapBonusWithBomb) {
                 if (tile.getText().equals("O")); else {
                     tile.setText("");
+                    playSound("unflag.wav");
                 }
                 tile.setBackground(Color.black);
                 bonusTileList.remove(tile);
@@ -2016,6 +2052,7 @@ public class Minesweeper implements ActionListener {
             gameLost = true;
             swapBonusWithBomb = true;
             revealMines();
+            playSound("gameover.wav");
             CustomDialog.showCustomError(frame, "Game Over:\nYou dug up a Virus!");
             //JOptionPane.showMessageDialog(frame, "Game Over: You dug up a Virus", "Game Over", JOptionPane.ERROR_MESSAGE);
             textLabel1.setText("Game Over: You dug up a Virus");

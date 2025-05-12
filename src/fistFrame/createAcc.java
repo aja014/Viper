@@ -14,7 +14,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.*;
 import fistFrame.*;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  *
@@ -42,7 +49,20 @@ public class createAcc extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-
+     
+    public void playSound(String soundFileName) 
+    {
+        try {
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFileName).getAbsoluteFile());
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+                clip.start();
+            } 
+        catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) 
+        {
+        ex.printStackTrace();
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -138,6 +158,7 @@ public class createAcc extends javax.swing.JFrame {
 
     private void BtnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCreateActionPerformed
 //        String getLatestId = "select * from account order by id desc fetch first 1 row only";
+        playSound("clickButton.wav");
         String getLatestId = "select * from account order by id asc";
         String addAcc1 = "insert into account(id,username,password) ";
         String numId = "";
@@ -217,6 +238,7 @@ public class createAcc extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnCreateActionPerformed
 
     private void BtnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCancelActionPerformed
+        playSound("clickButton.wav");
         new Login();
         dispose();
         
@@ -224,6 +246,7 @@ public class createAcc extends javax.swing.JFrame {
 
     private void confirmPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmPasswordActionPerformed
         // TODO add your handling code here:
+        playSound("clickButton.wav");
     }//GEN-LAST:event_confirmPasswordActionPerformed
 
     private void showCustomError(String messageText) {

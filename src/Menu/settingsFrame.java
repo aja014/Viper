@@ -8,12 +8,19 @@ package Menu;
 import Db.database;
 import fistFrame.*;
 import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 
 
@@ -60,7 +67,20 @@ public class settingsFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
-
+     
+    public void playSound(String soundFileName) 
+    {
+        try {
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFileName).getAbsoluteFile());
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+                clip.start();
+            } 
+        catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) 
+        {
+        ex.printStackTrace();
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -142,6 +162,7 @@ public class settingsFrame extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
          // TODO add youradmadmad         handling code here:
+         playSound("clickButton.wav");
         int x = showCustomConfirmation("Are you sure you want to logout?", "Logout");
         
         if (x == 0){
@@ -170,7 +191,7 @@ public class settingsFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        
+        playSound("clickButton.wav");
         database.saveIntRecord("sound", JSSound.getValue(), menu.username);
         database.saveIntRecord("music", JSMusic.getValue(), menu.username);
         

@@ -18,7 +18,14 @@ import Menu.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 
@@ -60,7 +67,20 @@ public class Login extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-
+     
+    public void playSound(String soundFileName) 
+    {
+        try {
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFileName).getAbsoluteFile());
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+                clip.start();
+            } 
+        catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) 
+        {
+        ex.printStackTrace();
+        }
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -143,12 +163,14 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegisterActionPerformed
+        playSound("clickButton.wav");
         new createAcc();
         dispose();
 
     }//GEN-LAST:event_BtnRegisterActionPerformed
 
     private void BtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLoginActionPerformed
+        playSound("clickButton.wav");
         username1 = username.getText();
         password1 = new String(password.getPassword());
            

@@ -5,7 +5,14 @@
  */
 package Menu;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
@@ -35,7 +42,20 @@ public class helpFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-
+     
+    public void playSound(String soundFileName) 
+    {
+        try {
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFileName).getAbsoluteFile());
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+                clip.start();
+            } 
+        catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) 
+        {
+        ex.printStackTrace();
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -103,12 +123,14 @@ public class helpFrame extends javax.swing.JFrame {
 
     private void BtnSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSettingsActionPerformed
         // TODO add your handling code here:
+        playSound("clickButton.wav");
         new settingsFrame("helpFrame");
         dispose();
     }//GEN-LAST:event_BtnSettingsActionPerformed
 
     private void BtnBack1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBack1ActionPerformed
         // TODO add your handling code here:
+        playSound("clickButton.wav");
         new menu();
         dispose();
     }//GEN-LAST:event_BtnBack1ActionPerformed

@@ -11,6 +11,13 @@ import javax.swing.JFrame;
 import play.*;
 import Menu.loadingPerLevel;
 import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JOptionPane;
 
 /**
@@ -39,7 +46,20 @@ public class playFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
-
+     
+    public void playSound(String soundFileName) 
+    {
+        try {
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFileName).getAbsoluteFile());
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+                clip.start();
+            } 
+        catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) 
+        {
+        ex.printStackTrace();
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -161,12 +181,14 @@ public class playFrame extends javax.swing.JFrame {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
+        playSound("clickButton.wav");
         new menu();
         dispose();
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void easyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_easyActionPerformed
         // TODO add your handling code here:
+        playSound("clickButton.wav");
         new loadingPerLevel("easy");
 //        Minesweeper easy = new Minesweeper(10,9,15,1,"");
         dispose();
@@ -174,6 +196,7 @@ public class playFrame extends javax.swing.JFrame {
 
     private void mediumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mediumActionPerformed
         // TODO add your handling code here:
+        playSound("clickButton.wav");
         new loadingPerLevel("medium");
 //        Minesweeper medium = new Minesweeper(20,15,25, 3,"");
         dispose();
@@ -181,6 +204,7 @@ public class playFrame extends javax.swing.JFrame {
 
     private void hard1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hard1ActionPerformed
         // TODO add your handling code here:
+        playSound("clickButton.wav");
         new loadingPerLevel("hard");
 //        Minesweeper hard = new Minesweeper(30,21,45, 5,"");
         dispose();
@@ -188,12 +212,14 @@ public class playFrame extends javax.swing.JFrame {
 
     private void BtnSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSettingsActionPerformed
         // TODO add your handling code here:
+        playSound("clickButton.wav");
         new settingsFrame("playFrame");
         dispose();
     }//GEN-LAST:event_BtnSettingsActionPerformed
 
     private void blitzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blitzActionPerformed
         // TODO add your handling code here:
+        playSound("clickButton.wav");
         new loadingPerLevel("blitz");
 //        Minesweeper blitz = new Minesweeper(15,9,20,3,"blitz");
 //        blitz.level = "blitz";
