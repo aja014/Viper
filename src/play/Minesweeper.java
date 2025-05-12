@@ -1923,6 +1923,7 @@ public class Minesweeper implements ActionListener {
     }
 
     void handleQuestionTile(Minetile tile) {
+        playSound("question.wav");
         tile.setText("?");
         tile.setEnabled(false);
         tile.setBackground(Color.white);
