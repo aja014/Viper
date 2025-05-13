@@ -646,9 +646,9 @@ public class Minesweeper implements ActionListener {
                             }
 
                             if (tile.isEnabled() && elapsedTime == 0) {
-                                System.out.println("nabasag");
+//                                System.out.println("nabasag");
                             } else if (tile.isEnabled()) {
-                                System.out.println("second");
+//                                System.out.println("second");
                             }
 
                             // "" means Not clicked yet -- PAG na click tile na hindi pa napipindot
@@ -814,7 +814,7 @@ public class Minesweeper implements ActionListener {
                                 tile.setText("O");
                                 playSound("flag.wav");
                                 tile.setForeground(Color.cyan); // Set text color
-                                playSound("buttonn.wav");
+                                playSound("clickButton.wav");
                             } else if (tile.getText() == "O") { // removing Flag
                                 tile.setText("");
                                 playSound("unflag.wav");
@@ -823,7 +823,7 @@ public class Minesweeper implements ActionListener {
                                 }
                             }
                             textLabelFlagged.setText(Integer.toString(flagged));
-                            playSound("efects.wav");
+//                            playSound("efects.wav");
                         }
                     }
                 });

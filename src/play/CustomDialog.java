@@ -389,7 +389,8 @@ public class CustomDialog {
     }
     
     public static void showCustomMessage(Component parent, String messageText, String titleText) {
-        JDialog dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(parent), true);
+        Window window = parent == null ? null : SwingUtilities.getWindowAncestor(parent);
+        JDialog dialog = new JDialog(window, Dialog.ModalityType.APPLICATION_MODAL);
         dialog.setUndecorated(true);
         dialog.setSize(400, 180);
         dialog.setLocationRelativeTo(parent);
@@ -403,7 +404,6 @@ public class CustomDialog {
         title.setForeground(new Color(93, 64, 55)); // Brown
         panel.add(title, BorderLayout.NORTH);
 
-        // Convert newlines to <br> for multi-line support
         messageText = "<html><div align='center'>" + messageText.replace("\n", "<br>") + "</div></html>";
 
         JLabel message = new JLabel(messageText, SwingConstants.CENTER);
@@ -413,7 +413,7 @@ public class CustomDialog {
 
         JButton okButton = new JButton("OK");
         okButton.setFont(new Font("Arial", Font.PLAIN, 18));
-        okButton.setBackground(new Color(255, 204, 128)); // Soft orange/yellow
+        okButton.setBackground(new Color(255, 204, 128));
         okButton.setForeground(Color.BLACK);
         okButton.setFocusPainted(false);
         okButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
